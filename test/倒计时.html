@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>倒计时</title>
+		<script src="../js/jquery-1.11.0.min.js"></script>
+	</head>
+	<body>
+		<input type="button" id="btn" value="免费获取验证码" onclick="daojishi(10,this)" />
+	</body>
+	<script type="text/javascript">
+		function daojishi(Num, obj) {
+			console.log(Num)
+			if (Num > 0) {
+				console.log('走这里了1')
+				Num--;
+				$(obj).val(Num + "秒后可重新获取 ").attr("disabled", true); //禁用按钮
+				setTimeout(() => {
+					daojishi(Num, obj)
+				},1000)
+			} else {
+				$(obj).val("免费获取验证码").attr("disabled", false); //禁用按钮
+			}
+		}
+	</script>
+</html>

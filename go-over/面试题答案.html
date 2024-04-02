@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>答案</title>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>vue的生命周期，API数据请求应该何时进行？为什么</h3>
+					<p>
+						beforeCreate(创建前):在实例初始化之后，数据观测(data observer) 和event/watcher事件配置之前被调用。
+						<br>在当前阶段 data、methods、computed 以及 watch 上的数据和方法都不能被访问，
+						<br>但是$route已存在，可以根据路由信息进行重定向
+					</p>
+					<p>
+						created(创建后):实例已经创建完成之后被调用，该阶段可以访问data，使用watcher、events、methods，
+						<br>也就是说实例已完成数据观测(data observer)，属性和方法的运算watch/event 事件回调。但是此时dom还没有被挂载。
+						<br>该阶段允许执行http请求操作。
+					</p>
+					<p>
+						beforeMount (挂载前)：在挂载开始之前被调用,相关render函数首次被调用(划重点)。
+					</p>
+					<p>
+						mounted (挂载后)：在挂载完成之后被调用，在当前阶段，真实的 Dom 挂载完毕，数据完成双向绑定，可以访问到 Dom 节点;
+					</p>
+					<p>
+						beforeUpdate: 数据更新时调用，发生在虚拟DOM重新渲染和打补丁（patch）之前;
+					</p>
+					<p>
+						updated：发生在更新完成之后，当前阶段组件Dom已完成更新;
+						<br>要注意的是避免在此期间更改数据，因为这可能会导致无限循环的更新，该钩子在服务器端渲染期间不被调用
+					</p>
+					<p>
+						beforeDestroy：实例销毁之前调用。在这一步，实例仍然完全可用。我们可以在这时进行善后收尾工作，比如清除计时器。
+					</p>
+					<p>
+						destroyed：实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
+						该钩子在服务器端渲染期间不被调用。
+					</p>
+					<p>
+						activated keep-alive 专属，组件被激活时调用
+					</p>
+					<p>
+						deactivated keep-alive 专属，组件被销毁时调用
+					</p>
+					<p>
+						考虑用户体验方面的话，在created中调用异步请求最佳:
+						<br>能更快获取到服务端数据，减少页面 loading 时间；
+						<br>ssr 不支持 beforeMount 、mounted 钩子函数，所以放在 created 中有助于一致性
+					</p>
+				</li>
+				<li>
+					<h3>双向绑定原理;什么时候监听</h3>
+					<p>vue 双向数据绑定是通过 数据劫持 结合 发布订阅模式的方式来实现的</p>
+					<p>首先要对数据进行劫持监听，所以我们需要设置一个监听器Observer，用来监听所有属性。<br>
+						如果属性发生改变了，就需要告诉订阅者Watcher看是否需要更新。因为订阅者是有很多个，<br>
+						所以我们需要有一个消息订阅器Dep来专门收集这些订阅者，然后在监听器Observer和订阅者Watcher之间进行统一管理的。<br>
+						接着，我们还需要有一个指令解析器Compile，对每个节点元素进行扫描和解析，<br>
+						将相关指令对应初始化成一个订阅者Watcher，并替换模板数据或者绑定相应的函数，<br>
+						此时当订阅者Watcher接收到相应属性的变化，就会执行对应的更新函数，从而更新视图。
+					</p>
+					<p>
+						简单描述：<br>
+						1.实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。<br>
+						2.实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。<br>
+						3.实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。
+						<br>
+						<img src="./img/vue.png" alt="">
+					</p>
+				</li>
+				<li>
+					<h3>常见的指令；（比如v-if,v-for他俩的优先级，key的作用）</h3>
+					<p>
+						v-for的优先级高于v-if，避免同时使用 v-if，v-for，因为如果每一次都需要遍历整个数组，会影响执行效率；
+						<br>key的作用：key是Vue中vnode的唯一标记；可以使虚拟算法更加准确,更快速；
+					</p>
+				</li>
+				<li>
+					<h3>如何封装一个组件，什么时候封装组件，封装组件需要注意什么</h3>
+					<p>
+					<ul>
+						<li>首先，使用Vue.extend()创建一个组件</li>
+						<li>然后，使用Vue.component()方法注册组件</li>
+						<li>接着，如果子组件需要数据，可以在props中接受定义</li>
+						<li>最后，子组件修改好数据之后，想把数据传递给父组件，可以使用emit()方法</li>
+					</ul>
+					</p>
+					<p>
+					<ul>
+						<li>当一个功能模块或者被重复使用就可以采用组件封装</li>
+						<li>组件封装的优点：降低组件重复性，便于项目维护</li>
+						<li>需要注意的点：易用性、拓展性、可维护性、可重用性</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>watch和computer的区别?</h3>
+					<p>
+					<h3>computer</h3>
+					<ul>
+						<li>支持缓存，只有数据发生改变，才会重新计算</li>
+						<li>不支持异步，当内部有异步操作时，无法监听数据变化</li>
+						<li>如果computer属性值是函数那么会默认走get方法，函数的返回值就是属性的属性值<br>
+							在computed属性都有一个get和set方法，当数据变化是调用set方法
+						</li>
+						<li>
+							使用场景：多对一
+						</li>
+					</ul>
+					<h3>watch</h3>
+					<ul>
+						<li>不支持缓存，数据改变会直接触发相应的操作</li>
+						<li>watch支持异步</li>
+						<li>监听函数接收两个参数一个是新值一个是旧值</li>
+						<li>有两个可配置属性：
+							<br>immediate:组件加载立即触发回调函数执行，
+							<br>deep: 深度监听，为了发现对象内部值的变化，复杂类型的数据时使用
+							<p>注意：deep无法监听到数组的变动和对象的新增</p>
+						</li>
+						<li>适用场景：一对多</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>computed原理,watch原理</h3>
+					<p>
+						computed内部实现了一个惰性的watcher，同时持有一个dep实例，<br>
+						其内部通过this.dirty来判断计算属性是否需要重新求值<br>
+						当computed依赖属性发生改变时就会通知这个惰性的watcher <br>
+						通过dep.sub.length来判断是否有订阅者，有的话会重新计算然后比对新旧值，如果发生改变了则重新渲染<br>
+						没有的话把dirty设置为true
+					</p>
+					<p>
+						watch在一开始初始化的时候，会读取一遍监听的数据的值,此时那个数据就收集到watch的watcher了<br>
+						然后你给watch设置的handler，watch 会放入watcher的更新函数中,<br>
+						当数据改变时，通知watch的watcher进行更新,于是你设置的handler就被调用了。
+					</p>
+				</li>
+				<li>
+					<h3>组件传值方式，自定义组件如何传值</h3>
+					<ul>
+						<li>
+							<p>$props/$emit父子组件传值，是日常工作中比较常用的一种</p>
+						</li>
+						<li>
+							<p>eventBus
+								<br>可以实现全局通信，在项目规模不大的情况下，可以利用eventBus实现全局的事件监听。
+								<br>但是eventBus要慎用，避免全局污染和内存泄漏等情况。
+							</p>
+						</li>
+						<li>
+							<p>Vuex
+								<br>可以实现全局通信，是vue项目全局状态管理的最佳实践。
+							</p>
+						</li>
+						<li>
+							<p>v-solt，在向组件传入Dom节点html等内容可以优先考虑v-solt</p>
+						</li>
+						<li>
+							<p>$ref/$parent/$child/$root：可以实现父子组件双向通信，其中$root可以实现根组件向子孙组件跨级传值</p>
+							<p>在父组件没有传递值或通过v-on绑定监听时，父子间想要获取彼此的属性或方法可以考虑使用这些api</p>
+						</li>
+						<li>
+							<p>$attr和$listener:能够实现跨级双向通信，获取传入的属性并且绑定监听，构建高阶组件的时候比较方便</p>
+						</li>
+						<li>
+							<p>provide/inject:可以实现跨级单向通信，向子孙组件注入依赖，这是你在实现高级组件、创建组件库时的不二之选。</p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>vuex几个属性及区别及怎么调用，模块儿化</h3>
+					<p>vuex:是用来集中管理所有组件数据的仓库</p>
+					<p>属性：state,getter,mutation,action</p>
+					<p>state:全局数据状态管理中心</p>
+					<p>getter:相当Vue中的计算属性computed</p>
+					<p>mutation:唯一修改state的方法,只能是同步操作，调用方法commit,mutation第一个参数是state</p>
+					<p>action:提交的是 mutation,可以包含任意异步操作，调用方法dispatch,action第一个参数是context</p>
+					<p>怎么在组件中批量使用Vuex的state状态？<br>通过使用mapState辅助函数</p>
+					<p>怎么在组件中批量使用Vuex的getter属性?<br>使用mapGetters辅助函数</p>
+					<p>在组件中多次提交同一个mutation，怎么写使用更方便？<br>使用mapMutations辅助函数</p>
+					<p>在组件中多次提交同一个action，使用mapActions辅助函数</p>
+					<p>Vuex中action通常是异步的，那么如何知道action什么时候结束呢？<br>在action函数中返回Promise，然后再提交时候用then处理</p>
+					<p>在模块中，getter和mutation和action中怎么访问全局的state和getter？
+						<br>在getter中可以通过第三个参数rootState访问到全局的state,可以通过第四个参数rootGetters访问到全局的getter。
+						<br>在mutation中不可以访问全局的satat和getter，只能访问到局部的state。
+						<br>在action中第一个参数context中的context.rootState访问到全局的state，context.rootGetters访问到全局的getter。
+					</p>
+					<p>在v-model上怎么用Vuex中state的值？<br>需要通过computed计算属性来转换。</p>
+					<p>为什么Vuex的mutation不能做异步操作？<br>
+						因为每次mutation执行完成后都会得到一个新的状态的变更，这样可以直接被调试工具监测到。<br>
+						如果mutation支持异步操作，就没有办法知道状态具体是什么时候更新的无法进行很好的状态跟踪，不便于调试。
+					</p>
+				</li>
+				<li>
+					<h3>插槽</h3>
+					<p>匿名插槽、具名插槽、作用域插槽</p>
+				</li>
+				<li>
+					<h3>登录拦截（流程）axios:请求拦截，响应拦截</h3>
+					<p>请求拦截：axios.interceptors.request.use((config))这里面可以设置token</p>
+					<p>响应拦截：axios.interceptors.response.use((response))这里可以根据状态码进行不同的操作</p>
+				</li>
+				<li>
+					<h3>有几种导航守卫?</h3>
+					<p>
+						全局导航守卫: <br>
+						router.beforeEach 全局前置守卫进入路由之前触发<br>
+						router.beforRouterEnter:全局解析守卫<br>
+						router.afterEach: 全局后置钩子进入路由后触发
+					</p>
+					<p>
+						组件内导航守卫：<br>
+						beforeRouterEnter:在页面还未进入的时候,这个时候vue实力还未创建,因此访问不到this <br>
+						beforeRouterUpdate:当前页面组件被复用的时候，页面的路径发生了改变，会触发此方法。在这个时候是可以访问到this的<br>
+						beforeRouterLeave:离开当前路由的时候，即要离开当前页面的时候，这个时候是可以访问到this的
+					</p>
+					<p>
+						路由独享守卫：<br>
+					<p>router.beforeEnter</p>
+					</p>
+				</li>
+				<li>
+					<h3>history和hash模式（区别）默认是哪种?</h3>
+					<p>默认是hash模式</p>
+					<p>hash默认路径后会带#，history不带#</p>
+					<p>hash:仅hash符号之前的内容会被包含在请求中</p>
+					<p>history:前端的 URL 必须和实际向后端发起请求的 URL 一致</p>
+				</li>
+				<li>
+					<h3>nexttick原理</h3>
+					<p>
+						在下次 DOM 更新循环结束之后执行延迟回调；在修改数据之后立即使用这个方法，获取更新后的 DOM；
+						<br>有些时候在改变数据后立即要对dom进行操作，此时获取到的dom仍是获取到的是数据刷新前的dom，
+						<br>无法满足需要，这个时候就用到了$nextTick。
+					</p>
+					<p>
+						nexttick是一个异步方法，源码中有三个重要元素：
+						<br>callback:用来存储所有需要执行的回调函数
+						<br>pending:用来标志是否正在执行回调函数
+						<br>timerFun:用来触发执行回调函数
+						<br>当调用nexttick时会传入两个参数一个是回调函数另一个是执行回调函数的上下文，
+						<br>如果没有提供回调函数那么将返回promise对象，首先将拿到的回调函数存放到数组中
+						<br>然后判断是否正在执行回调函数，如果没有pending则会调用timeFunc，多次执行nexttick只会调用一次timeFunc
+						<br>然后去异步执行flushCallbacks方法，flushCallbacks就是将传递的函数依次执行
+					</p>
+					<h3>nextTick和$nextTick的区别</h3>
+					<p>一个是实例方法一个是类的静态方法</p>
+					<p>nextTick(callback)：当数据发生变化，更新后执行回调。</p>
+					<p>$nextTick(callback)：当dom发生变化，更新后执行的回调。</p>
+				</li>
+				<li>
+					<h3>keepalive</h3>
+					<p>
+						它是vue的一个内置组件，当组件在切换的过程中，keep-alive可以将状态保存在内存中，防止重新渲染。
+					</p>
+					<p>
+					<ul>
+						<li>缓存的都是虚拟节点,在create周期里创建了catch这么一个缓存容器，在销毁周期里清除这个容器</li>
+						<li>通过getFirstComponentChild获取组件的name</li>
+						<li>通过matches来匹配缓存的条件</li>
+						<li>如果需要缓存，遍历catch这个容器如果之前缓存过直接覆盖，否则存进去</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>vue数据持久化</h3>
+					<p>vuex页面刷新数据回初始化</p>
+					<p>使用vuex-persistedstate插件或者结合前端存储技术</p>
+				</li>
+				<li>
+					<h3>vue react的区别?</h3>
+					<p>
+					<ul>
+						<li>Vue 是响应式的，React是手动setState，提倡的是单向数据流；</li>
+						<li>Vue组合不同功能的方式是通过mixin，React组合不同功能的方式是通过HoC(高阶组件)</li>
+						<li>模板渲染方式的不同</li>
+						<li>渲染过程不同</li>
+						<li>框架本质不同</li>
+						<li>Vuex和Redux的区别</li>
+					</ul>
+					</p>
+					<p>
+					<ul>
+						<h3>组合式Api:</h3>
+						<li>根据逻辑进行组织相关代码，提高可读性可维护性</li>
+						<li></li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>vue scope原理</h3>
+				</li>
+				<li>
+					<h3>Object.defindproperty与proxy的区别?</h3>
+					<p>proxy相当于在目标对象前设置了一层拦截，外界对该对象的访问都必须经过这层拦截,可以对外界访问进行一层过滤和改写</p>
+					<p>proxy代理的是整个对象,Object.defindproperty只是代理的对象的某个属性</p>
+					<p>proxy在调用时递归，Object.defindproperty一开始就全部递归</p>
+					<p>proxy可以直接监听到数组的变化，Object.defindproperty不可以</p>
+					<p>对象新增属性时proxy可以直接监听到，Object.defindproperty不可以</p>
+					<p>proxy不兼容IE，Object.defineProperty()不兼容IE8及以下</p>
+				</li>
+				<li>
+					<h3>vue和react中的diff算法区别</h3>
+					<p>当元素节点相同className不同,vue会认为是不同类型的元素删除重建<br>
+						react会认为是同类型节点，只修改节点属性
+					</p>
+					<p>vue列表对比采用两端到中间对比，react采用的是从左到右依次对比</p>
+					<p>当一个集合把最后一个节点挪到最前面，vue会把最后一个节点移到最前面,react会把前面的节点依次往后移</p>
+				</li>
+				<li>
+					<h3>vue3了解多少?</h3>
+					<p>组合式api</p>
+					<p>在创建虚拟dom中会根据内容是否发生改变而去添加标记，谁改变了去比较谁</p>
+				</li>
+				<li>
+					<h3>优化</h3>
+					<p>首屏加载的优化</p>
+					<p>路由懒加载</p>
+					<p>开启服务器Gzip</p>
+					<p>启用CND</p>
+					<p>Webpack 对图片进行压缩(image-webpack-loader)</p>
+					<p>避免内存泄漏</p>
+				</li>
+			</ul>
+			<ul>
+				<li>
+					<h1>JS</h1>
+				</li>
+				<li>
+					<h3>防抖节流的区别，实现方式，使用场景</h3>
+					<ul>
+						<li>
+							<h3>防抖：</h3>
+							<p>在短时间内多次触发同一个函数，只执行最后一次</p>
+							<p>使用场景：window触发resize时，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次</p>
+							<p>search搜索，用户不断输入值时，用防抖来节约Ajax请求,也就是输入框事件。</p>
+						</li>
+						<li>
+							<h3>节流：</h3>
+							<p>多次触发同一个函数，同一个时间段内只执行一次</p>
+							<p>使用场景：监听滚动事件，比如是否滑到底部自动加载更多，用throttle判断</p>
+							<p>鼠标的点击事件，比如mousedown只触发一次</p>
+							<p>游戏中发射子弹的频率</p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>改变this指向方式区别</h3>
+					<p>this指向是在调用的时候才能确实指向谁</p>
+					<p>改变this指向的方法有call、apply、bind、new关键字改变</p>
+					<p>call传参第是以逗号分隔分别传参数 apply是以数组的形式传参</p>
+					<p>call,apply都是改变上下文中的this立即执行<br>
+						而bind可以让对应的函数想什么时候调用就什么时候调用，<br>
+						并且可以在执行的时候添加参数</p>
+					<p>箭头函数不绑定this,而是根据外层作用域来决定this</p>
+					<p>注：作为方法的箭头函数this指向全局window对象，而普通函数则指向调用它的对象</p>
+				</li>
+				<li>
+					<h3>事件循环机制evenloop</h3>
+					<p>
+						javascript代码的执行过程，除了依靠函数调用栈之外还依靠任务队列来搞定其它代码执行<br>
+						一个线程中，事件循环是唯一的，但是任务队列有多个，任务队列又分为宏任务和微任务
+					</p>
+					<p>
+						宏任务：script，settimeout,setInterval,setImmediate,I/O,UI render
+					</p>
+					<p>
+						微任务：process.nextTick,Promise,Async/Await,MutationObserver
+					</p>
+				</li>
+				<li>
+					<h3>判断数组的方法；instanceof原理是什么如何实现</h3>
+					<p>instanceof constructor Array.isArray</p>
+					<p>
+						console.log(arr instanceof Array) <br>
+						console.log(arr.constructor == Array); <br>
+						console.log(Array.isArray(arr));
+					</p>
+				</li>
+				<li>
+					<h3>数组排重几种方式</h3>
+					<p>Es6 set方法:Array.from(new Set(arr)</p>
+					<p>indexof</p>
+					<p>filter结合indexOf</p>
+					<p>map结合indexOf</p>
+				</li>
+				<li>
+					<h3>箭头函数this指向是否可改变为什么</h3>
+					<p>箭头函数的this指向永远指向其上下文的this，任何方法都改变不</p>
+				</li>
+				<li>
+					<h3>Array.forEach() 与 Array.map() Array.filter的区别 </h3>
+					<p>forEach不支持return 对原数组也没有影响 </p>
+					<p>map支持return 对原数组没有影响 会返回一个新数组</p>
+					<p>filter 和 map 均返回一个新的数组;
+						不同点：filter是满足条件的留下，是对原数组的过滤<br>
+						map则是对原数组的加工，映射成一对一映射的新数组
+					</p>
+				</li>
+				<li>
+					<h3>Array.slice() 与 Array.splice()</h3>
+					<p>Array.slice(start,end)是截取数组的某一部分返回一个新数组，<br>
+						取出的值不包含end位置的值,end可以为空，end为空的时候表示从开始位置截取到最后</p>
+					<p>array.splice(start,length,insert_one......)直接对数组进行添加删除替换操作<br>
+						start为数组删除元素的开始下标 length为从start位置开始array删除元素的个数<br>
+						后面参数为删除之后array重新插入的数据内容,插入位置为删除位置，而非数组开头或末尾
+					</p>
+				</li>
+				<li>
+					<h3>findIndex filter map的区别</h3>
+				</li>
+				<li>
+					<h3>for in,for of 区别</h3>
+					<p>for in更适合遍历对象;<br>
+						如果使用for in遍历数组会遍历数组所有可枚举的属性包括原型
+					</p>
+					<p>for of只会遍历数组内的元素不包括原型</p>
+					<p>for in遍历的是数组的索引 而 for of遍历的是数组的元素值</p>
+					<p>for of只能遍历有迭代属性的对象不能用于普通对象 会报错；好像普通对象可以通过object.keys改造</p>
+				</li>
+				<li>
+					<h3>js获取两个字符串相同的部分</h3>
+				</li>
+				<li>
+					<h3>js判断一个字符串出现最多的次数的字符并统计次数</h3>
+				</li>
+				<li>
+					<h3>JS中计算出现浮点数计算精度问题怎么解决?</h3>
+					<p>使用toFixed四舍五入保留小数点后几位,Math.round</p>
+				</li>
+				<li>
+					<h3>闭包，优缺点，闭包变量存储在哪里堆还是栈 </h3>
+					<p>闭包:闭包是指有权访问另一个函数作用域中的变量的函数</p>
+					<p>优点：可以避免使用全局变量，防止全局变量污染</p>
+					<p>局部变量会常驻在内存中，滥用闭包会造成内存消耗过大 导致网页性能问题,会造成内存泄漏</p>
+				</li>
+				<li>
+					<h3>深拷贝浅拷贝</h3>
+					<p>浅拷贝：拷贝的时候只拷贝了一层引用,修改拷贝以后的数据会影响原来的数据</p>
+					<p>深拷贝:拷贝的时候会生成一份新的数据，修改拷贝以后的数据不会原数据。</p>
+					<p>常见浅拷贝：Object.assign()</p>
+					<p>常见深拷贝：Array.prototype.slice,Array.prototype.concat,JSON.parse(JSON.stringify())<br>
+						lodash中的.cloneDeep
+					</p>
+					<p>
+					<ul>
+						<h3>使用Json.parse(Json.stringfy())的缺陷?</h3>
+						<li>undefind、Symbol、函数会被忽略掉</li>
+						<li>NaN和Infinity数值会被认为是null</li>
+						<li>日期类型的数据会被toJSON转为字符串</li>
+						<li>reg会被转为空对象</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>原型原型链</h3>
+					<p>当查找一个对象的属性时如果查找不到会通过__proto__去它的上一级（父级对象）去查找<br>
+						如果上一级也没有这个属性,则继续向上查找，<br>
+						直到原型链的顶端为null的时候再向上查找则会报错<br>
+						这种通过__proto__属性过程就叫做原型链
+					</p>
+					<p>prototype和__proto__都指向原型对象</p>
+					<p>特别记忆：
+						<br>Object.prototype.__proto__ === null
+						<br>Function.prototype.__proto__ === Object.prototype
+						<br>Object.__proto__ === Function.prototype === Function.__proto__
+						<br>
+						<strong>注意：null和undefined没有__proto__</strong>
+					</p>
+				</li>
+				<li>
+					<h3>new实现</h3>
+					<p>new实现过程:实际上就是调用这个构造函数同时将构造函数的prototype上的属性方法挂上去</p>
+				</li>
+				<li>
+					<h3>es6</h3>
+					<ul>
+						<li>
+							<h3>var-let-const</h3>
+							<p>let:
+								<br>let声明的变量只在块儿级作用域有效
+								<br>let不会变量提升 所以要在声明后再使用
+								<br>暂存性死区：只要块级作用域内存在let命令，它所声明的变量就绑定这个区域，不再受外部影响
+								<br>不允许重复声明，let不允许在相同作用域内，重复声明同一个变量
+							</p>
+							<p>
+								const:
+								<br>一旦声明，就要立即初始化，否则也报错
+								<br>声明一个只读的常量。一旦声明，常量的值就不能改变。
+								<br>const命令声明的常量也不提升，只能在声明的位置后使用,同样也存在暂时性死区。、
+								<br>也不可以重复声明
+							</p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>cookie sessionstorage localstorage区别</h3>
+					<p>
+					<ul>
+						<h3>cookie</h3>
+						<li>如果设置了过期时间，超过过期时间自动销毁。如果没有设置，浏览器关闭也随之销毁</li>
+						<li>存储数据4k左右</li>
+						<li>在cookei自动携带在请求中容易被劫持</li>
+						<li>同域名下所以页面共享，不可以跨域名访问</li>
+						<li>cookie需要自己封装</li>
+						<h3>session</h3>
+						<li>存储在服务器上存储类型为对象</li>
+						<li>如果设置了过期时间，超过过期时间自动销毁</li>
+						<li>依赖于cookie（sessionID保存在cookie），如果禁用cookie，则要使用URL重写，不安全</li>
+						<h3>sessionstorage</h3>
+						<li>仅在当前会话下有效，关闭页面或浏览器后被清除</li>
+						<li>存储数据一般为5MB</li>
+						<li>不与服务端通信</li>
+						<li>不在不同的浏览器窗口共享，既是是同一个页面</li>
+						<h3>localstorage</h3>
+						<li>一旦存储除非手动清除或者调用方法清除否则一直存在</li>
+						<li>存储数据一般为5MB</li>
+						<li>不参与和服务器的通信</li>
+						<li>同域名下所有页面共享</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>promise</h3>
+					<ul>
+						<h3>介绍</h3>
+						<li>三个状态：pending fulfilled reject,状态一旦确认，就不会再改变</li>
+						<li></li>
+						<h3>Promise.all 如何防止某一个promise失败而使整个promise失败</h3>
+						<li>Promise.allSettled或者在catch中resolve</li>
+						<h3>promise与async、await的区别</h3>
+						<li>async/await是写异步代码的新方式</li>
+						<li>async/await使得异步代码看起来像同步代码</li>
+						<li>async/await是基于Promise实现的，它不能用于普通的回调函数</li>
+						<li>async/await与Promise一样，是非阻塞的</li>
+						<h3>终止promise</h3>
+						<li>返回一个pending状态的Promise</li>
+						<h3>promise抛出错误</h3>
+						<li>throw抛出</li>
+					</ul>
+				</li>
+				<li>
+					<!-- ！！！！！！！！！！！！！！！！！！！！！！ -->
+					<h3>es6和es5区别</h3>
+					<p>声明变量的方法</p>
+				</li>
+				<li>
+					<!-- ！！！！！！！！！！！！！！ -->
+					<h3>强缓存、协商缓存</h3>
+					<p></p>
+				</li>
+				<li>
+					<h3>外边距塌陷</h3>
+					<p>给父元素定义上边框</p>
+					<p>给父元素定义上内边距</p>
+					<p>添加浮动,添加绝对定位</p>
+				</li>
+				<li>
+					<h3>axios重复请求如何正确关闭loding</h3>
+					<p>每当发起一个请求，打开 loading，同时 loadingCount 加1</p>
+					<p>每当一个请求结束，loadingCount 减1，并判断 loadingCount 是否为 0，
+					如果为 0，则关闭 loading。</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// 防抖
+		function debounce(fn, wait) {
+			let timer = null
+			return function debounced(...args) {
+				if (timer) clearTimeout(timer)
+				timer = setTimeout(() => {
+					fn.apply(this, args)
+					// timer = null
+				}, wait)
+			}
+		}
+		// 节流
+		function throttle(fn, wait) {
+			let pre = Date.now()
+			return function(...args) {
+				let now = Date.now()
+				if (pre - now > wait) {
+					fn.apply(this, args)
+					pre = Date.now()
+				}
+			}
+		}
+		// ============this==============
+		var o = {
+			a: 10,
+			b: {
+				a: 12,
+				fn: function() {
+					console.log(this.a);
+					console.log(this);
+				}
+			}
+		}
+		o.b.fn(); //12 ,{a: 12, fn: ƒ}
+		var j = o.b.fn;
+		j() //undefind window
+
+		// 宏任务微任务
+		// async function async1() {
+		// 	console.log('async1 start')
+		// 	await async2()
+		// 	console.log('async1 end')
+		// }
+		// async function async2() {
+		// 	console.log('async2')
+		// }
+		// console.log('script start')
+		// setTimeout(function() {
+		// 	console.log('setTimeout')
+		// }, 0)
+		// async1()
+		// new Promise((resolve) => {
+		// 	console.log('promise1')
+		// 	resolve()
+		// }).then(function() {
+		// 	console.log('promise2')
+		// })
+		// console.log('script end')
+		//输出
+		//script start
+		//async1 start
+		//async2
+		//promise1
+		//script end
+		//async1 end
+		//promise2
+		//setTimeout
+
+		// ==========instansof==========
+		function instanceOf(left, right) {
+			let proto = left.__proto__ //取 left 的隐式原型
+			let prototype = right.prototype //取 right 的显示原型
+			while (true) { // 无线循环的写法（也可以使 for(;;) ）
+				if (proto === null) return false //找到最顶层
+				if (proto === prototype) return true //找到最顶层
+				proto = prototype.__proto__; //没找到继续向上一层原型链查找
+			}
+		}
+		// 数组排重几种方式
+		let arr = [4, 1, 2, 2, 3, 2, 1, 4, 4];
+		//console.log('数组去重-----',Array.from(new Set(arr)))
+		let result = []
+		// arr.map((item)=>{
+		// 	if(result.indexOf(item)===-1){
+		// 		result.push(item)
+		// 	}
+		// 	return result
+		// })
+		// console.log('数组去重-----',result)
+		// result=arr.filter((item,index)=>{
+		// 	return arr.indexOf(item)===index
+		// })
+		// console.log('数组去重-----',result)
+		// result=arr.map((item,index)=>{
+		// 	if(arr.indexOf(item)===index){
+		// 		return item
+		// 	}
+		// })
+		// console.log('数组去重-----',result)
+
+		// arr.slice=============================arr.splice
+		const slicearr = [1, 2, 3, 4, 5]
+		const slicearr1 = slicearr.slice(2, 4)
+		const slicearr2 = slicearr.slice(1)
+		const slicearr3 = slicearr.slice(1, -1)
+		// [1, 2, 3, 4, 5],[3,4],[2,3,4,5],[2,3,4]
+		console.log('arr.slice======', slicearr, slicearr1, slicearr2, slicearr3)
+
+		const splicearr = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+		const splicearr1 = splicearr.splice(2, 3)
+		//['a', 'b', 'c', 'd', 'e', 'f', 'g'],['c','d','e']
+		console.log('arr.splice===', splicearr, splicearr1)
+
+		// for in -------- for of
+		const testarr = [1, 2, 3, 4]
+		// for (i in testarr) {
+		// 	console.log('i====', i) //返回的是数组的索引
+		// }
+		// for (i of testarr) {
+		// 	console.log('i-----', i) //返回的是数组的元素
+		// }
+		const obj = {
+			name: 'tanke',
+			age: 5
+		}
+		// for (n in obj) {
+		// 	console.log('n====', n)
+		// }
+		// for (n of obj) {
+		// 	console.log('n====', n) // obj is not iterable 报错：Obj是不可迭代的
+		// }
+
+		// ======================js获取两个字符串相同的部分===========
+		var str1 = 'abcdfed',
+			str2 = 'abcdff'
+
+		function getMaxStr(str1, str2) {
+			var max = str1.length > str2.length ? str1 : str2;
+			var min = (max == str1 ? str2 : str1);
+			for (var i = 0; i < min.length; i++) {
+				for (var x = 0, y = min.length - i; y != min.length + 1; x++, y++) {
+					//y表示所取字符串的长度
+					var newStr = min.substring(x, y);
+					//判断max中是否包含newStr
+					if (max.indexOf(newStr) != -1) {
+						return newStr;
+					}
+				}
+			}
+			return -1;
+		}
+		console.log('js获取两个字符串相同的部分----', getMaxStr(str1, str2))
+
+		//js判断一个字符串出现最多的次数的字符并统计次数
+		function maxNumstr(str) {
+			let max = 0,
+				obj = {},
+				chart = '';
+			for (i of str) {
+				console.log('js判断i===', i)
+				obj[i] = obj[i] ? obj[i] += 1 : 1
+			}
+			console.log('obj====', obj)
+			for (n in obj) {
+				if (obj[n] > max) {
+					max = obj[n]
+					chart = n
+				}
+			}
+			console.log(chart, max)
+		}
+		maxNumstr('abcddfgfff')
+
+		// ==========闭包========
+		function fn1(a, b) {
+			if (b) {
+				return a + b
+			}
+			b = a
+			return function fn1(a) {
+				return a + b
+			}
+		}
+		console.log('闭包========', fn1(2, 3), fn1(2)(3))
+
+		// ============深拷贝手写=============
+		function cloneType(target) {
+			return Object.prototype.toString.call(target).slice(8, -1)
+		}
+
+		function deepclone(target) {
+			let result;
+			if (cloneType(target) === 'Object') {
+				result = {}
+			} else if (cloneType(target) === 'Array') {
+				result = []
+			} else {
+				result = target
+			}
+			for (i in target) {
+				if (cloneType(target[i]) === 'Object' || cloneType(target[i]) === 'Array') {
+					result[i] = deepclone(target[i])
+				} else {
+					result[i] = target[i]
+				}
+			}
+			return result;
+		}
+		let person = {
+			name: 'zhangsan',
+			age: 13,
+			option: {
+				sex: 'man',
+				fav: 'football'
+			}
+		}
+		let person2 = deepclone(person)
+		person.option.sex = 'woman'
+		console.log(person2)
+
+		// ================new==========
+		function _new(fn) {
+			let obj = {}
+			obj = Object.create(fn.prototype)
+			console.log('obj====', obj)
+			let args = Array.prototype.slice.call(arguments, 1)
+			console.log('args=====', args)
+			let result = fn.call(obj, ...args)
+			console.log('result====', result, 'obj=====', obj)
+			return result === 'object' || result instanceof Function ? result : obj;
+		}
+
+		function Cat(name, age) {
+			this.name = name
+			this.age = age
+		}
+		let cat = _new(Cat, '坦克', 5)
+		console.log(cat)
+		// ===============Generator=======
+		function* count() {
+			yield 1
+			yield 2
+			return 3
+		}
+		var c = count()
+		console.log('Generator=====', c.next())
+		console.log('Generator=====', c.next())
+		console.log('Generator=====', c.next())
+	</script>
+</html>

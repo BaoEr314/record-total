@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vue</title>
+		<style type="text/css">
+			body {
+				padding-bottom: 30px;
+			}
+
+			p {
+				line-height: 30px;
+			}
+			ul li{
+				list-style: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>1. ★★★ 如何再Vue的单文件组件里的样式定义全局CSS？</h3>
+					<p>在style标签上不加上scoped的属性，默认为全局css样式</p>
+				</li>
+				<li>
+					<h3>2. ★★★ 如何实现一个路径渲染多个组件？</h3>
+					<p>可以通过命名视图(router-view)，它容许同一界面中拥有多个单独命名的视图，而不是只有一个单独的出口。
+						<br>如果 router-view 没有设置名字，那么默认为 default。通过设置components即可同时渲染多个组件。
+					</p>
+				</li>
+				<li>
+					<h3>3. ★★★ 如何实现多个路径共享一个组件</h3>
+					<p>只需将多个路径的component字段的值设置为同一个组件即可。</p>
+				</li>
+				<li>
+					<h3>4. ★★★ 如何监测动态路由的变化</h3>
+					<p>可以通过watch方法来对$route进行监听，或者通过导航守卫的钩子函数beforeRouteUpdate来监听它的变化。</p>
+				</li>
+				<li>
+					<h3>5. ★★★ 对MVC，MVP，MVVM的理解</h3>
+					<p>mvc 和 mvvm 其实区别并不大。都是一种设计思想。主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。<br>
+						mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。<br>
+						和当 Model 频繁发生变化，开发者需要主动更新到 View 。</p>
+					<p>MVVM 是 Model-View-ViewModel 的缩写。mvvm 是一种设计思想。</p>
+					<p>1：Model 层代表数据模型，也可以在 Model 中定义数据修改和操作的业务逻辑；View 代表 UI 组件，它负责将数据模型转化成 UI 展现出来，ViewModel 是一个同步 View
+						和 Model 的对象。</p>
+					<p>2：在 MVVM 架构下，View 和 Model 之间并没有直接的联系，而是通过 ViewModel 进行交互，Model 和 ViewModel 之间的交互是双向的， 因此 View
+						数据的变化会同步到 Model 中，而 Model 数据的变化也会立即反应到 View 上。</p>
+					<p>3：ViewModel 通过双向数据绑定把 View 层和 Model 层连接了起来，而 View 和 Model
+						之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作 DOM, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 MVVM 来统一管理。</p>
+				</li>
+				<li>
+					<h3>6. ★★ 说一下$root，$parent，$refs</h3>
+					<p>$root，和$parent都能访问父组件的属性和方法，区别在于如果存在多级子组件，通过parent 访问得到的是它最近一级的父组件，通过root 访问得到的是根父组件。<br>
+						通过在子组件标签定义 ref 属性，在父组件中可以使用$refs 访问子组件实例。</p>
+				</li>
+				<li>
+					<h3>7. ★★★★★ 你知道Vue响应式数据原理吗？Proxy 与 Object.defineProperty 优劣对比？</h3>
+					<p>响应式原理:
+						<br>vue的响应式实现主要是利用了Object.defineProperty的方法里面的setter 与getter方法的观察者模式来实现。<br>
+						<br>在组件初始化时会给每一个data属性注册getter和setter，然后再new 一个自己的Watcher对象，此时watcher会立即调用组件的render函数去生成虚拟DOM。
+						<br>在调用render的时候，就会需要用到data的属性值，此时会触发getter函数，将当前的Watcher函数注册进sub里。
+						<br>当data属性发生改变之后，就会遍历sub里所有的watcher对象，通知它们去重新渲染组件
+					</p>
+					<p>proxy的优势如下：</p>
+					<p>Proxy 可以直接监听对象而非属性，可以直接监听数组的变化</p>
+					<p>Proxy 有多达 13 种拦截方法,不限于 apply、ownKeys、deleteProperty、has 等等是 Object.defineProperty 不具备的；</p>
+					<p>Proxy 返回的是一个新对象,我们可以只操作新的对象达到目的,而 Object.defineProperty 只能遍历对象属性直接修改；</p>
+					<p>Object.defineProperty 的优势如下:</p>
+					<p>兼容性好，支持 IE9，而 Proxy 的存在浏览器兼容性问题,而且无法用 polyfill(垫片)来弥补</p>
+				</li>
+				<li>
+					<h3>8. ★★★★ Composition API 的出现带来哪些新的开发体验，为啥需要这个？</h3>
+					<p>1：在Compostion API 中是根据逻辑相关组织代码的，提高可读性和可维护性，类似于react的hook写法。</p>
+					<p>2：更好的重用逻辑代码，在Options API中通过MIxins重用逻辑代码，容易发生命名冲突且关系不清。</p>
+					<p>3：解决在生命周期函数经常包含不相关的逻辑，但又不得不把相关逻辑分离到了几个不同方法中的问题，如在mounted中设置定时器，但需要在destroyed中来清除定时器，将同一功能的代码拆分到不同的位置，造成后期代码维护的困难。
+					</p>
+				</li>
+				<li>
+					<h3> 9. ★★★★ 为什么Vuex的mutation不能做异步操作？</h3>
+					<p>Vuex中所有的状态更新的唯一途径都是mutation，异步操作通过 Action 来提交
+						mutation实现，这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。<br>
+						每个mutation执行完成后都会对应到一个新的状态变更，这样devtools就可以打个快照存下来，否则无法被devtools所监测。<br>
+						如果mutation支持异步操作，就没有办法知道状态是何时更新的，无法很好的进行状态的追踪，给调试带来困难。</p>
+				</li>
+				<li>
+					<h3>10. ★★★v-model和vuex有冲突吗? demo请看demo1</h3>
+					<p>在严格模式中使用Vuex，当用户输入时，v-model会试图直接修改属性值，但这个修改不是在mutation中修改的，所以会抛出一个错误。当需要在组件中使用vuex中的state时，有2种解决方案：
+						<br>
+						1、在input中绑定value(vuex中的state)，然后监听input的change或者input事件，在事件回调中调用mutation修改state的值 <br>
+						2、使用带有setter的双向绑定计算属性
+					</p>
+				</li>
+				<li>
+					<h3>11. ★★★ 解释单向数据流和双向数据绑定</h3>
+					<p>对于 Vue 来说，组件之间的数据传递具有单向数据流这样的特性称为单向数据流
+						<br>单向数据流指只能从一个方向来修改状态
+					</p>
+					<p>而双向数据绑定即为当数据发生变化的时候，视图也就发生变化，当视图发生变化的时候，数据也会跟着同步变化，两个数据流之间互为影响。</p>
+				</li>
+				<li>
+					<h3>12. ★★★ $route和$router的区别</h3>
+					<p>$route是来获取路由信息的，它是路由信息的一个对象，里面包含了路由的一些基本信息<br>
+						包括name、meta、path、hash、query、param、fullPath、matched、等
+					</p>
+					<p>而$router 主要是用来操作路由的 它是Vuerouter的实例包含了一些路由跳转方法，钩子函数等</p>
+				</li>
+				<li>
+					<h3>13. ★★★ Vue 中怎么自定义指令</h3>
+					<p>通过directive来自定义指令，自定义指令分为全局指令和局部指令，自定义指令也有几个钩子函数，常用的有bind和update
+						<br>当bind和update触发相同的行为而不关心其他钩子时可以简写
+					</p>
+				</li>
+				<li>
+					<h3>14. ★★★ Vue 中怎么自定义过滤器</h3>
+					<p>通过filter来定义过滤器，过滤器分为全局和局部过滤器，过滤器主题是一个普通函数，来对数据进行一些处理，可以传递参数<br>
+						当局部和全局过滤器名称一样时会采用就近原则，即：局部过滤器优先于全局过滤器被调用</p>
+				</li>
+				<li>
+					<h3>15. ★★★ Vue 等单页面应用的优缺点</h3>
+					<p>优点：</p>
+					<p>单页面应用内容的改变 不需要重新加载整个页面</p>
+					<p>单页面应用没有页面切换不会出现白屏或者闪现的情况</p>
+					<p>单页面应用服务器压力小，服务器只需要提供数据就可以了</p>
+					<p>良好的前后端分离</p>
+					<p>缺点：</p>
+					<p>首次加载耗时比较多</p>
+					<p>SEO问题 不利于百度
+						<br>解决办法：预渲染，SSR
+					</p>
+				</li>
+				<li>
+					<h3>16. ★★★ Vue-router 使用params与query传参有什么区别</h3>
+					<p>1.query主要是用path来引入 ，param要用name来引入 接收参数都是类似的：
+						<br>分别是this.$route.query.name和this.$route.param.name
+					</p>
+					<p>2.query会在浏览器上显示 param不会</p>
+					<p>3.param是路由的一部分必须要有，query是拼接在url后面的参数没有也没关系</p>
+					<p>4.param,query不设置也可以传参数，param不设置的时候刷新或者返回参数会丢失</p>
+				</li>
+				<li>
+					<h3>17. ★★★ Vue中 keep-alive 的作用</h3>
+					<p>keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，或避免重新渲染。</p>
+					<p>一旦使用keepalive包裹组件，此时mouted，created等钩子函数只会在第一次进入组件时调用，当再次切换回来时将不会调用。</p>
+					<p>此时如果我们还想在每次切换时做一些事情，就需要用到另外的周期函数，activated和deactivated，这两个钩子函数只有被keepalive包裹后才会调用。</p>
+				</li>
+				<li>
+					<h3>18. ★★★ 说出至少4种Vue当中的指令和它的用法？</h3>
+					<p>v-if(判断显示隐藏用来判断是否创建元素)</p>
+					<p>v-show(元素的显示隐藏，类似css中的display:block和hidden)</p>
+					<p>v-for(把数据遍历出来)</p>
+					<p>v-bind(绑定属性)</p>
+					<p>v-model(实现双向绑定)</p>
+				</li>
+				<li>
+					<h3>19. ★★★ Vue 路由守卫</h3>
+					<p>vue-router提供的导航守卫主要是用来对路由跳转进行监控，控制它的跳转或者取消，路由守卫有全局的和单个路由独享的<br>
+						或者是组件级别的，导航钩子有三个参数：
+						<br>
+						to:即将要进入的路由对象
+						<br>
+						form：当前导航即将要离开的路由对象
+						<br>
+						next:调用该方法后才能进入下一个钩子函数（afterEach）
+					</p>
+				</li>
+				<li>
+					<h3>20. ★★★★★ Vue3中的双向数据绑定proxy</h3>
+					<p>Proxy相当于在目标对象之前架设了一层“拦截”，外界对该对象的访问，都必须要通过这层拦截，<br>
+						因此提供了一种机制，可以对外界访问进行过滤或者改写，我们可以理解为proxy是Object.defineProperty的全方位加强，<br>
+						它解决了之前defineProperty无法监听数组变化等的缺点。
+					</p>
+				</li>
+				<li>
+					<h3>21. ★★★★★Vue和React中diff算法区别</h3>
+					<p>都是忽略跨级别比较只做同级比较，vue的diff调用patch函数 参数是（vand和oldvand）分别代表新旧节点</p>
+					<p>1.vue对比节点，当元素节点相同的时候 但是className不同，会认为是不同类型的元素，然后删除重建，<br>
+						而react认为是同类型节点,只修改节点属性
+					</p>
+					<p>2.vue列表对比，采用的两端到中间的对比方式，而react采用的是从左到右依次对比，
+						<br>当一个集合只是把最后一个节点挪到最前面 react会把前面的节点依次向后移，而vue则是把最后一个节点移到最前面，相比来说vue更为高效。
+					</p>
+				</li>
+				<li>
+					<h3>自己想要了解的</h3>
+					<h3>22. 什么是虚拟DOM？</h3>
+					<p>虚拟dom只保留了真实Dom的一些基本的属性和节点之前的层次关系，它相当于建立在javascipt和Dom的一层“缓存”
+						<br>虚拟DOM其实就是用一个对象来描述DOM，通过对比前后两个对象的差异，最终只把变化的部分重新渲染，提高渲染的效率。
+					</p>
+				</li>
+				<li>
+					<h3>23. ★★★ 请你说一下 Vue 中 create 和 mount 的区别</h3>
+					<p>create组件初始化阶段 在这个阶段主要完成数据的观测 属性和方法的应用，watch/event 事件回调，挂载阶段还没开始 还没有生成真实的dom，<br>
+						无法获取和操作dom，而mounted主要完成虚拟dom到真实dom的转换挂载 此时html已经渲染出来了 所以可以直接操作dom
+					</p>
+				</li>
+				<li>
+					<h3>24. ★★★★ Object.defineProperty有什么缺点</h3>
+					<p>无法监控到数组下标的变化,导致通过数组下标添加元素，不能实时响应</p>
+					<p>只能劫持对象的属性从而需要对每个对象，每个属性进行遍历，如果属性值是对象还要进行深层遍历</p>
+				</li>
+				<li>
+					<h3>25. ★★★★ axios是什么？怎么使用？描述使用它实现登录功能的流程?</h3>
+					<p>axios 是请求后台资源的模块。</p>
+					<p>在大多数情况下我们需要封装拦截器，<br>
+						在实现登录的过程中我们一般在请求拦截器(axios.interceptors.request.use())中来加入token,<br>
+						在响应请求器(axios.interceptors.response.use())中通过判断后端返回的状态码来对返回的数据进行不同的处理。</p>
+				</li>
+				<li>
+					<h3>26. ★★★ 路由懒加载</h3>
+					<p>把不同的路由对应的组件分割成不同的代码块，然后当路由被访问时才加载对应的组件，可以加快项目的加载速度，提高效率，<br>
+						通过这种格式来导入组件const foo = () => import('./foo.vue');
+					</p>
+				</li>
+				<li>
+					<h3>27. ★★★★★★computed和watcher的区别?watch的实现原理，watch有几种写法</h3>
+					<ul>
+						<li>
+							<h3>computed:</h3>
+							<p>1、支持缓存，只有依赖数据发生改变，才会重新进行计算</p>
+							<p>2、不支持异步，当computed内有异步操作时，无法监听数据变化</p>
+							<p>3、computed属性纸会默认走缓存，计算属性是基于它们的响应式依赖进行缓存的，也就是基于data中声明过或者父组件传递的props中的数据<br>
+								通过计算得到的值
+							</p>
+							<p>如果一个属性是由其他属性计算而来，这个属性依赖其他属性，是一个多对一或者一对一，一般用computed</p>
+							<p>如果computed属性属性值是函数,那么默认会走get方法；函数的返回值就是属性的属性值<br>
+								在computed中的，属性都有一个get和一个set方法，当数据变化时，调用set方法
+							</p>
+						</li>
+						<li>
+							<h3>侦听属性watch：</h3>
+							<p>1、不支持缓存 数据变 直接会触发相应的操作</p>
+							<p>2、watch支持异步</p>
+							<p>3、监听的函数接收两个参数 一个是最新的值 一个是之前的值</p>
+							<p>4. 当一个属性发生变化时，需要执行对应的操作；一对多；</p>
+							<p>5. 监听数据必须是data中声明过或者父组件传递过来的props中的数据，<br>
+								当数据变化时，触发其他操作，函数有两个参数:
+								<br>immediate：组件加载立即触发回调函数执行，
+								<br>deep: 深度监听，为了发现对象内部值的变化，复杂类型的数据时使用，
+								<br>例如数组中的对象内容的改变，注意监听数组的变动不需要这么做。
+							</p>
+							<p>注意：deep无法监听到数组的变动和对象的新增，参考vue数组变异,只有以响应式的方式触发才会被监听到。</p>
+							<p>watch工作原理:</p>
+							<p>watch在一开始初始化的时候，会读取一遍监听的数据的值，此时那个数据就收集到watch的watcher了<br>
+								然后你给watch设置的handler，watch 会放入watcher的更新函数中,<br>
+								当数据改变时，通知watch的watcher进行更新,于是你设置的handler就被调用了。
+								<br>
+							</p>
+						</li>
+						<li>
+							<h3>computed:实现原理</h3>
+							<p>1. data 属性初始化 getter setter</p>
+							<p>2. computed 计算属性初始化，提供的函数将用作属性 vm.reversedMessage 的 getter</p>
+							<p>3. 当首次获取 reversedMessage 计算属性的值时，Dep 开始依赖收集</p>
+							<p>4. 在执行 message getter 方法时，如果 Dep 处于依赖收集状态，则判定 message 为 reversedMessage 的依赖，并建立依赖关系</p>
+							<p>5. 当 message 发生变化时，根据依赖关系，触发 reverseMessage 的重新计算</p>
+						</li>
+						<li>
+							<h3>watch：实现原理</h3>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>28. 组件通讯方式</h3>
+					<p>$props/$emit
+						<br>props/$emit：可以实现父子组件的双向通信，在日常的父子组件通信中一般会作为我们的最常用选择。
+					</p>
+					<p>v-slot
+						<br>可以实现父子组件单向通信（父向子传值），在实现可复用组件，
+						<br>向组件中传入DOM节点、html等内容以及某些组件库的表格值二次处理等情况时，可以优先考虑v-slot。
+					</p>
+					<p>$ref/$parent/$child/$root
+						<br>可以实现父子组件双向通信，其中$root可以实现根组件实例向子孙组件跨级单向传值。
+						<br>在父组件没有传递值或通过v-on绑定监听时，父子间想要获取彼此的属性或方法可以考虑使用这些api
+					</p>
+					<p>$attr/$listener
+						<br>能够实现跨级双向通信，能够让你简单的获取传入的属性和绑定的监听，
+						<br>并且方便地向下级子组件传递，在构建高级组件时十分好用。
+					</p>
+					<p>provide/inject
+						<br>可以实现跨级单向通信，轻量地向子孙组件注入依赖，这是你在实现高级组件、创建组件库时的不二之选。
+					</p>
+					<p>eventBus
+						<br>可以实现全局通信，在项目规模不大的情况下，可以利用eventBus实现全局的事件监听。
+						<br>但是eventBus要慎用，避免全局污染和内存泄漏等情况。
+					</p>
+					<p>Vuex
+						<br>可以实现全局通信，是vue项目全局状态管理的最佳实践。
+						<br>在项目比较庞大，想要集中式管理全局组件状态时，那么安装Vuex准没错
+					</p>
+				</li>
+				<li>
+					<h3>29. ★★★★ Vue和React区别</h3>
+					<p>vue使用的是web开发者更熟悉的模版与特性，Vue的API跟传统web开发者熟悉的模板契合度更高，
+					</p>
+					<p>
+						Vue跟React的最大区别在于数据的reactivity，就是反应式系统上。
+						<br>Vue提供反应式的数据，当数据改动时，界面就会自动更新，而React里面需要调用方法SetState。
+						<br>
+					</p>
+				</li>
+				<li>
+					<h3>30. ★★★ Vue深层次嵌套传值方法</h3>
+					<p>利用$attrs 和 $listeners</p>
+				</li>
+				<li>
+					<h3>31. Vue路由实现的底层原理</h3>
+					<p>在vue利用数据劫持defineProperty在原型peototype上初始化一些getter,分别是router标识当前的Router实例
+						<br>router表示当前Router的信息，在install中也注册了全局的router-view,router-link，
+						<br>其中vue.util.defineReactive这是vue里面观察者劫持数据的方法，劫持_route，当_route触发setter方法的时候，则会通知到依赖的组件。
+						<br>接下来在init中，会挂载判断是路由的模式，是history或者是hash,点击行为按钮，调用hashchange或者popstate的同时更_route
+						<br>_route的更新会触发route-view的重新渲染。
+					</p>
+				</li>
+				<li>
+					<h3>32. ★★★★ 如何封装一个通用组件</h3>
+					<p>通用组件的封装就是对可复用组件的解耦和样式复用，为了解耦一般数据都是通过父组件传递过来，在子组件中进行数据处理，</p>
+					<p>对于一些较为复杂的数据可能还需要做数据验证，为了避免高耦合，逻辑最好放在父组件中，</p>
+					<p>通过自定义事件将数据回传，子组件只是一个承载体，这样既降低耦合，保证子组件中数据和逻辑不会混乱。</p>
+				</li>
+				<li>
+					<h3>33. ★★★★★ Vue 响应式原理</h3>
+					<p>1.观察者observer：首先通过观察者对data中的属性使用object.defineproperty劫持数据的getter和setter，通知订阅者，触发他的update方法，对视图进行更新
+					</p>
+					<p>2.Compile：用来解析模板指令，并替换模板数据，初始化视图，初始化相应的订阅器</p>
+					<p>3.订阅者Watcher：订阅者接到通知后，调用update方法更新对应的视图</p>
+					<p>4.订阅器Dep：订阅者可能有多个，因此需要订阅器Dep来专门接收这些订阅者，并统一管理但在vue3中抛弃了object.defineproperty方法，
+						<br>因为1.Object.defineproperty无法监测对象属性的添加和删除、数组索引和长度的变更，因此vue重写了数组的push/pop/shift/unshift/splice/sort/reverse方法
+						<br>2.Object.defineProperty只能劫持对象的属性,因此我们需要对每个对象的每个属性进行遍历，这样很消耗性能
+					</p>
+					<p>vue3中实现数据双向绑定的原理是数据代理，使用proxy实现。<br>
+						Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，
+						可以对外界的访问进行过滤和改写。
+					</p>
+				</li>
+				<li>
+					<h3>34. ★★★★ Vue proxy的原理</h3>
+					<p>主要通过Proxy对对象进行绑定监听处理，通过new Map对对象的属性操作进行处理,将要执行的函数匹配到存到对应的prop上面，</p>
+					<p>通过每次的访问触发get方法，进行存方法的操作，通过修改触发set的方法，此时执行回调监听的函数，这样达到修改数据和视图的 </p>
+				</li>
+				<li>
+					<h3>35. ★★★ v-for key</h3>
+					<p>key是为Vue中的vnode标记的唯一id,通过这个key,我们的diff操作可以更准确、更快速</p>
+					<p>优点：
+						<br>准确: 如果不加key,那么vue会选择复用节点(Vue的就地更新策略),导致之前节点的状态被保留下来,会产生一系列的bug.
+						<br>快速: key的唯一性可以被Map数据结构充分利用,相比于遍历查找的时间复杂度O(n),Map的时间复杂度仅仅为O(1)
+					</p>
+				</li>
+				<li>
+					<h3> 36. ★★★★★★ defineProperty在数据劫持后是如何通知数据的更新和视图的更新的</h3>
+					<p>vue的双向绑定是由数据劫持结合发布者－订阅者模式实现的，那么什么是数据劫持？vue是如何进行数据劫持的？<br>
+						说白了就是通过Object.defineProperty()来劫持对象属性的setter和getter操作，在数据变动时做你想要做的事情</p>
+					<p>我们已经知道实现数据的双向绑定，首先要对数据进行劫持监听，所以我们需要设置一个监听器Observer，用来监听所有属性。</p>
+					<p>如果属性发生变化了，就需要告诉订阅者Watcher看是否需要更新。</p>
+					<p>因为订阅者是有很多个，所以我们需要有一个消息订阅器Dep来专门收集这些订阅者，<br>
+						然后在监听器Observer和订阅者Watcher之间进行统一管理的。</p>
+					<p>接着，我们还需要有一个指令解析器Compile，对每个节点元素进行扫描和解析，将相关指令（如v-model，v-on）
+						对应初始化成一个订阅者Watcher，<br>
+						并替换模板数据或者绑定相应的函数，此时当订阅者Watcher接收到相应属性的变化，就会执行对应的更新函数，从而更新视图</p>
+				</li>
+				<li>
+					<h3>37. ★★★★ Vuex如何实现跨组件的数据监听</h3>
+					<p></p>
+				</li>
+				<li>
+					<h3>38. ★★★★ 中间件机制是怎么生效的</h3>
+					<p></p>
+				</li>
+				<li>
+					<h3>39. ★★★ 为什么要设置key值，可以用index吗？为什么不能？</h3>
+					<p>因为vue组件高度复用增加key可以标识组件的唯一性，为了更好的区分各个组件key的作用主要是为了高效的更新虚拟DoM</p>
+				</li>
+				<li>
+					<h3>40. ★★★ 怎么修改Vuex中的状态？Vuex中有哪些方法</h3>
+					<p>通过this.$store.state来访问状态</p>
+					<p>通过this.$store.commit('mutation中的方法')来修改状态</p>
+				</li>
+				<li>
+					<h3>41. ★★★ vue-router路由传参的方式</h3>
+					<p>路由传参:
+						<br>query=>path=>query;
+						<br>param=>name=>param;
+					</p>
+				</li>
+				<li>
+					<h3>42. ★★★ Vue中的单项数据流</h3>
+					<p>单向数据流指只能从一个方向来修改状态。</p>
+					<p>数据从父级组件传递给子组件，只能单向绑定。</p>
+					<p>子组件内部不能直接修改从父级传递过来的数据</p>
+				</li>
+				<li>
+					<h3>43. ★★★★★★★★ 你做过哪些Vue的性能优化？</h3>
+					<p>1、首屏加载优化</p>
+					<p>2、路由懒加载</p>
+					<p>3、开启服务器Gzip</p>
+					<p>4、启用CDN加速</p>
+					<p>5、代码层面优化 </p>
+					<p>6、Webpack 对图片进行压缩</p>
+					<p>7、避免内存泄漏</p>
+					<p>8、减少 ES6 转为 ES5 的冗余代码</p>
+				</li>
+				<li>
+					<h3>44. ★★★★★ nextTick知道吗、实现的原理是什么？是宏任务还是微任务？</h3>
+					<p>微任务</p>
+					<p>原理:<br>
+						nextTick方法主要是使用了宏任务和微任务，定义了一个异步方法，<br>
+						多次调用nextTick会将方法存入队列中，通过这个异步方法清空队列。
+					</p>
+				</li>
+				<li>
+					<h3>45. ★★★★★★ 介绍下vue父子组件生命周期的执行顺序</h3>
+					<p>加载渲染过程:
+						<br>
+						父beforeCreate->父created->父beforeMount->
+						子beforeCreate->子created->子beforeMount->子mounted
+						->父mounted
+					</p>
+					<p>子组件更新过程:
+						<br>父beforeUpdate->子beforeUpdate->子updated->父updated
+					</p>
+					<p>
+						销毁过程:
+						<br>父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
+					</p>
+				</li>
+				<li>
+					<h3>46. ★★★★ 虚拟 dom 为什么会提高性能？</h3>
+					<p>虚拟DOM其实就是一个JavaScript对象。通过这个JavaScript对象来描述真实DOM
+						<br>真实DOM的操作，一般都会对某块元素的整体重新渲染，
+						<br>采用虚拟DOM的话，当数据变化的时候，只需要局部刷新变化的位置就好了 ,
+						<br>虚拟dom相当于在js和真实dom中间加了一个缓存，利用dom diff算法避免了没有必要的dom操作，从而提高性能
+					</p>
+				</li>
+				<li>
+					<h3>47. ★★★ Vue的常用修饰符</h3>
+					<p>一、v-model修饰符:
+						<br>1、.lazy：
+						<br>输入框改变，这个数据就会改变，lazy这个修饰符会在光标离开input框时才会更新数据
+						<br>2.trim
+						<br>输入框过滤首尾空格
+						<br>3.number
+						<br>先输入数字就会限制输入的只能是数字，先是字符串就相当于没有加number,注意不是输入框不能输入字符串
+						是这个数据是数字
+					</p>
+					<p>二、事件修饰符
+						<br>1、.stop：
+						<br>阻止事件冒泡，相当于调用了event.stopPropagetion()
+						<br>2、.prevent：
+						<br>阻止默认行为，相当于调用了event.preventDefault()方法，比如表单提交，a标签跳转就是默认事件
+						<br>3、.self：
+						<br>只有元素本身触发时才会触发方法，就是只有点击元素本身才会触发，比如div里面有个按钮，div和按钮都有事件
+						<br>我们点击按钮div绑定的方法也会触发，如果div的click加上self,那么就只有点击div时才会触发
+						<br>4、.once
+						<br>事件只能用一次，无论点击几次，执行一次之后都不会再执行
+						<br>5、.capture：
+						<br>事件的完整机制是捕获-目标-冒泡，事件触发是目标往外冒泡
+						<br>6、.sync
+						<br>对prop进行双向绑定
+						<br>7、.keyCode：
+						<br>监听按键的指令，具体可以查看vue的键码对应表
+					</p>
+				</li>
+				<li>
+					<h3>48. ★★★★ Vue中子组件是否可以修改props，如果想修改的话如何修改</h3>
+					<p>不能直接修改，可以父组件用sync修饰，子组件通过$emit('update:参数'，值)函数去修改</p>
+				</li>
+				<li>
+					<h3>49. ★★★ 说一下Vue-router守卫有哪些。如何实现路由懒加载？</h3>
+					<p>router.beforeEach全局前置守卫 进入路由之前</p>
+					<p>router.beforeResolve 全局解析守卫(2.5.0+) 在beforeRouteEnter调用之后调用</p>
+					<p>router.afterEach 全局后置钩子 进入路由之后</p>
+					<p>路由懒加载：推荐方式imprort ()----推荐使用 </p>
+				</li>
+				<li>
+					<h3>50. ★★★★ Vuex刷新页面数据会丢失吗？咋解决的</h3>
+					<p>页面刷新的时候vuex里的数据会重新初始化，导致数据丢失。因为vuex里的数据是保存在运行内存中的，当页面刷新时，页面会重新加载vue实例，vuex里面的数据就会被重新赋值。 </p>
+					<p>
+						办法一：将vuex中的数据直接保存到浏览器缓存中（sessionStorage、localStorage、cookie）
+						<br>办法二：在页面刷新的时候再次请求远程数据，使之动态更新vuex数据
+						<br>办法三：在父页面向后台请求远程数据，并且在页面刷新前将vuex的数据先保存至sessionStorage（以防请求数据量过大页面加载时拿不到返回的数据）
+					</p>
+				</li>
+				<li>
+					<h3>51. ★★★★ 什么是 Vue.nextTick()？</h3>
+					<p>$nextTick 是在下次DOM更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的DOM，
+						<br>意思是 等你dom加载完毕以后再去调用nextTick()里面的数据内容
+					</p>
+				</li>
+				<li>
+					<h3>52. ★★★ 谈谈你对Vue3.0有什么了解？</h3>
+					<p>性能比vue2.x快1.2~2倍</p>
+					<p>支持tree-shaking，按需编译，体积比vue2.x更小</p>
+					<p>支持组合API</p>
+					<p>更好的支持TS</p>
+					<p>更先进的组件</p>
+					<ul>
+						<li>
+							<h3>二、性能比vue2.x快1.2~2倍如何实现的呢</h3>
+							<p>1.diff算法更快</p>
+							<p>vue2.0是需要全局去比较每个节点的，若发现有节点发生变化后，就去更新该节点</p>
+							<p>vue3.0是在创建虚拟dom中，会根据DOM的的内容会不会发生内容变化，添加静态标记， 谁有flag！比较谁。</p>
+							<p>2、静态提升</p>
+							<p>vue2中无论元素是否参与更新，每次都会重新创建，然后再渲染 ;vue3中对于不参与更新的元素，会做静态提升，只被创建一次，在渲染时直接复用即可 </p>
+						</li>
+						<li>
+							<h3>三、为什么vue3.0体积比vue2.x小</h3>
+							<p>在vue3.0中创建vue项目 除了vue-cli，webpack外还有 一种创建方法是Vite</p>
+							<p>Vite是作者开发的一款有意取代webpack的工具，<br>
+								其实现原理是利用ES6的import会发送请求去加载文件的特性，拦截这些请求，做一些预编译，省去webpack冗长的打包时间 </p>
+						</li>
+						<li>
+							<h3>四、vue3.0组合API</h3>
+							<p>在vue2.0中： 主要是往data 和method里面添加内容，一个业务逻辑需要什么data和method就往里面添加，</p>
+							<p>而组合API就是 有一个自己的方法，里面有自己专注的data 和method。</p>
+							<p>组合API的本质是什么:首先composition API（组合API） 和 Option API（vue2.0中的data和method）可以共用;<br>
+								composition API（组合API）本质就是把内容添加到Option API中进行使用
+							</p>
+						</li>
+						<li>
+							<h3>五、ref和reactive的简单理解</h3>
+							<p>1.ref和reactive都是vue3的监听数据的方法，本质是proxy <br>
+								2.ref 基本类型复杂类型都可以监听(我们一般用ref监听基本类型)，<br>
+								reactive只能监听对象（arr，json） <br>
+								3.ref底层还是reactive
+							</p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<h3>53. ★★★ Vue如何在用户没登陆的时候重定向登录界面？</h3>
+					<p>现在 我们需要实现这样 一个功能，登录拦截，其实就是 路由拦截，</p>
+					<p>首先在定义路由的时候就需要多添加一个自定义字段requireAuth，用于判断该路由的访问是否需要登录。</p>
+					<p>如果用户已经登录，则顺利进入路由， 否则就进入登录页面。在路由管理页面添加meta字段</p>
+					<p>{
+						path:'/manage',
+						name:'manage',
+						component:manage,
+						meta:{requireAuth:true}
+						}
+					</p>
+					<p>
+						1、先判断该路由是否需要登录权限<br>
+						2、判断本地是否存在token，如果存在token就next()，不存在token重定向到登录页
+					</p>
+				</li>
+				<li>
+					<h3>54. ★★★★★ Vue项目常见优化点</h3>
+					<p>1、首屏加载优化</p>
+					<p>2、路由懒加载</p>
+					<p>3、开启服务器 Gzip
+						<br>开启 Gzip 就是一种压缩技术，需要前端提供压缩包，然后在服务器开启压缩，文件在服务器压缩后传给浏览器，浏览器解压后进行再进行解析。
+						<br>首先安装 webpack 提供的compression-webpack-plugin进行压缩,然后在 vue.config.js：
+						<br>const CompressionWebpackPlugin = require('compression-webpack-plugin')
+						<br>
+						const productionGzipExtensions = ['js', 'css']......plugins: [
+						new CompressionWebpackPlugin(
+						{
+						algorithm: 'gzip',
+						test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+						threshold: 10240,
+						minRatio: 0.8
+						}
+						)
+						]....
+					</p>
+					<p>4、启动 CDN 加速<br>
+						我们继续采用 cdn 的方式来引入一些第三方资源，就可以缓解我们服务器的压力，原理是将我们的压力分给其他服务器点。
+					</p>
+					<p>5、代码层面优化:
+						<br>computed 和 watch 区分使用场景
+						<br>v-for 遍历必须为 item 添加 key，且避免同时使用 v-if v-for 遍历;
+						<br>必须为 item 添加 key，循环调用子组件时添加 key，key 可以唯一标识一个循环个体，可以使用例如 item.id 作为 key <br>
+						避免同时使用 v-if，v-for 比 v-if 优先级高，如果每一次都需要遍历整个数组，将会影响速度。
+					</p>
+					<p>6、Webpack 对图片进行压缩</p>
+					<p>7、避免内存泄漏</p>
+					<p>8、减少 ES6 转为 ES5 的冗余代码</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// 定义一个全局过滤器
+		// Vue.filter('dataFormat', function(input, pattern = '') {
+		// 	var dt = new Date(input);
+		// 	var y = dt.getFullYear();
+		// 	var m = (dt.getMonth() + 1).toString().padStart(2, '0');
+		// 	var d = dt.getDate().toString().padStart(2, '0');
+		// 	// 如果 传递进来的字符串类型，转为小写之后，等于 yyyy-mm-dd，那么就返回 年-月-日
+		// 	// 否则，就返回  年-月-日 时：分：秒
+		// 	if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+		// 		return `${y}-${m}-${d}`;
+		// 	} else {
+		// 		// 获取时分秒
+		// 		var hh = dt.getHours().toString().padStart(2, '0');
+		// 		var mm = dt.getMinutes().toString().padStart(2, '0');
+		// 		var ss = dt.getSeconds().toString().padStart(2, '0');
+		// 		return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+		// 	}
+		// });
+		let obj = {
+			a: 1
+		}
+
+		let state = new Proxy(obj, {
+			get(obj, key) {
+				console.log('get', obj, key);
+				return obj[key]; //return Reflect.get(obj, key)
+			},
+			set(obj, key, value) {
+				obj[key] = value //Reflect.set(obj, key, value)
+				console.log('set', obj, key, value);
+			}
+		})
+		state.a = 2;
+		console.log('state.a====',state.a);
+		// 数组
+		let arr = [1, 2, 3];
+		let state1 = new Proxy(arr, {
+			get(obj, key) {
+				console.log('get', obj, key);
+				return obj[key];
+			},
+			set(obj, key, value) {
+				// Reflect.set(obj, key, value);
+				console.log('set', obj, key, value);
+				obj[key] = value
+				return true
+			}
+		})
+		// state1.push(5);
+		state1.splice(0,2);
+		// demo1
+		// <input v-model="message">
+		// computed: {
+		//   message: {
+		//     get () {
+		//       return this.$store.state.obj.message
+		//     },
+		//     set (value) {
+		//       this.$store.commit('updateMessage', value)
+		//     }
+		//   }
+		// }
+		
+	</script>
+</html>

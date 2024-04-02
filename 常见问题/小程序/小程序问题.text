@@ -1,0 +1,47 @@
+Taro小程序：
+1、支付宝小程序关于地图：
+coverView和Map 写的时候注意是同级的:
+<View>
+  <Map className="map_box" scale={16}
+          showLocation
+          latitude={Latitude}
+          longitude={Longitude}
+          markers={markerdata}
+          onMarkerTap={this.showModal}
+        >
+</Map>
+<CoverView></CoverView>
+</View>
+
+2、支付宝小程序在子组件componentDidShow中无法获取其它页面的传值
+
+3、支付宝小程序互跳未上线调试的时候需注意：（A跳转B）
+  先扫码B小程序的体验码或者预览码 然后打开联调模式 然后再用进入A小程序去跳转（注意顺序不能乱）
+
+4、Taro小程序事件机制 阻止事件冒泡 例子：
+onClick={ e=>{e.stopPropagation();this.toNavigation()}}
+
+5、小程序有个热更新机制 所以像调扫码或者支付这些功能的时候再次回到小程序的时候也是重新进入小程序并且状态码不变
+
+6、小程序与h5互跳：
+   借助：<WebView src = {} />
+
+  h5跳转小程序：
+  checkisEnv().then(res => {
+    switch (res) {
+      case 'alipay':
+      case 'alipay_mini':
+      <!--  支付宝： -->
+        window.my.navigateTo({
+          url: `/pages/moneyPay/index?${qs.stringify(params)}`
+        })
+        break
+      case 'weapp_mini':
+      微信：
+        window.wx.miniProgram.navigateTo({
+          url: `/pages/moneyPay/index?${qs.stringify(params)}`
+        })
+        break
+    }
+  })
+  

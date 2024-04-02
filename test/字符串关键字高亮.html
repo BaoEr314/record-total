@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>字符串关键字高亮</title>
+	</head>
+	<body>
+		<div id="xx"></div>
+	</body>
+	<script type="text/javascript">
+		function keywordscolorful(str, key) {
+			var reg = new RegExp("(" + key + ")", "g");
+			var newstr = str.replace(reg, "<font style='background:#db4a14;'>$1</font>");
+			return newstr;
+		}
+
+		var a = keywordscolorful("我是中国人", "中国");
+		const aa = document.getElementById('xx')
+		aa.innerHTML=a
+		console.log(aa)
+	</script>
+</html>

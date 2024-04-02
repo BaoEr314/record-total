@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			/*style中添加*/
+			.center .list {
+				display: block;
+				float: left;
+				margin: 0 30px;
+			}
+
+			.fn_1 {
+				width: 250px;
+				height: 220px;
+				background: url(./image/20210410223033792.png);
+				background-size: cover;
+			}
+
+			.fn_1:hover {
+				background: url(./image/20210410223033792.png);
+				background-size: cover;
+			}
+
+			.fn_2 {
+				width: 250px;
+				height: 220px;
+				background: url(./image/20210410223021733.png);
+				background-size: cover;
+			}
+
+			.fn_2:hover {
+				background: url(./image/20210410223021733.png);
+				background-size: cover;
+			}
+
+			.fn_3 {
+				width: 250px;
+				height: 220px;
+				background: url(./image/2021041022304691.png);
+				background-size: cover;
+			}
+
+			.fn_3:hover {
+				background: url(./image/2021041022304691.png);
+				background-size: cover;
+			}
+
+			.moveUpDownFla1 {
+				animation: moveUpDown 5s ease infinite;
+			}
+
+			.moveUpDownFla2 {
+				animation: moveUpDown 4s linear infinite;
+			}
+
+			/* 菜单动画 */
+			@keyframes moveUpDown {
+				0% {
+					transform: translate(0px, -20px)
+				}
+
+				50% {
+					transform: translate(0px, 20px)
+				}
+
+				100% {
+					transform: translate(0px, -20px);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="center">
+			<a class="list fn_1 moveUpDownFla1" href="...">
+				<p></p>
+			</a>
+			<a class="list fn_2 moveUpDownFla2" href="...">
+				<p></p>
+			</a>
+			<a class="list fn_3 moveUpDownFla1" href="...">
+				<p></p>
+			</a>
+		</div>
+	</body>
+</html>

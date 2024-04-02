@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>手写数组扁平化</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>什么是数组扁平化?</h3>
+					<p>数组扁平化是指将一个多维数组变为一维数组</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		const optionArr = [1, [2, 3, [4, 5,[6,7]]]]
+		// 方法一 递归
+		function flatten1(arr, result = []) {
+			if(!Array.isArray(arr)){
+				result.push(arr)
+				return result
+			}
+			for(let value of arr){
+				flatten1(value, result)
+			}
+			return result;
+		}
+		console.log('递归的方法---',flatten1(optionArr))
+		// 方法二数组字符串
+		function flatten2(arr){
+			// parseInt亦可换做Number
+			return arr.toString().split(',').map(ele=>parseInt(ele))
+		}
+		console.log('数组字符串方法---',flatten2(optionArr))
+		
+		// 方法三 reduce
+		function flatten3(arr){
+			return arr.reduce((pre,cur)=>{
+				return pre.concat(Array.isArray(cur)?flatten3(cur):cur)
+			},[])
+		}
+		console.log('reduce方法-----',flatten3(optionArr))
+		// 自己写的
+		function fn(arr,result=[]){
+			arr.map((item)=>{
+				if(Array.isArray(item)){
+					result=result.concat(fn(item))
+					console.log(result)
+				}else{
+					result.push(item)
+				}
+			})
+			return result
+		}
+		console.log('自己写的---',fn(optionArr))
+		
+		// 方法四 flat (个人认为适用于项目中已经知道当前数据是几维数组)
+		var test = ['a', ['b', 'c'], ['d', ['e', ['f']], 'g']]
+		console.log('flat方法-------------',test.flat(3))
+		// 使用数组扁平化 整理这样的一组数据 
+		// 规律：如果pid等于id，那么这个相等的id对象是pid对象的子元素
+		let arr = [{
+				pid: 0,
+				id: 1,
+				name: "中国"
+			},
+			{
+				pid: 1,
+				id: 2,
+				name: "广东"
+			},
+			{
+				pid: 2,
+				id: 3,
+				name: "深圳"
+			},
+			{
+				pid: 3,
+				id: 6,
+				name: "福田"
+			},
+			{
+				pid: 1,
+				id: 4,
+				name: "香港"
+			},
+			{
+				pid: 4,
+				id: 5,
+				name: "九龙"
+			},
+		];
+		// 使用reduce作为高阶函数，reduce可以传入一个函数做为参数
+		// total 必需。初始值, 或者计算结束后的返回值。
+		// currentValue 必需。当前元素
+		// index 可选。当前元素的索引
+		// array 可选。当前元素所属的数组对象。
+		let newArr = [];
+
+		function rank(total, currentValue, index, array) {
+			// console.log('total, currentValue, index==',total, currentValue, index);
+			console.log('total===', total)
+			if (total) {
+				total.pid === 0 && newArr.push(total);
+				total.chlidren = [];
+			}
+			// console.log('newArr===',newArr)
+			array.forEach((item) => {
+				if (total.id === item.pid) {
+					total.chlidren.push(item);
+				}
+			});
+			console.log('currentValue===', currentValue)
+			return currentValue;
+		}
+		arr.reduce(rank);
+		console.log(newArr);
+	</script>
+</html>

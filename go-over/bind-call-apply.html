@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>bind-call-apply</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>this指向</h3>
+					<p>首先必须要说的是，this的指向在函数定义的时候是确定不了的，
+						只有函数执行的时候才能确定this到底指向谁，实际上this的最终指向的是那个调用它的对象</p>
+					<p>
+					<h4>注意:非严格模式下:</h4>
+					</p>
+					<p>情况1:下如果一个函数中有this，但是它没有被上一级的对象所调用，那么this指向的就是window</p>
+					<p>情况2:如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象。</p>
+					<p>情况3:如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，
+						this指向的也只是它上一级的对象，</p>
+					<h3>构造函数种的this</h3>
+					<p>this还是指向函数的实例</p>
+					<h3>当this碰到return时</h3>
+					<p>如果返回值是一个对象，那么this指向的就是那个返回的对象，
+						如果返回值不是一个对象那么this还是指向函数的实例。</p>
+				</li>
+				<li>
+					<h3>箭头函数中的this</h3>
+					<p>箭头函数不使用this的四种标准规则（也就是不绑定this），而是根据外层作用域来决定this。</p>
+				</li>
+				<li>
+					<h3>优先级总结：</h3>
+					<p>new绑定 > 显示绑定（bind）> 隐式绑定 > 默认绑定</p>
+				</li>
+				<li>
+					<h3>call、apply、bind</h3>
+					<p>call:</p>
+					<p>apply:</p>
+					<p>bind:</p>
+					<p>注意如果call和apply的第一个参数写的是null，那么this指向的是window对象</p>
+					<p>call和apply都是改变上下文中的this并立即执行这个函数;
+						bind方法可以让对应的函数想什么时候调就什么时候调用，并且可以将参数在执行的时候添加，
+						这是它们的区别;
+					</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// case1:
+		function fn() {
+			var user = "追梦子";
+			console.log(this.user); //undefined
+			console.log(this); //Window
+		}
+		console.log('1------------------------------------')
+		fn(); //fn===window.fn() 是被window所调用的
+
+		// case2:
+		console.log('2------------------------------------')
+		var o = {
+			a: 10,
+			b: {
+				a: 12,
+				fn: function() {
+					console.log(this.a); //undefined
+					console.log(this); //window
+				}
+			}
+		}
+		var j = o.b.fn;
+		j(); //这里this指向的是window this永远指向的是最后调用它的对象 虽然函数fn是被对象b所引用，
+		//但是在将fn赋值给变量j的时候并没有执行所以最终指向的是window
+
+		// 构造函数中的this
+		function Fn() {
+			this.user = "追梦子";
+		}
+		var a = new Fn();
+		//因为new关键字可以改变this的指向，将这个this指向对象a，
+		//为什么我说a是对象，因为用了new关键字就是创建一个对象实例，
+		console.log('构造函数--------------------------')
+		console.log(a.user); //追梦子
+
+		// case3
+		var demo = {
+			name: "张三",
+			getname: function() {
+				console.log(this.name)
+			}
+		}
+		// demo.getname()()
+		var name = '李四'
+		var demo2 = demo.getname
+		demo2() //李四 此时this指向window因为demo2作用域是个全局的
+		var demo2 = demo.getname.bind(demo)
+		demo2() //张三 this指向demo
+
+		// case4:箭头函数: this
+		function obj() {
+			this.name = "张三";
+			this.init();
+		}
+		// obj.prototype.init=function(){
+		// 	console.log('this------',this)
+		// 	document.addEventListener('click',function(){
+		// 			console.log(this)////在事件中指向当前事件对象
+		// 			console.log(this.name)
+		// 		}.bind(this)//改变this指向
+		// 	)
+		// }
+		//箭头函数无需考虑this指向问题
+		obj.prototype.init = function() {
+			console.log('this------', this) // obj{name:'张三'}
+			document.addEventListener('click', () => {
+				console.log(this) //obj{name:'张三'}
+				console.log(this.name) //张三
+			})
+		}
+		new obj();
+
+		// call、apply、bind:
+		var name = '小王',
+			age = 17
+		var obj = {
+			name: '小李',
+			objAge: this.age,
+			myFun: function(fm, t) {
+				console.log(this.name + '年龄' + this.age, '来自' + fm + '去往' + t)
+			}
+		}
+		var db = {
+			name: '德玛',
+			age: 99
+		}
+		console.log('call、apply、bind----------------------------------')
+		console.log(obj.objAge); //17
+		console.log(obj.myFun()); //小李年龄undefined 来自undefined去往undefined
+		obj.myFun.call(db, '成都', '上海'); //德玛 年龄 99  来自 成都去往上海
+		obj.myFun.apply(db, ['成都', '上海']); //德玛 年龄 99  来自 成都去往上海
+		obj.myFun.bind(db, '成都', '上海')(); //德玛 年龄 99  来自 成都去往上海
+		obj.myFun.bind(db, ['成都', '上海'])(); //德玛 年龄 99  来自 成都, 上海去往 undefined
+
+		// 面试1=======================================
+		console.log('面试1-----------------------------------')
+
+		var name = "window";
+		var person = {
+			name: "person",
+			sayName: function() {
+				console.log(this.name);
+			}
+		};
+
+		function sayName() {
+			var sss = person.sayName;
+			// 独立函数的调用 没有和任何对象关联
+			sss();
+			//关联
+			person.sayName();
+			(person.sayName)();
+			(b = person.sayName)(); //window
+		}
+		sayName(); //window person person window
+
+		// 面试2----------------------------------------------
+
+		console.log('面试2-----------------------------------')
+
+		var name = 'window'
+		var person1 = {
+			name: 'person1',
+			foo1: function() {
+				console.log(this.name)
+			},
+			foo2: () => console.log(this.name),
+			foo3: function() {
+				return function() {
+					console.log(this.name)
+				}
+			},
+			foo4: function() {
+				return () => {
+					console.log(this.name)
+				}
+			}
+		}
+		var person2 = {
+			name: 'person2'
+		}
+		//隐式绑定，肯定是person1
+		person1.foo1(); // person1 
+
+		// 隐式绑定和显示绑定的结合，显示绑定生效，所以是person2
+		person1.foo1.call(person2); //person2
+
+		// foo2()是一个箭头函数，不适用所有的规则
+		person1.foo2(); //window
+		// foo2依然是箭头函数，不适用于显示绑定的规则
+		person1.foo2.call(person2); //window
+
+		// 获取到foo3，但是调用位置是全局作用于下，所以是默认绑定window
+		person1.foo3()(); //window
+
+		// foo3显示绑定到person2中 
+		// 但是拿到的返回函数依然是在全局下调用，所以依然是window
+		person1.foo3.call(person2)(); //window
+
+		// 拿到foo3返回的函数，通过显示绑定到person2中，所以是person2
+		person1.foo3().call(person2); //person2
+
+		// foo4()的函数返回的是一个箭头函数 箭头函数的执行找上层作用域，是person1
+		person1.foo4()(); //person1
+		// foo4()显示绑定到person2中，并且返回一个箭头函数
+		person1.foo4.call(person2)(); //person2
+		// foo4返回的是箭头函数 箭头函数只看上层作用域！！！！
+		person1.foo4().call(person2); //person1
+
+		// 面试3
+		console.log('面试3-----------------------------------')
+		var name = 'window'
+
+		function Person(name) {
+			this.name = name
+			this.foo1 = function() {
+					console.log(this.name)
+				},
+				this.foo2 = () => console.log(this.name),
+				this.foo3 = function() {
+					return function() {
+						console.log(this.name)
+					}
+				},
+				this.foo4 = function() {
+					return () => {
+						console.log(this.name)
+					}
+				}
+		}
+		var person1 = new Person('person1')
+		var person2 = new Person('person2')
+
+		//隐式绑定
+		person1.foo1() // person1
+
+		// 显示绑定优先级大于隐式绑定
+		person1.foo1.call(person2) //person2
+
+		//foo2是一个箭头函数，会找上层作用域中的this，那么就是person1
+		person1.foo2() //person1
+
+		// foo2是一个箭头函数，使用call调用不会影响this的绑定，和上面一样向上层查找
+		person1.foo2.call(person2) //person1
+
+		//调用位置是全局直接调用，所以依然是window（默认绑定）
+		person1.foo3()() //window
+		//最终还是拿到了foo3返回的函数，在全局直接调用（默认绑定）
+		person1.foo3.call(person2)() //window
+		//拿到foo3返回的函数后，通过call绑定到person2中进行了调用
+		person1.foo3().call(person2) //person2
+
+		//foo4返回了箭头函数，和自身绑定没有关系，上层找到person1
+		person1.foo4()() // person1
+
+		// foo4调用时绑定了person2，返回的函数是箭头函数，调用时，找到了上层绑定的person2
+		person1.foo4.call(person2)() //person2
+
+		// foo4调用返回的箭头函数，和call调用没有关系，找到上层的person1
+		person1.foo4().call(person2) //person1
+
+		// 面试4====================================
+		console.log('面试4-------------------------------')
+		
+		var name = 'window'
+		function Person1(name) {
+			this.name = name
+			this.obj = {
+				name: 'obj',
+				foo1: function() {
+					return function() {
+						console.log(this.name)
+					}
+				},
+				foo2: function() {
+					return () => {
+						console.log(this.name)
+					}
+				}
+			}
+		}
+		var person1 = new Person1('person1')
+		var person2 = new Person1('person2')
+
+		// obj.foo1()返回一个函数  这个函数在全局作用于下直接执行（默认绑定）
+		person1.obj.foo1()() //window
+
+		// 最终还是拿到一个返回的函数（虽然多了一步call的绑定）
+		//这个函数在全局作用于下直接执行（默认绑定）
+		person1.obj.foo1.call(person2)() //window
+		person1.obj.foo1().call(person2) //person2
+
+		//拿到foo2()的返回值，是一个箭头函数 箭头函数在执行时找上层作用域下的this，就是obj
+		person1.obj.foo2()() //obj
+		// foo2()的返回值，依然是箭头函数，但是在执行foo2时绑定了person2
+		// 箭头函数在执行时找上层作用域下的this，找到的是person2
+		person1.obj.foo2.call(person2)() //person2
+		// foo2()的返回值，依然是箭头函数 
+		//箭头函数通过call调用是不会绑定this，所以找上层作用域下的this是obj
+		person1.obj.foo2().call(person2) //obj
+	</script>
+</html>

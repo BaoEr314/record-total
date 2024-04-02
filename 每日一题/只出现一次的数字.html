@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>只出现一次的数字</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 示例 1:
+		
+		// 输入: [2,2,1]
+		// 输出: 1
+		// 示例 2:
+		
+		// 输入: [4,1,2,1,2]
+		// 输出: 4
+		function uniqueNumber(arr){
+			let countMap={}
+			arr.forEach((item,index)=>{
+				countMap[item] ? countMap[item]+=1 : countMap[item] = 1 
+			})
+			//console.log(countMap)
+			for(i in countMap){
+				if(countMap[i]===1){
+					return i;
+				}
+			}
+		}
+		uniqueNumber([4,1,2,1,2])
+		console.log(uniqueNumber([4,1,2,1,2]))
+	</script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>手写new</title>
+	</head>
+	<body>
+		<div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//new的实现过程(实际上就是调用这个构造函数，同时将构造函数的prototype上的属性方法挂上去)
+		//新建一个对象
+		//对象继承构造函数的原型链
+		//将构造函数的this指向这个对象
+		//根据构造函数的返回值的返回结构
+		function _new(fn) {
+			//定义一个空对象
+			let obj = {};
+			//将传入的构造函数的prototype属性方法复制到obj里面
+			obj = Object.create(fn.prototype)
+			console.log('obj====',obj)
+			// 获取除去fn之外的参数   //或者  [...arguments].slice(1)
+			let args = Array.prototype.slice.call(arguments, 1)
+			console.log('args=====',args)
+			// 调用传入的构造函数,矫正this为obj，并传入args
+			let result = fn.call(obj, ...args)
+			console.log('result====',result)
+			console.log('obj===',obj)
+			// 如果构造函数返回引用类型，直接返回，否则返回obj
+			return typeof result === 'object'
+		}
+		function Dog(name, age) {
+			this.name = name;
+			this.age = age;
+		}
+		Dog.prototype.sayInfo = function() {
+			console.log(`Name = ${this.name}, Age = ${this.age}`);
+		}
+		let dog = _new(Dog, 'Hello', 12);
+		dog.sayInfo();
+		
+	</script>
+</html>

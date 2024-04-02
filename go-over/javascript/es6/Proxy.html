@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>一、定义：用于定义基本操作的自定义行为</h3>
+				</li>
+				<li>
+					<h3>二、用法：</h3>
+					<p>var proxy = new Proxy(target, handler)
+						<br>target表示所要拦截的目标对象（任何类型的对象，包括原生数组，函数，甚至另一个代理））
+						<br>handler通常以函数作为属性的对象，各属性中的函数分别定义了在执行各种操作时代理 p 的行为
+					</p>
+				</li>
+				<li>
+					<h3>handler解析</h3>
+					<p>get(target,propKey,receiver)：拦截对象属性的读取</p>
+					<p>set(target,propKey,value,receiver)：拦截对象属性的设置</p>
+					<p>has(target,propKey)：拦截propKey in proxy的操作，返回一个布尔值</p>
+					<p>deleteProperty(target,propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值</p>
+					<p>ownKeys(target)：拦截Object.keys(proxy)、for...in等循环，返回一个数组</p>
+					<p>getOwnPropertyDescriptor(target, propKey)：拦截Object.getOwnPropertyDescriptor(proxy,
+						propKey)，返回属性的描述对象</p>
+					<p>defineProperty(target, propKey, propDesc)：拦截Object.defineProperty(proxy, propKey,
+						propDesc），返回一个布尔值</p>
+					<p>preventExtensions(target)：拦截Object.preventExtensions(proxy)，返回一个布尔值</p>
+					<p>getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy)，返回一个对象</p>
+					<p>isExtensible(target)：拦截Object.isExtensible(proxy)，返回一个布尔值</p>
+					<p>setPrototypeOf(target, proto)：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值</p>
+					<p>apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作</p>
+					<p>construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作</p>
+				</li>
+				<li>
+					<h3>使用场景:Proxy其功能非常类似于设计模式中的代理模式，常用功能如下：</h3>
+					<p>拦截和监视外部对对象的访问</p>
+					<p>降低函数或类的复杂度</p>
+					<p>在复杂操作前对操作进行校验或对所需资源进行管理</p>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			//proxy几种用法：
+			// get:get接受三个参数，依次为目标对象、属性名和 proxy 实例本身，最后一个参数可选
+			//注意：如果一个属性不可配置（configurable）且不可写（writable），则 Proxy 不能修改该属性，
+			//否则会报错
+			var person = {
+				name: "张三"
+			};
+			var proxy = new Proxy(person, {
+				get: function(target, propKey) {
+					return Reflect.get(target, propKey)
+				}
+			})
+			console.log(proxy.name)
+
+			// set
+			// set方法用来拦截某个属性的赋值操作，可以接受四个参数，依次为目标对象、属性名、属性值和 Proxy 实例本身
+			// 假定Person对象有一个age属性，该属性应该是一个不大于 200 的整数，
+			//那么可以使用Proxy保证age的属性值符合要求
+			//注意:如果目标对象自身的某个属性，不可写且不可配置，那么set方法将不起作用
+			//严格模式下，set代理如果没有返回true，就会报错
+			let validator = {
+				set: function(obj, prop, value) {
+					if (prop === 'age') {
+						if (!Number.isInteger(value)) {
+							throw new TypeError('The age is not an integer');
+						}
+						if (value > 200) {
+							throw new RangeError('The age seems invalid');
+						}
+					}
+
+					// 对于满足条件的 age 属性以及其他属性，直接保存
+					obj[prop] = value;
+				}
+			};
+			let person1 = new Proxy({}, validator);
+			// person1.age = 'young' // 报错
+			// person1.age = 300 // 报错
+			person1.age = 100;
+
+			//deleteProperty
+			//deleteProperty方法用于拦截delete操作，
+			//如果这个方法抛出错误或者返回false，当前属性就无法被delete命令删除
+			//注意，目标对象自身的不可配置（configurable）的属性，不能被deleteProperty方法删除，否则报错
+			var target = { _prop: 'foo' };
+			var handler2 = {
+				deleteProperty(target, key) {
+					invariant(key, 'delete');
+					Reflect.deleteProperty(target, key)
+					return true;
+				}
+			};
+			;
+			function invariant (key, action) {
+				console.log('key===',key,action)
+			  if (key[0] === '_') {
+			    throw new Error(`无法删除私有属性`);
+			  }
+			}
+			var proxy = new Proxy(target, handler2);
+			delete proxy._prop // 无法删除私有属性
+		</script>
+	</body>
+</html>

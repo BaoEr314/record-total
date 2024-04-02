@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div></div>
+	</body>
+	<script type="text/javascript">
+		function time() {
+			var today = new Date();
+			var jran = today.getTime();
+			var number = 3;
+			var random_number = "";
+			var image = "";
+			var text_color = "";
+			ia = 9301;
+			ic = 49297;
+			im = 233280;
+			jran = (jran * ia + ic) % im;
+			random_number = Math.ceil((jran / (im * 1.0)) * number);
+			if (random_number == 1) {
+				console.log('1111111111111')
+			}
+			if (random_number == 2) {
+				console.log('2222222222222')
+			}
+			if (random_number == 3) {
+				console.log('33333333333')
+			}
+			setTimeout(function() {
+				time()
+			}, 1000)
+		}
+		time()
+
+		// var how_many_ads = 3;
+		// var now = new Date()
+		// var sec = now.getSeconds()
+		// var ad = sec % how_many_ads;
+		// ad += 1;
+		// if (ad == 1) {
+		// 	console.log('111111111')
+		// }
+		// if (ad == 2) {
+		// 	console.log('2222222222222')
+		// }
+	</script>
+</html>

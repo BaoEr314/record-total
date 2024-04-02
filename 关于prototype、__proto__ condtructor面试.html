@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>关于prototype、__proto__ condtructor</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//case1:
+		function Fn() {
+			// 代码字符串
+			// 谁 new 就是谁的私有属性
+			this.x = 100;
+			this.y = 200;
+			this.getX = function() {
+				console.log(this.x);
+			};
+			// 每个函数都有 prototype 对象
+			// 这个 Fn.prototype 上有 constructor
+			// constructor 指向函数本身
+		};
+		// 把 getX 挂载到 Fn 的原型对象上
+		// 生成一新的堆内存
+		// 属于公共属性
+		Fn.prototype.getX = function() {
+			console.log(this.x);
+		};
+		// 把 getY 挂载到 Fn 的原型对象上
+		// 生成一新的堆内存
+		// 属于公共属性
+		Fn.prototype.getY = function() {
+			console.log(this.y);
+		};
+		// 括号可加可不不加
+		// 都是创建类的实例
+		// 创建实例对象 f1 / f2 (堆)
+		// 同时创建 x: 100 y: 200  getX: function ...
+		// 都是这个实例的私有属性
+		// 通过 this 创建的变量和对象都属于私有属性
+		// 实例都带 __proto__ 属性
+		// __proto__ 所属类的原型 prototype
+		// 通过原型链往上找都属于 实例（Fn.prototype） 的共有属性
+		let f1 = new Fn();
+		let f2 = new Fn;
+		console.log('case1===============================')
+		// 实例指向的堆内存不同，如果自己私有就不会往原型类上查找
+		// 因为这个 getX 函数自己私有
+		// 所以两个实例的 getX 方法不相等
+		console.log('1--------', f1.getX === f2.getX); //false
+		// 因为 getY 这个函数不是自己私有
+		// 所以往原型链上查找，结果相等
+		// 原因就是他们的 __proto__ 都指向 Fn.prototype 原型对象
+		console.log('2--------', f1.getY === f2.getY); //true
+		// 通过原型链查找到的是公共的 getY 
+		// 类似于 f1.getY === f2.getY
+		console.log('3--------', f1.__proto__.getY === Fn.prototype.getY); //true
+		// f1.__proto__.getX 找的是 Fn.prototype 公共属性
+		// f2.getX 因为自己私有
+		// 所以不相等
+		console.log('4--------', f1.__proto__.getX === f2.getX); //false
+		// f1.getX 属于自己私有的属性
+		// Fn.prototype.getX 本身就是公共属性
+		// 所以不相等
+		console.log('5--------', f1.getX === Fn.prototype.getX); //false
+		// f1 自己身上没有 constructor 
+		// 往原型对象上查找
+		// 又因为 constructor 指向 函数本身
+		// 所以结果就是 Fn 函数
+		console.log('6--------', f1.constructor); //Fn 函数
+		// Fn.prototype 的 __proto__ 指向的是 Object.prototy
+		// 因为 Object.prototy 的 constructor 指向 Object 本身
+		// 所以是结果 Object
+		console.log('7--------', Fn.prototype.__proto__.constructor); //ƒ Object() { [native code] }
+		console.log('打印8--------', )
+		f1.getX(); //100
+		// 直接查找的是原型对象上的 getX()
+		// 原型上的是 console.log(this.x);
+		// 因为 f1.__proto__.getX(); getX() 前面有点
+		// 所以 相当于 f1.__proto__.x
+		// f1.__proto__.x 直接跳过自己（f1 实例对象（堆））往原型对象上查找
+		// 此时原型对象上也没有，再往 Object.prototype 对象上查找
+		// Object 对象上也没有
+		// 最后得到的是 undefined
+		f1.__proto__.getX(); // undefined
+		f2.__proto__.getX(); // undefined
+		f1.getX(); //100
+		f2.getX(); //100
+		// Fn.prototype.getY(); 
+		// 直接查找的是原型对象上的 getY()
+		// 原型上的是 console.log(this.y);
+		// 因为 Fn.prototype.getY(); getY() 前面有点
+		// 所以 相当于 Fn.prototype.y
+		// Fn.prototype.y 直接跳过自己（f2 实例对象（堆））往原型对象上查找
+		// 此时原型对象上也没有，再往 Object.prototype 对象上查找
+		// Object 对象上也没有
+		// 最后得到的是 undefined
+		Fn.prototype.getY(); //undefind
+		// ******************************************************************************************
+		//case2:
+		function A() {
+			
+		}
+		A.prototype.n = 1
+		
+		var b = new A()
+		
+		A.prototype = {
+			n: 2,
+			m: 3,
+		}
+		var c = new A()
+		
+		console.log('case2================')
+		
+		console.log(b.n, b.m, c.n, c.m); //1,undefind,2,3
+
+		//***************************************************************************************
+
+		//case3:
+		function Foo() {
+			Object.prototype.a = function() {
+				console.log('可访问a');
+			};
+		}
+		Function.prototype.b = function() {
+			console.log('可访问b')
+		}
+		var foo = new Foo()
+		console.log('case3=====')
+		console.log(foo.__proto__.__proto__)
+		foo.a(); //可访问a
+		//foo.b(); //报错 foo.b is not a function
+		// 因为 Foo.__proto__ === Function.prototype
+		Foo.a(); //可访问a
+		Foo.b(); //可访问b
+
+		//*******************************************************************************************		
+		//case4:
+		function Person() {}
+		Person.prototype.name = 'bangbang';
+		Person.prototype.age = 18;
+		Person.prototype.job = 'programmer';
+		Person.prototype.dream = function() {
+			console.log('Change yourself');
+		}
+		var person1 = new Person();
+		console.log('case4=========')
+		person1.dream(); //Change yourself
+		var person2 = new Person();
+		person2.dream(); //Change yourself
+		//判断两个实例继承的方法和属性是否全等
+		// 都指向原型 所以相等 如果是Person内部有this的话结果就为false了
+		console.log(person1.dream === person2.dream); //true
+		console.log(person1.age === person2.age); //true
+
+		// **************************************************
+		//case5:
+		// 注意：instanceof 运算符用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上。
+		var A = function() {};
+		A.prototype = {};
+		var a = new A();
+		console.log('case5==========')
+		console.log(a instanceof A); //true
+		//又执行了一遍 A.prototype = {}; 这其实是prototype又换了一个引用地址。
+		A.prototype = {};
+		// 当执行 var b = new A() 时，即又生成了一个 A 的实例
+		var b = new A();
+		console.log(a instanceof A); //false
+		console.log(b instanceof A); //true
+
+		// **********************************************************
+		// case6:
+		//实例没有找到info属性,这个修改反映在了原型对象的info属性上
+		// 当原型对象的属性值为基本类型的数据值时，通过实例对象修改属性值从而引起原型对象的属性值发生变化的情况不会发生。
+		//当原型对象的属性值为引用类型的数据值时，通过实例对象修改属性值就可能引起原型对象的属性值发生变化。
+		var fun = function() {}
+		fun.prototype = {
+			name:'xiaohua',
+			info: {
+				name: 'peter',
+				age: 25
+			}
+		}
+		var a = new fun();
+		var b = new fun();
+		var c = new fun()
+		a.name = 'huahua'
+		b.name = 'lili'
+		console.log('case6=======================')
+		a.info.name = 'jack';
+		b.info.name = 'tom';
+		// 实例对象c创建了自己的info属性
+		c.info = {
+			sex: 'girle'
+		}
+		console.log(a.info.name); //tom
+		console.log(b.info.name); //tom
+		console.log(c.info.name); //undefind
+		console.log(c.info, a.info, b.info)//{sex:'girle'},{name:'tom',age: 25},{name:'tom',age: 25}
+
+		// case7:
+		// 实例对象a和b分别重新设置了name属性，结果是实例对象a和b拥有了自己的name属性
+		// 没有改变原型对象的name属性值;
+		//当原型对象的属性值为基本类型的数据值时，通过实例对象修改属性值从而引起原型对象的属性值发生变化的情况不会发生。
+		//当原型对象的属性值为引用类型的数据值时，通过实例对象修改属性值就可能引起原型对象的属性值发生变化。
+		var fun = function() {}
+		fun.prototype.name = 'peter';
+		var a = new fun();
+		var b = new fun();
+		a.name = 'jack';
+		b.name = 'tom';
+		console.log('case7==============')
+		console.log(a.name); //jack
+		console.log(b.name); //tom
+	</script>
+</html>

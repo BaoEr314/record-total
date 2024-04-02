@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body></body>
+	<script>
+		// 对象转字符串
+		let obj = {
+			name: 'huahua',
+			age: 18
+		}
+		let str = JSON.stringify(obj)
+		console.log(str, typeof(str)) //{"name":"huahua","age":18} string
+		//字符串转对象
+		let str2 = '{"a":1,"b":12}'
+		let obj1 = JSON.parse(str2)
+		console.log('obj1===', obj1, typeof(obj1))
+		// 数组转字符串
+		let arr = [1, 2, 3]
+		let str3 = arr.join(',')
+		console.log('str3===', str3, typeof(str3))
+		// 字符串转数组
+		let str1 = 'abcd'
+		let arr1 = str1.split('')
+		console.log('arr1===', arr1, typeof(arr1))
+
+		// 数组转对象
+		let arr2 = [{
+			name: 'lili',
+			age: 18
+		}, {
+			name: 'huahua',
+			age: 20
+		}]
+		let obj2 = {}
+		// 方法1
+		obj2 = {
+			...arr2
+		}
+		console.log('obj2====', obj2)
+		// 方法2
+		let obj3 = Object.assign({}, arr2)
+		console.log('obj3====', obj3)
+
+		// 方法3
+		for (let key in arr2) {
+			console.log(key) //0,1 索引
+			obj2[key] = arr2[key]
+		}
+		console.log('obj2====', obj2)
+
+		//对象转数组
+		let person = {
+			name: 'huahua',
+			age: 18
+		}
+		let array = []
+		for (let key in person) {
+			array.push(person[key])
+		}
+		console.log('array====', array) //['huahua', 18]
+		array = Object.entries(person)
+		console.log('array====', array) //[['name', 'huahua'],['age', 18]]
+		array = Object.values(person)
+		console.log('array====', array) //['huahua', 18]
+		// 数组套对象对象又嵌套数组 取 这个嵌套数组中的所有id
+		const List = [
+			{
+				id: 1,
+				idList:[
+					{
+						id:'1-1'
+					},
+					{
+						id:'1-2'
+					}
+				]
+			},{
+				id:2,
+				idList:[
+					{
+						id:'2-1'
+					},
+					{
+						id:'2-2'
+					}
+				]
+			}
+		 
+		]
+		const idArr = List.map((item)=>{
+			console.log('item-----',item)
+			return item.idList.map((i)=>{
+				return i.id
+			})
+		})
+		console.log('idArr=====',idArr)
+		function flatten(arr,result=[]){
+			if(!Array.isArray(arr)){
+				result.push(arr)
+				return result
+			}
+			for(let i of arr){
+				 flatten(i,result)
+			}
+			return result
+		}
+		const idList = flatten(idArr)
+		console.log('idList=====',idList)
+		// 替换对象某个key并删除
+		let replaceObj = {
+			name:'shuya',
+			age:28
+		}
+		for(let key in replaceObj){
+			if(key==='name'){
+				replaceObj.personName = replaceObj[key]
+			}
+			delete replaceObj['name']
+		}
+		console.log('replaceObj====',replaceObj)
+		// 对象合并顺序
+		const data = {name:'11',age:22}
+		const data1 = {name:'22',age:33,sex:'女'}
+		console.log({...data,...data1})
+		console.log({...data1,...data})
+	</script>
+</html>

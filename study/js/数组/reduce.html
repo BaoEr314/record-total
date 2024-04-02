@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>reduce</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>reduce</h3>
+					<p>计算数组元素相加后的总和</p>
+					<p>reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。</p>
+					<p>reduce() 可以作为一个高阶函数，用于函数的 compose</p>
+					<p>注意:reduce() 对于空数组是不会执行回调函数的。</p>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var numbers = [65, 44, 12, 4];
+
+			function getSum(total, num) {
+				return total + num;
+			}
+			numbers.reduce(getSum);
+			console.log(numbers.reduce(getSum))
+
+			// 简单用法
+			var arr = [1, 2, 3, 4];
+			var sum = arr.reduce((x, y) => x + y)
+			var mul = arr.reduce((x, y) => x * y)
+			console.log(sum); //求和，10
+			console.log(mul); //求乘积，24
+
+			// reduce中的高级用法
+
+			//(1)计算数组中每个元素出现的次数
+			let names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
+			let nameNum = names.reduce((pre, cur) => {
+				if (cur in pre) {
+					pre[cur]++
+				} else {
+					pre[cur] = 1
+				}
+				return pre
+			}, {})
+			console.log(nameNum) //{Alice: 2, Bob: 1, Tiff: 1, Bruce: 1}
+
+			//(2)数组去重
+			let Repeatarr = [1, 2, 3, 4, 4, 1]
+			let newArr = Repeatarr.reduce((pre, cur) => {
+				if (!pre.includes(cur)) {
+					return pre.concat(cur)
+				} else {
+					return pre
+				}
+			}, [])
+			console.log(newArr) //[1, 2, 3, 4]
+
+			//(3)将二维数组转化为一维
+			let arr1 = [
+				[0, 1],
+				[2, 3],
+				[4, 5]
+			]
+			let newArr1 = arr1.reduce((pre, cur) => {
+				return pre.concat(cur)
+			}, [])
+			console.log('newArr1----', newArr1) //[0, 1, 2, 3, 4, 5]
+
+			// (4)将多维数组转化为一维
+			let arr2 = [
+				[0, 1],
+				[2, 3],
+				[4, [5, 6, 7]]
+			]
+			let newArr2 = function(arr) {
+
+				return arr.reduce((pre, cur) => pre.concat(Array.isArray(cur) ? newArr2(cur) : cur), [])
+			}
+			console.log(newArr2(arr2));
+
+			// (5)、对象里的属性求和
+			var result = [
+				{
+					subject: 'math',
+					score: 10
+				},
+				{
+					subject: 'chinese',
+					score: 20
+				},
+				{
+					subject: 'english',
+					score: 30
+				}
+			];
+			var sum = result.reduce(function(prev, cur) {
+			    return cur.score + prev;
+			}, 0)
+			console.log(sum) //60
+		</script>
+	</body>
+</html>

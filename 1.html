@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				overflow: hidden
+			}
+
+			ul,
+			li {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+
+			.box_wrap {
+				width: 100%;
+				height: 400px;
+				border: 1px solid red;
+				margin: 20px auto;
+				overflow: hidden;
+			}
+
+			.box_wrap ul {
+				/* 多出20像素是滚动条的位置，会被父容器盖住就看不到了 */
+				width: calc(100% + 20px);
+				height: 100%;
+				border: 4px solid blue;
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+
+			.box_wrap ul li {
+				width: 200px;
+				height: 40px;
+				line-height: 40px;
+				border-bottom: 1px solid #ccc;
+				font-size: 12px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box_wrap">
+			<ul>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+				<li>测试数据1</li>
+			</ul>
+		</div>
+	</body>
+	<script>
+		// const arr = [{
+		// 		equityType: 1,
+		// 		remainNumber: 10
+		// 	},
+		// 	{
+		// 		equityType: 10,
+		// 		remainNumber: 20
+		// 	},
+		// 	{
+		// 		equityType: 2,
+		// 		remainNumber: 30
+		// 	},
+		// ]
+		// arr.sort(function(a, b) {
+		// 	return (b.equityType - a.equityType)
+		// });
+		// console.log('arr==', arr)
+
+		// let obj = {
+		// 	name: '123'
+		// }
+		// // let obj1 = JSON.parse(obj)
+		// let obj2 = JSON.stringify(obj)
+		// console.log('=====', obj2)
+		
+		// let result = [1,2,3,4]
+		// let count = result.reduce((perv,current,currentIndex,arr)=>{
+		// 	return perv+current
+		// })
+		// console.log(count)
+		
+		// function MyClass() {
+		//   this.x = 10;
+		// }
+		
+		// MyClass.prototype.y = 20;
+		// const myInstance = new MyClass();
+		// myInstance.c=1
+		// console.log('-----',myInstance.y,myInstance.c)
+		// const iteratorWithPrototype = Object.entries(myInstance);
+		// console.log('iteratorWithPrototype----',[...iteratorWithPrototype])
+		
+		const promise1 = Promise.resolve(3);
+		const promise2 = new Promise((resolve, reject) => {
+			setTimeout(()=>{
+				reject('error')
+			},300)
+		});
+		const promise3 = new Promise((resolve,reject) => {
+			setTimeout(()=>{
+				resolve('resolve')
+			},100)
+		});
+		
+		Promise.allSettled([promise1, promise2, promise3])
+		  .then((results) => {
+			  // console.log('results----',results)
+		    results.forEach((result) => {
+		      // console.log('6666',result.status); // 输出 "fulfilled", "rejected", "fulfilled"
+		      console.log('888',result); // 输出 3, "error", "resolved"
+		    })
+		  })
+
+	</script>
+</html>

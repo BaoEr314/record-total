@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>var-let-const</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>let</h3>
+					<p>let声明的仅在块级作用域内有效</p>
+					<p>let不会发生变量提升的现象，所以一定要在定义后使用，否则报错。</p>
+					<p>暂时性死区：只要块级作用域内存在let命令，它所声明的变量就绑定这个区域，不再受外部影响。</p>
+					<p>不允许重复声明，let不允许在相同作用域内，重复声明同一个变量</p>
+				</li>
+				<li>
+					<h3>const:</h3>
+					<p>一旦声明，就要立即初始化，否则也报错。</p>
+					<p>声明一个只读的常量。一旦声明，常量的值就不能改变。</p>
+					<p> const命令声明的常量也不提升，同样存在暂时性死区，只能在声明的位置后使用。</p>
+					<p>也不可以重复声明</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// 经典题
+		const obj1 = {
+			name:'坦克',
+			age:4
+		}
+		const obj2 = obj1
+		obj2.name = '刘坦克'
+		console.log('obj1,obj2====',obj1,obj2)//
+		// =======================================================
+		//let声明的仅在块级作用域内有效
+		{
+			let a = 1;
+			var b = 2;
+		}
+	     console.log(b);2
+		// console.log(a);  //报错，找不到。
+		//=======================================================
+		//let 与 var 对比
+		for(var i = 0;i<10;i++){
+			setTimeout(()=>{
+				console.log('var声明的i====',i)//10个10
+			},1000)
+		}
+		// let 只在块级作用域有效 每次循环都会是一个新的变量给settimeout
+		//不要怀疑既然是新变量为什么还会一直加 因为js会记住上一次的值
+		for(let i= 0;i<10;i++){
+			setTimeout(()=>{
+				console.log('let声明的i====',i)//0-9
+			},2000)
+		}
+		// ====================================
+		//const
+		// 一旦声明，就要立即初始化，否则也报错
+		//const a;//Missing initializer in const declaration
+		
+		// 声明一个只读的常量。一旦声明，常量的值就不能改变
+		// const a = 10;
+		// a = 20 //Assignment to constant variable
+		
+		//不存在变量提升
+		// console.log(c)// access 'c' before initialization
+		// const c =  10
+		console.log('xx',x)//undefind
+		var x = 1
+		// 不可以重复声明
+		// const num =1 
+		// const num = 2 // Identifier 'num' has already been declared
+	</script>
+</html>

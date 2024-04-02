@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		const arr = [1, 2, 3, 4, 4, 5, 5, 6]
+		const newarr = arr.forEach((item, index) => {
+			return item + 1
+		})
+		console.log(newarr,arr) //不支持return
+
+		const maparr = [1, 2, 3, 4, 5, 6, 6, 5]
+		const newmaparr = maparr.map((item, index) => {
+			return item + 1
+		})
+		console.log('newmaparr===', newmaparr)
+
+		const fifterarr = [1, 2, 3, 4, 5, 6]
+		const newfilterarr = fifterarr.filter((item, index) => {
+			return item > 2
+		})
+		console.log('newfilterarr===', newfilterarr)
+
+		var fruits = ["Banana", "Orange", "Apple", "Mango"];
+		fruits.splice(2, 0, "Lemon", "Kiwi")
+		console.log('fruits==',fruits)//['Banana', 'Orange', 'Lemon', 'Kiwi', 'Apple', 'Mango']
+		
+		var fruits1 = ["Banana", "Orange", "Apple", "Mango"];
+		fruits1.splice(2, 1, "Lemon", "Kiwi");
+		console.log('fruits1======',fruits1)//['Banana', 'Orange', 'Lemon', 'Kiwi', 'Mango']
+		
+		// split 将字符串转为数组
+		const splitstr = 'abcdefg'
+		console.log('splitstr====',splitstr.split(""))//['a', 'b', 'c', 'd', 'e', 'f', 'g']
+		console.log('splitstr====',splitstr.split("",2))//['a', 'b']
+		console.log("hello".split(""))// ['h', 'e', 'l', 'l', 'o']
+		console.log("2:3:4:5".split(":"))//['2', '3', '4', '5']
+		console.log("|a|b|c".split("|"))//['', 'a', 'b', 'c']
+		
+		//join 将数组元素转换为字符串：
+		var joinarr = ["Banana", "Orange", "Apple", "Mango"];
+		var energy = joinarr.join()
+		console.log('energy===',energy)//Banana,Orange,Apple,Mango
+		
+		var joinarr1 = ["Banana", "Orange", "Apple", "Mango"];
+		var energy1 = fruits.join(" and ");
+		console.log('energy1===',energy1)//Banana and Orange and Lemon and Kiwi and Apple and Mango
+		
+		// push pop unshift shift
+		const testarr = [1,2,3,4,5]
+		testarr.pop()
+		console.log( 'pop',testarr)//[1, 2, 3, 4]
+		testarr.push(1)
+		console.log( 'push',testarr)//[1, 2, 3, 4, 1]
+		testarr.shift()
+		console.log( 'shift',testarr)//[2, 3, 4, 1]
+		testarr.unshift(1)
+		console.log( 'unshift',testarr)// [1, 2, 3, 4, 1]
+		
+		const user = {
+			name:'aa',
+			age:25
+		}
+		console.log('hasOwnProperty----',user.hasOwnProperty('name'))
+		
+		function * count(){
+			yield 1;
+			yield 2;
+			yield 3;
+			yield 4;
+		}
+		var c = count()
+		console.log(c.next())//{value:1,done:false}
+		console.log(c.next())//{value:2,done:false}
+		console.log(c.next())//{value:3,done:false}
+		console.log(c.next())//{value:4,done:false}
+		console.log(c.next())//{value:undefind,done:true}
+		
+		const isArr = [1,2,3,4]
+		console.log(Array.isArray(isArr))//true
+		console.log(Object.prototype.toString.apply(isArr).slice(8, -1)==='Array')//true
+		console.log(isArr instanceof Array) // true
+		console.log(arr.constructor == Array)//true
+		
+		// Object.getOwnPropertyNames
+		//Object.getOwnPropertyNames返回的是对象所有自己的属性，而Object.keys(obj)则返回的是所有可枚举属性，
+		const obj = {
+		    property1: 1,
+		    property2: 2,
+		};
+		console.log('object.keys===',Object.keys(obj))//['property1', 'property2']
+		console.log('getOwnPropertyNames===',Object.getOwnPropertyNames(obj))//['property1', 'property2']
+		const obj1 = {};
+		
+		Object.defineProperties(obj1, {
+		    property1: {enumerable: true, value: 1},
+		    property2: {enumerable: false, value: 2},
+		});
+		
+		console.log(Object.keys(obj1));//['property1']
+		console.log(Object.getOwnPropertyNames(obj1));//['property1', 'property2']
+		
+		// 箭头函数
+		function test1 () {
+			console.log('顺便复习原型----')
+			console.log(test1.prototype)//constructor: f test1()
+			console.log(test1.__proto__)//ƒ () { [native code] }
+			console.log(test1.prototype.__proto__)
+			console.log(Function.prototype)//ƒ () { [native code] }
+			console.log(Function.__proto__)// { [native code] }
+			console.log(Object.prototype)
+			console.log(Object.prototype.__proto__)//null
+		}
+		test1()//constructor: f test1()
+		
+
+		var test2 = () => {
+			console.log(test2.prototype)
+		}
+		test2() // undefind
+		
+		var obj2 = {
+		   x:100, //属性x
+		   show1(){
+		        setTimeout(
+		            // 匿名函数： 此时的this已经是window了
+		           function(){console.log('this.x===',this,this.x);},  500 );      // undefined
+		    },
+		   show2(){
+		        setTimeout(
+		            // 箭头函数： 此时的this是对象定义时的this
+		           () =>{console.log('this.x========',this,this.x);},  500 );      // 100
+		    }
+		};
+		obj2.show1();//打印结果：undefined
+		obj2.show2();//100
+		
+		function A () {
+		    console.log(arguments)         //1,2,3,4
+		  }
+		A(1,2,3,4);
+		  
+		const B = (...b) => {
+		    console.log(b)                //5,6,7,8
+		  };
+		B(5,6,7,8);
+	</script>
+</html>

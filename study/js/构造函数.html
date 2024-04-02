@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>构造函数</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 定义: 
+		// 通过 new 函数名来实例化对象的函数叫构造函数。任何的函数都可以作为构造函数存在。
+		// 之所以有构造函数与普通函数之分，主要从功能上进行区别的，构造函数的主要 功能为 初始化对象，
+		// 特点是和new 一起使用。new就是在创建对象，从无到有，构造函数就是在为初始化的对象添加属性和方法。
+		// 构造函数定义时首字母大写（规范）。
+
+
+		// 对new理解：
+		// new 申请内存, 创建对象,当调用new时，后台会隐式执行new Object()创建对象。
+		// 所以，通过new创建的字符串、数字是引用类型，而是非值类型。
+		//case :
+		function Foo(name, age, sex) {
+
+			this.name = name;
+
+			this.age = age;
+
+			this.sex = sex;
+
+		}
+
+		Foo.prototype.belief = function() {
+
+			console.log('量变是质变的必要准备，质变是量变积累到一定程度的必然结果！');
+
+		}
+
+		let f = new Foo('zh', 18, '男');
+
+		// 手写new函数　
+		//case:　
+		function newTest(constructFunction) {
+			let obj = {};
+			obj.__proto__ = constructFunction.prototype;
+			return function() {
+				constructFunction.apply(obj, arguments);
+				return obj;
+			}
+		}
+		// ==================================================================================================			
+
+		// ES6 中 class 与构造函数的关系	
+		//类的写法 case :
+		class Person {
+			constructor(name, age) { //constructor是一个构造方法，用来接收参数
+				this.name = name;
+				this.age = age;
+			}
+			say() {
+				return this.name + this.age;
+			}
+		}
+		const obj = new Person('老铁',18)
+		
+		// 构造函数的写法case:
+		function Person(name, age) {
+			if (!(this instanceof Person)) { //避免使用者不小心将Person当作普通函数执行
+				throw new Error("请使用 new Person");
+				}
+				this.name = name;
+				this.age = age;
+			}
+			Person.prototype.say = function() {
+				return this.name + this.age
+			}
+			var obj = new Person('老铁',18); //通过构造函数创建对象，必须使用new运算符
+	</script>
+</html>

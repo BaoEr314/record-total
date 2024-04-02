@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>手写防抖节流</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>防抖概念:</h3>
+					<p>在短时间内多次触发同一个函数，如果n秒内高频事件再次被触发，则重新计算时间 只执行最后一次 </p>
+					<p>举例：搭乘公交车的时候，陆续有不同的乘客上车，但师傅只会在最后一个乘客上车后才关门。</p>
+					<p>应用场景：
+					<ul>
+						<li>表单输入验证</li>
+						<li>表单触发搜索</li>
+						<li>resize/scroll/touch/mouseove</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>节流概念:</h3>
+					<p>多次触发同一个函数，同一时间段内只执行一次</p>
+					<p>举例：获取验证码很多都会限制 60s 的时间，在 60s 内再次获取验证码是无效，只能获取一次。下个60s才能再次获取。</p>
+					<p>应用场景:
+					<ul>
+						<li>按钮的点击，用户短时间内多次点击，只执行一次点击函数</li>
+						<li>编辑器语法校验</li>
+						<li>resize/scroll/touch/mouseove 事件</li>
+						<li>表单输入联想</li>
+					</ul>
+					</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// 防抖:简单版本
+		function debounce(fn, wait) {
+			let timer = null
+			return function debounced(...args) {
+				if (timer) clearTimeout(timer)
+				timer = setTimeout(() => {
+					fn.apply(this, ...args)
+					timer = null
+				},wait)
+			}
+		}
+		// 需求:第一次触发立即执行
+		function debounce(fn, wait, immediate = false) {
+			let timer = null
+			return function debounced(...args) {
+				if (timer) clearTimeout(timer)
+				if (immediate && !timer) {
+					fn.apply(this, ...args);
+					timer = setTimeout(() => {
+						timer = null;
+					}, wait);
+					return;
+				}
+				timer = setTimeout(() => {
+					fn.apply(this, ...args);
+					timer = null;
+				}, wait);
+				// 取消功能
+				// debounced.cancel = () => {
+				// 	clearTimeout(timer);
+				// 	timer = null;
+				// };
+			}
+		}
+
+		// 节流:简单版本
+		function throttle(fn, wait = 1000) {
+			let previous = 0;
+			return function throttled(...args) {
+				const now = +new Date();
+				if (now - previous > wait) {
+					fn.apply(this, args);
+					previous = now;
+				}
+			}
+			return throttled;
+		}
+	</script>
+	<script type="text/javascript">
+		// 防抖：不立即执行
+		const debounce = function(fn, wait) {
+			//console.log('进入了===',fn,timeout)
+			let timer = null
+			return function(...args) {
+				// console.log("...args",...args)
+				if (timer) {
+					clearTimeout(timer)
+				}
+				timer = setTimeout(() => {
+					fn.apply(this, args)
+				}, wait);
+			}
+		}
+		// 防抖：立即执行
+		const debounced = function(fn, wait) {
+			let timer = null;
+			return function(...args) {
+				let callnow = !timer
+				timer = setTimeout(() => {
+					timer = null
+				}, wait);
+				if (callnow) {
+					fn.apply(this, args)
+				}
+			}
+		}
+		// 节流 时间戳方案
+		const throttle = function(fn, wait) {
+			let pre = Date.now();
+			return function(...arg) {
+				let now = Date.now()
+				//console.log('pre==',pre,now-pre)
+				if (now - pre >= wait) {
+					fn.apply(this, arg)
+					pre = Date.now()
+				}
+			}
+		}
+		//节流 定时器方案
+		const throttled = function(fn, wait) {
+			let timer = null
+			return function() {
+				let args = arguments;
+				if (!timer) {
+					timer = setTimeout(() => {
+						fn.apply(this, args)
+						timer = null
+					}, wait);
+				}
+			}
+		}
+	</script>
+</html>

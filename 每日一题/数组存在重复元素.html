@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>给定一个整数数组，判断是否存在重复元素</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+	// 题目:
+	// 给定一个整数数组，判断是否存在重复元素。
+	// 如果存在一值在数组中出现至少两次，函数返回 true 。如果数组中每个元素都不相同，则返回 false 。
+	// 示例 1:
+	
+	// 输入: [1,2,3,1]
+	// 输出: true
+	
+	// 示例 2:
+	
+	// 输入: [1,2,3,4]
+	// 输出: false
+	
+	const coutarritem = function(nums){
+		let map = new Map();
+		for (let i of nums){
+			if(map.has(i)){
+				console.log(i)
+				return true
+			}else{
+				map.set(i,1)
+			}
+		}
+		return false;
+	}
+	// coutarritem([1,2,3,1])
+	console.log(coutarritem( [1,2,3,1]))
+	
+	// 注意：
+	// const map = new Map();
+	// map.set('li',12);
+	// map.set('hua',19);
+	// map.set('li',26);
+	// 因为一个key只能对应一个value,所以多次对一个key放入value,后面的值会覆盖前面的值
+	// console.log(map)//{"li" => 26, "hua" => 19}
+	</script>
+</html>

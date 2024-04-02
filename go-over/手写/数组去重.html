@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>多种数组去重方法</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		let arr = [4, 1, 2, 2, 3, 2, 1, 4, 4];
+		
+		// 方法一 Es6 set方法
+		function unique1(arr) {
+			return Array.from(new Set(arr))
+		}
+		console.log('Es6 set方法---', unique1(arr))//[4, 1, 2, 3]
+		
+		// 方法二 indexof
+		function unique2(arr){
+			let result = []
+			for(let i = 0,len=arr.length;i<len;i++){
+				if(result.indexOf(arr[i])===-1){
+					result.push(arr[i])
+				}
+			}
+			return result
+		}
+		console.log('indexof方法---',unique2(arr))//[4, 1, 2, 3]
+		
+		// 方法三 fifter
+		function unique3(arr){
+			return arr.filter((ele,index)=>(arr.indexOf(ele)===index))
+		}
+		console.log('fifter方法----',unique3(arr))//[4, 1, 2, 3]
+		// 方法四 map
+		function unique4(arr){
+			return arr.map((ele,index)=>{
+				if(arr.indexOf(ele)===index) return ele
+			})
+		}//
+		console.log('map方法----',unique4(arr))//[4, 1, 2, undefined, 3, undefined, undefined, undefined, undefined]
+		// 方法 双层for循环
+		function unique(arr) {
+			let result = []
+			for (let i = 0, len = arr.length; i < len; i++) { //第一层遍历
+				let flag = false //进行标记
+				for (let k = i + 1, len = arr.length; k < len; k++) {
+					if (arr[i] === arr[k]) { //如果后面有重复的就跳过
+						flag = true
+						k = arr.length
+					}
+				}
+				if (!flag) result.push(arr[i]) //没有重复的，添加到数组中
+			}
+			return result
+		}
+		console.log('双层for循环方法---',unique(arr))//[3, 2, 1, 4]
+		
+	</script>
+</html>

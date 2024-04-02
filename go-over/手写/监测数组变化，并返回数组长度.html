@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>监测数组变化，并返回数组长度</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		const ArrayProto = []
+		// console.log('Array.prototype===',Array.prototype)
+		Object.getOwnPropertyNames(Array.prototype).forEach(method => {
+			//console.log('method====',method)数组自带的一些属性 方法 例如:length,push,pop,concat等
+			if (typeof Array.prototype[method] === "function") {
+				// console.log('ArrayProto[method]===',ArrayProto[method])
+				ArrayProto[method] = function() {
+					console.log("我已经监听到数组触发了" + method + "事件")
+					let len = this.length
+					let result = Array.prototype[method].apply(this, arguments)
+					//console.log('arguments====',arguments)
+					console.log('result===',result)
+					console.log('len====', this.length);
+					if (len !== this.length) return this.length
+					return result
+				}
+			}
+		})
+		let list = [1, 2, 3]
+		list.__proto__ = ArrayProto
+		console.log(list.push(2), list.pop(2), list.slice(2), list.unshift(2));
+	</script>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js文件/vue.min.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1 id="name">{{name}}</h1>
+		</div>
+		<script src="./observer.js"></script>
+		<script src="./watcher.js"></script>
+		<script>
+			function SelfVue (data, el, exp) {
+			    this.data = data;
+			    observe(data);
+			    el.innerHTML = this.data[exp];  // 初始化模板数据的值
+			    new Watcher(this, exp, function (value) {
+			        el.innerHTML = value;
+			    });
+			    return this;
+			}
+			var ele = document.querySelector('#name');
+			
+			var selfVue = new SelfVue({
+				name: 'hello world'
+			}, ele, 'name');
+			
+			window.setTimeout(function() {
+				console.log('name值改变了');
+				selfVue.data.name = 'canfoo';
+			}, 2000);
+			
+		</script>
+	</body>
+</html>

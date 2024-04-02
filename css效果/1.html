@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态轮播图</title>
+    <script src="../js文件/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <!-- <link rel="stylesheet" href="https://suoluomei.com/common/js2.0/element-ui/2.12/lib/theme-chalk/index.css"> -->
+    <!-- 引入组件库 -->
+    <!-- <script src="https://suoluomei.com/common/js2.0/element-ui/2.12/lib/theme-chalk/index.js"></script> -->
+ 
+</head>
+<style>
+    .shakeend {}
+    .shake {
+        animation: shake 0.5s;
+        animation-iteration-count: 1;
+    }
+    .box {
+        width: 600px;
+        height: 300px;
+        padding-top: 20px;
+        position: relative;
+        /* border: 1px solid #333; */
+        right: 10%;
+        margin: 0 auto;
+    }
+    .image{
+        height: 190px;
+        width: 140px;
+        border: 1px solid #333;
+        border-radius: 20px;
+        /* transform: translate(-50% 0); */
+    }
+    .divs {
+        height: 100%;
+        border: 1px solid #333;
+        border-radius: 20px;
+    }
+    .boximage0 {
+        position: absolute;
+        top: 20px;
+        left: 10%;
+        width: 140px;
+        height: 190px;
+        z-index: 1;
+        animation: boximage0 0.5s;
+        animation-iteration-count: 1;
+    }
+    .boximage1 {
+        position: absolute;
+        top: 20px;
+        left: 29%;
+        width: 150px;
+        height: 200px;
+        z-index: 2;
+        animation: boximage1 0.5s;
+        animation-iteration-count: 1;
+    }
+    .boximage2 {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        width: 160px;
+        height: 210px;
+        z-index: 3;
+        animation: boximage2 0.5s;
+        animation-iteration-count: 1;
+    }
+    .boximage3 {
+        position: absolute;
+        top: 20px;
+        left: 72%;
+        width: 150px;
+        height: 200px;
+        z-index: 2;
+        animation: boximage3 0.5s;
+        animation-iteration-count: 1;
+    }
+    .boximage4 {
+        position: absolute;
+        top: 20px;
+        left: 92%;
+        width: 140px;
+        height: 190px;
+        z-index: 1;
+        animation: boximage4 0.5s;
+        animation-iteration-count: 1;
+    }
+    li {
+        list-style: none;
+    }
+    .color0 {
+        background-color: rgb(115, 209, 204);
+    }
+    .color1 {
+        background-color: rgb(182, 180, 55);
+    }
+    .color2 {
+        background-color: rgb(155, 30, 103);
+    }
+    .color3 {
+        background-color: rgb(34, 180, 90);
+    }
+    .color4 {
+        background-color: rgb(73, 138, 212);
+    }
+    @keyframes boximage0 {
+        0% { left: 92%; width: 140px; height: 190px; z-index: 1;}
+        50% { width: 130px; height: 180px;}
+        100% { left: 10%; width: 140px; height: 190px; z-index: 1;}
+    }
+    @keyframes boximage1 {
+        0% { left: 10%; width: 140px; height: 190px; z-index: 1;}
+        100% { left: 29%;  width: 150px; height: 200px; z-index: 2;}
+    }
+    @keyframes boximage2 {
+        0% { left: 29%; width: 150px; height: 200px; z-index: 2; transform: rotatey(0deg);}
+        100% { left: 50%; width: 160px; height: 210px; z-index: 3; transform: rotatey(180deg);}
+    }
+    @keyframes boximage3 {
+        0% { left: 50%; width: 160px; height: 210px; z-index: 3;}
+        100% { left: 72%; width: 150px; height: 200px; z-index: 2;}
+    }
+    @keyframes boximage4{
+        0% { left: 72%; width: 150px; height: 200px; z-index: 2;}
+        100% { left: 92%; width: 140px; height: 190px; z-index: 1;}
+    }
+</style>
+<body>
+<div id="Vue" style="width: 100%;" ref="container">
+    <div class="box">
+        <ul>
+            <li id="liClass" v-for="(item, index) in dataList" :key="index" :class="item.calss">
+                <div :class="`color${index} divs`">1</div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el:"#Vue",
+        data () {
+            return {
+                dataList: [
+                    { calss: 'image boximage0' },
+                    { calss: 'image boximage1' },
+                    { calss: 'image boximage2' },
+                    { calss: 'image boximage3' },
+                    { calss: 'image boximage4' },
+                ],
+            }
+        },
+        mounted () {
+            this.fn()
+        },
+        methods:{
+            fn() {
+                setInterval(() => {
+                    this.times()
+                }, 3000);
+            },
+            times() {
+                const aaa = this.dataList.shift()
+                this.dataList.push(aaa)
+            }
+        }
+    })
+</script>
+ 
+</html>

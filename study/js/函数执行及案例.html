@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 1、js为何将函数作为对象属性值后,只执行一次
+		var myName = "张三";
+		function fn(name) {
+			return "hello i am " + myName;
+		}
+		var obj = {
+			par1: fn(),//此时赋值给par1的是函数执行结果
+		}
+		console.log(obj.par1)
+		myName = "李四";
+		console.log(obj.par1)
+		
+		// var myName = "张三";
+		// function fn(name) {
+		// 	return "hello i am " + myName;
+		// }
+		// var obj = {
+		// 	par1: fn,//这是才是把函数赋值给par1
+		// }
+		// console.log(obj.par1())
+		// myName = "李四";
+		// console.log(obj.par1())
+		
+	</script>
+</html>

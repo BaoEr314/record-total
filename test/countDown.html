@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>倒计时制作</title>
+		<style>
+			.otime span {
+				display: inline-block;
+				padding: 10px 20px;
+				background-color: green;
+				opacity: 0.5;
+				margin-left: 10px;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="text">
+			<p>距离下班还剩余:<span id="time" class="otime"></span></p>
+			<p>当前时间：<span id="time1" class="otime"></span></p>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//这个函数是为了适应格式 比如：01分01秒;
+		function p(n) {
+			return n < 10 ? '0' + n : n;
+		}
+
+		//倒计时函数
+		function newTime() {
+			//定义当前时间
+			var startTime = new Date();
+			//定义结束时间
+			var endTime = new Date("2022/2/21 18:00:00");
+
+			//算出中间差并且已毫秒数返回; 除以1000将毫秒数转化成秒数方便运算；
+			var countDown = (endTime.getTime() - startTime.getTime()) / 1000;
+
+			//获取天数 1天 = 24小时  1小时= 60分 1分 = 60秒
+			var oDay = parseInt(countDown / (24 * 60 * 60));
+
+			//获取小时数 
+			//特别留意 %24 这是因为需要剔除掉整的天数;
+			var oHours = parseInt(countDown / (60 * 60) % 24);
+
+			//获取分钟数
+			//同理剔除掉分钟数
+			var oMinutes = parseInt(countDown / 60 % 60);
+
+			//获取秒数
+			//因为就是秒数  所以取得余数即可
+			var oSeconds = parseInt(countDown % 60);
+
+			//下面就是插入到页面事先准备容器即可;
+			var html = "<span>" + p(oDay) + "天</span>" + "<span>" + p(oHours) + "时</span>" + "<span>" + p(oMinutes) +
+				"分</span>" + "<span>" + p(oSeconds) + "秒</span>";
+			document.getElementById('time').innerHTML = html;
+			document.getElementById('time1').innerHTML = startTime.toLocaleTimeString();
+			//别忘记当时间为0的，要让其知道结束了;
+			if (countDown < 0) {
+				document.getElementById('time').innerHTML = '下班了';
+			}
+		}
+		newTime()
+
+
+		// let obj1 = {
+		// 	name: '关羽',
+		// 	sex: 'male',
+		// 	skill() {
+		// 		console.log('看尔乃插标卖首');
+		// 	}
+		// };
+		// let obj2 = {
+		// 	house: '赤兔',
+		// 	do() {
+		// 		console.log('I can run fast!!!');
+		// 	},
+		// 	...obj1
+		// };
+		// console.log(obj2)
+		// let list = [{
+		// 		id: 1,
+		// 		name: 'jack'
+		// 	},
+		// 	{
+		// 		id: 2,
+		// 		name: 'may'
+		// 	},
+		// 	{
+		// 		id: 3,
+		// 		name: 'shawn'
+		// 	},
+		// 	{
+		// 		id: 4,
+		// 		name: 'tony'
+		// 	},
+		// ]
+		// let a = Math.max.apply(Math, list.map((item, index) => {
+		// 	 item
+		// 	return item.id
+		// }))
+
+
+		var arr = [{
+				age: 10,
+				name: 'Tom'
+			},
+			{
+				age: 8,
+				name: 'Jack'
+			},
+			{
+				age: 20,
+				name: 'Michel'
+			},
+			{
+				age: 12,
+				name: 'Daniel'
+			},
+		]
+		// var max = Math.max.apply(Math, arr.map(function(o) {
+		// 	return o.age
+		// })) //获取最大值
+		// var compare = function(prop) {
+		// 	return function(obj1, obj2) {
+		// 		var val1 = obj1[prop];
+		// 		var val2 = obj2[prop];
+		// 		if (val1 < val2) {
+		// 			return -1;
+		// 		} else if (val1 > val2) {
+		// 			return 1;
+		// 		} else {
+		// 			return 0;
+		// 		}
+		// 	}
+		// }
+		// arr.sort(compare("age")) //排序
+		// console.log(arr)
+		function sortId(a, b) {
+			return  b.age -a.age
+		}
+		arr.sort(sortId);
+		console.log(arr);
+	</script>
+</html>

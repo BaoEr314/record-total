@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		const arr = [1,2,3,4,5,6,7,8,9];
+		const sliceArr = arr.slice(2,4)
+		console.log('slice===',sliceArr,arr)//[3, 4],[1, 2, 3, 4, 5, 6, 7, 8, 9]
+		// const arr1 = [1,2,3,4,5,6,7,8,9];
+		// const spliceArr = arr1.splice(3,2)//从第三个位置开始删除两个元素包含第三个位置那个元素
+		// console.log('splice====',spliceArr,arr1);
+		const tableData = [
+			{
+				id:1,
+				name:'xx',
+				age:22
+			},
+			{
+				id:2,
+				name:'aa',
+				age:33
+			}
+		]
+		const tableData1 = [
+			{
+				id:1,
+				name:'00',
+				age:44
+			},
+			{
+				id:2,
+				name:'pp',
+				age:21
+			},
+			{
+				id:3,
+				name:'oo',
+				age:19
+			}
+		]
+		for(var i = 0; i<tableData1.length;i++){
+			for(var j = 0;j<tableData.length;j++){
+				if(tableData1[i].id === tableData[j].id){
+					tableData1.splice(i,1)
+				}
+			}
+		}
+		//console.log(tableData1)
+		
+	</script>
+</html>

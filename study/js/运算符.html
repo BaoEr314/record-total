@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		console.log(null==undefined,null===undefined)//true false
+		// {},[]的布尔值都是 true 但是与布尔值比较的时候 会先转换成Number
+		console.log(Boolean({}),Boolean([]))//true true
+		console.log({}==false,[]==false)//false true
+		console.log(Number({}),Number([]))//NaN 0 
+		
+		console.log(Number(null),Number(undefined))//0 NaN
+		console.log(null>=0,null==0,undefined==0) //true false  false
+		
+		console.log(parseInt('a123'),parseInt('12a3'),parseInt('123'))//NaN 12 123
+		console.log(Number('a123'),Number('12a3'),Number('123'))//NaN NaN 123 
+		// 隐士转换
+		console.log('11'+2)//112
+		console.log('11'-1)//10
+		
+		const a = ''
+		//!!常常用来做类型判断。
+		console.log(a,!a,!!a)//null true false
+		console.log(a,Boolean(a))//false
+		
+		// null vs undefined
+		// 如果传递null，则不采用默认值，而传递undefined或不传递任何参数时，采用默认值。
+		const fn = (x = '默认值') => console.log(x);
+		fn(undefined); // 默认值
+		fn(); // 默认值
+		fn(null); // null
+	</script>
+</html>

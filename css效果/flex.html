@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+		.flex-box{
+		         display: flex;
+		         width: 1000px;
+		         text-algin:center;
+				 border: solid 1px forestgreen;
+		    }
+		
+		    .item1 {
+				width: 200px;
+		        height: 100px;
+		        flex: 2 1 0%; /*flex-basis为0%，覆盖width，实际占用0*/
+		        background:red;
+		    }
+		
+		    .item2 {
+				width: 300px;
+		        height: 100px;
+		        flex: 2 1 auto;  /*flex-basis为auto，width权限更高，占用300*/
+		        background:green;
+		    }
+		
+		    .item3 {
+		        height: 100px;
+		        flex: 1 1 200px; /*flex-basis为200，占用200*/
+      	        background:blue;
+		    }
+			/* flex: 0 1 auto：默认有剩余空间也不放大，空间不足时可以缩小 */
+			/* flex: 1 1 auto：等同于 flex: auto */
+			/* flex: 0 0 auto： 等同于 flex: none */
+		</style>
+	</head>
+	<body>
+		<div class="flex-box">
+		    <div class="item1">Item1</div>
+		    <div class="item2">Item2</div>
+		    <div class="item3">Item3</div>
+		</div>
+	</body>
+</html>

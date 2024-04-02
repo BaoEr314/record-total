@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		// function a() {
+		//   let a_var = 'a';
+		//   b(a_var);
+		// }
+		
+		// function b(a_var_from_a) {
+		//   debugger;
+		//   console.log(global_var);
+		//   let b_var = 'b';
+		//   c();
+		// }
+		
+		// function c() {
+		// 	debugger;
+		//   let c_var = 'c';
+		// }
+		
+		// let module_var = 'module';
+		// var global_var = 'global';
+		
+		// a();
+        let obj = {
+			name:'1',
+			a:3,
+			b:2
+		}
+		let {name,...rest} = obj
+		let xx= {...rest}
+		name = 2
+		console.log(name,obj.name,xx)
+		
+		var  names = '1'
+		let obj1 = {
+		  names: 'huahua',
+		  fun: () => {
+		    console.log(this.names)
+		  }
+		}
+		obj1.fun()
+	</script>
+</html>

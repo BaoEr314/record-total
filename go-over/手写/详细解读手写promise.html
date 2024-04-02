@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>详解手写promise</title>
+		<style>
+			li {
+				margin: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<h3>Promise 基本特征</h3>
+				<li>promise:有三个状态：pending,fulfilled,rejected</li>
+				<li>executor接受两个参数分别是resolve和reject，Promise构造函数执行时会立即调用executor函数<br>
+					当调用resolve(成功)，状态：pengding=>fulfilled。当调用reject(失败)，状态：pending=>rejected；
+				</li>
+				<li>promise 有一个value保存成功状态的值，可以是undefined/thenable/promise；</li>
+				<li>promise 有一个reason保存失败状态的值；</li>
+				<li>promise 只能从pending到rejected, 或者从pending到fulfilled，状态一旦确认，就不会再改变；</li>
+				<li>
+					promise 必须有一个then方法，then 接收两个参数，分别是 promise 成功的回调 onFulfilled, 
+					和 promise 失败的回调 onRejected
+				</li>
+				<li>
+					如果调用 then 时，promise 已经成功，则执行onFulfilled，参数是promise的value；
+				</li>
+				<li>
+					如果调用 then 时，promise 已经失败，那么执行onRejected, 参数是promise的reason；
+				</li>
+				<li>
+					如果 then 中抛出了异常，那么就会把这个异常作为参数，传递给下一个 then 的失败的回调onRejected；
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			// 定义三个状态
+			const PENDING = 'PENDING';
+			const FULFILLED = 'FULFILLED';
+			const REJECTED = 'REJECTED';
+			class MyPromise {
+				constructor(executor) {
+					// 默认状态为PENDING
+					this.status = PENDING;
+					// 存放成功状态的值，默认为 undefined
+					this.successValue = undefined;
+					// 存放失败状态的值，默认为 undefined
+					this.failValue = undefined;
+					// 存放成功的回调
+					this.onResolvedCallbacks = [];
+					// 存放失败的回调
+					this.onRejectedCallbacks = [];
+					// 执行成功时的回调
+					const resolve = (successValue) => {
+						// 状态为 PENDING 时才可以更新状态，防止 executor 中调用了两次 resovle/reject 方法
+						if (this.status = PENDING) {
+							this.status = FULFILLED
+							this.successValue = successValue
+							// 依次将对应的函数执行
+							this.onResolvedCallbacks.forEach(fn => fn())
+						}
+					}
+					// 执行失败时的回调
+					const reject = (failValue) => {
+						if (this.status = PENDING) {
+							this.status = REJECTED
+							this.failValue = failValue
+							// 依次将对应的函数执行
+							this.onRejectedCallbacks.forEach(fn => fn())
+						}
+					}
+					// 执行时判断报不报错，报错就抛出异常执行失败的回调
+					try {
+						executor(resolve, reject)
+					} catch (error) {
+						// 发生异常时执行失败
+						reject(error)
+					}
+				}
+				/**
+				 * 包含一个 then 方法，并接收两个参数
+				 * 一个是成功时的回调
+				 * 一个是失败时的回调
+				 **/
+				then(onFulfilled, onRejected) {
+					// 如果promise的状态是 pending，需要将 onFulfilled 和 onRejected 函数存放起来，等待状态确定后，再依次将对应的函数执行
+					if (this.status === PENDING) {
+						this.onResolvedCallbacks.push(() => {
+							onFulfilled(this.successValue)
+						})
+						this.onRejectedCallbacks.push(() => {
+							onRejected(this.failValue)
+						})
+					}
+					if (this.status === FULFILLED) {
+						onFulfilled(this.successValue)
+					}
+					if (this.status === REJECTED) {
+						onRejected(this.failValue)
+					}
+				}
+			}
+			// 练习
+			const test_sync = new MyPromise((resolve, reject) => {
+				resolve('同步成功')
+			})
+			console.log('test_sync===', test_sync);
+			test_sync.then((res) => {
+				console.log('res===', res)
+			})
+			const test_async = new MyPromise((resolve, reject) => {
+				setTimeout(() => {
+					resolve("异步成功")
+				}, 100)
+			})
+			console.log(test_async);
+			test_async.then(res => {
+				// 打印可知 当前的 promise 并没有成功，一直处于 pending 状态。
+				// 所以如果当调用 then 方法时， 当前状态是 pending， 我们需要先将成功和失败的回调分别存放起来，
+				// 在executor() 的异步任务被执行时， 触发 resolve 或 reject， 依次调用成功或失败的回调
+				console.log('res--------', res); //undefined
+			})
+		</script>
+	</body>
+</html>

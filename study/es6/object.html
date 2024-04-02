@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>对象拆分合并</title>
+	</head>
+	<body>
+		<div></div>
+	</body>
+	<script type="text/javascript">
+		// pass
+		let obj = {
+			alipayCount: 1,
+			alipayMoney: 100,
+			balanceCount: -7,
+			balanceMoney: -1600,
+			cardCount: 2,
+			cardMoney: 200,
+			coinCount: 0,
+			coinMoney: 0,
+			onlineCardCount: 0,
+			onlineCardMoney: 0,
+			wxCount: 0,
+			wxMoney: 0,
+		}
+		//aa=[{Count: 1,Money: 100},{Count: -7,Money: -1600}]//想要这种结果
+		let obj1 = {}
+		let obj2 = {}
+    let obj3 = {}
+		let arr1 = []
+    let arr2 = []
+    let arr3 = []
+		for (let key in obj) {
+			if (key.indexOf("Money") != -1) {
+				obj1[key] = obj[key]
+			}
+			if (key.indexOf("Count") != -1) {
+				obj2[key] = obj[key]
+			}
+		}
+    console.log('obj1,obj2====',obj1,obj2)
+    for (var i in obj1){
+       arr1.push(obj1[i])
+    }
+    for (var i in obj2){
+       arr2.push(obj2[i])
+    }
+    
+    arr3 =  arr1.map((item,index)=>{
+       return {
+         Money:arr1[index],
+         Count:arr2[index]
+       }
+     })
+   console.log('太棒了',arr3)
+	</script>
+</html>

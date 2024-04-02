@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>手写一个instanceOf</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// instanceof 运算符用于测试构造函数的 prototype 属性是否出现在对象原型链中的任何位置。
+		// 首先 instanceof 左侧必须是对象, 才能找到它的原型链
+		// instanceof 右侧必须是函数, 函数才会prototype属性
+		//迭代 , 左侧对象的原型不等于右侧的 prototype时, 沿着原型链重新赋值左侧
+		function instanceOf(left, right) {
+			let proto = left.__proto__ //取 left 的隐式原型
+			let prototype = right.prototype //取 right 的显示原型
+			while (true) {  // 无线循环的写法（也可以使 for(;;) ）
+				if(proto === null) return false //找到最顶层
+				if(proto === prototype)return true //找到最顶层
+				proto = prototype.__proto__; //没找到继续向上一层原型链查找
+			}
+		}
+	</script>
+</html>

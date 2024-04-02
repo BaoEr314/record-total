@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>前端工程化</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>★★★ webpack的核心思想是什么</h3>
+					<p>万物皆模块：在webpacck的世界中，其他任何资源都可以当做模块的方式引入。</p>
+					<p>代码分割：webapp 的优化关键在于代码体积，当应用体积增大，实现代码的按需加载是刚需,这也是 webpack 出现的根本原因</p>
+					<p>可定制化：任何一个工具都不可能解决所有问题提供解决方案才是最可行的，webpack基于可定制化的理念构建，通过插件系统，配置文件，可实现大型项目的定制需求 </p>
+				</li>
+				<li>
+					<h3>★★★ Loader和Plugin的区别</h3>
+					<p>
+						<strong>loader是一个转换器</strong>
+						<br>1、用于对模块源码文件的预编译和转换，loader描述了webpack如何处理非javascript模块。
+						<br>2、没有loader，构建的打包过程无法顺利完成
+						<br>3、loader作用在打包前
+						<br>4、将A文件转换为B文件，操作的是文件，比如将A.scss转换为A.css，是单纯的文件转换过程
+					</p>
+					<p>
+						<strong>Plugin是插件扩展器</strong>
+						<br>1、plugin构建过程更完整的补充和优化，如使用new UglifyJsPlugin(),new CssMinimizerPlugin()压缩js和css
+						<br>2、没有plugin，文件的打包过程可以完成
+						<br>3、plugin作用于整个打包过程，
+						<br>4、针对webpack的打包过程，他不直接操作文件，而是基于事件机制工作，会监听webpack打包过程的事件钩子，执行任务，通过事件钩子拦截webpack的执行。
+					</p>
+				</li>
+				<li>
+					<h3>★★★ 有哪些常见的Loader和Plugin，简单聊一聊各自的作用</h3>
+					<p>
+						<strong>常用Loader</strong>
+					<ul>
+						<li>babel-loader使得webpack可以通过babel转译js代码</li>
+						<li>css-loader转译css文件，会对@import和url()进行处理，就像js解析import/require一样</li>
+						<li>style-loadder把css-loader转译后的结果插入输出的脚本中显示样式效果</li>
+						<li>sass-loader/less-loader都是用来预编译和转换.sass/.less文件</li>
+						<li>file-loader将一个文件中的加载文件、图片import/require()解析为url,并且将文件发送到输出文件夹，并返回文件的publicURL，</li>
+						<li>url-loader是file-loader功能的扩展和封装，options选项中可以设置对引用图片大小的限制，如果大于等于限制，默认使用file-loader并传递所有参数，如果小于，则默认使用base64编码并返回输出
+						</li>
+					</ul>
+					</p>
+					<p>
+						<strong>常用Plugin</strong>
+					<ul>
+						<li>DllPlugin:作用和optimization.splitChunk的作用相似，都是用某种方法拆分bundles,可以大幅度提升构建速度</li>
+						<li>SplitChunksPlugin：分离公共的第三方模块以及业务代码</li>
+						<li>extract-text-webpackplugin: extract-text-webpackplugin(webpack4)里的contenthash值，<br>
+							保证引入css文件所在的模块只要css文件内容不变，就不会重复构建css</li>
+						<li>MiniCssExtractPlugin：抽离css文件，删除和压缩css代码，本插件是extract-text-webpackplugin插件的webpack5的升级用法，可以实现contenthash
+						</li>
+						<li>HtmlWebpackPlugin：
+							<br>1、为html文件动态引入外部资源给script、link添加compile(编译)后的hash，防止引用缓文件问题
+							<br>2、可以生成创建html入口文件，比如单页面可以生成一个html文件入口，多页面生成多个html
+						</li>
+						<li>UglifyjsWebpackPlugin：删除和压缩js文件</li>
+						<li>EslintWebpackPlugin:作用类似eslint-loader(eslint-loader已被弃用)，<br>
+							审查代码是否符合编码规范和统一，审查代码是否存在语法错误</li>
+					</ul>
+					</p>
+				</li>
+				<li>
+					<h3>★★★ 说一下 Webpack 的热更新原理吧</h3>
+					<p>首先热更新所更新的内容是基于hash值发生改变的文件,<br>
+						更新的原理方法是webpack-dev-server启动本地服务,源码在webpack-dev-server的package.json中的bin命令，
+						<br>可以找到命令的入口文件bin/webpack-dev-server.js。
+						<br>一、webpack启动后，完成webpack所有编译工作，以及监听本地文件变化
+						<br>二、使用express框架启动本地服务让浏览器可以请求本地的静态资源。
+						<br>三、本地服务启动后，再启动websocket服务，
+						<br>通过websocket，可以建立本地服务和浏览器的双向通信，这样就可以实现本地文件变化，立马告知浏览器可以更新了
+					</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

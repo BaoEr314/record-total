@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>盒模型</title>
+		<style>
+			*{
+				box-sizing: border-box;
+			}
+			.div{
+				width: 100px;
+				margin: 10px 20px;
+				padding: 10px 20px;
+				border: solid 2px red;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="div">123</div>
+			<h3>
+				标准盒模型(ContentBox)：这是CSS中默认的盒模型。，
+			</h3>
+			<p>盒子的总宽度 = margin+border+padding+width 即：width = content的宽度</p>
+			<h3>
+				IE盒模型（怪异盒子模型）
+			</h3>
+			<p> width = content的宽度+border边框宽度(左右)+padding内边距(左右)  不包含外间距 </p>
+			
+			<p>在CSS中，可以使用box-sizing属性来控制盒模型的类型。默认值为content-box，表示使用标准盒模型;</p>
+			<p>而设置为border-box则表示使用IE盒模型</p>
+			
+		</div>
+		<script>
+			console.log((window.innerWidth / window.innerHeight).toFixed(5))
+		</script>
+	</body>
+</html>

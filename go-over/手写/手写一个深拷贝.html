@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>手写深拷贝</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>浅拷贝</h3>
+					<p>浅拷贝是只拷贝对象的第一层属性</p>
+				</li>
+				<li>
+					<h3>深拷贝</h3>
+					<p>深拷贝则是无限层次的拷贝对象的属性，只要属性值不是基本类型，就继续深度遍历进去</p>
+				</li>
+				<li>
+					<h3>深拷贝浅拷贝</h3>
+					<p>浅拷贝：拷贝前后，互相影响</p>
+					<p>深拷贝：拷贝前后，互不影响</p>
+				</li>
+				<li>
+					<h3>使用Json.parse(Json.stringfy())的缺陷：</h3>
+					<p>不能序列化函数，属性值是函数的会丢失掉</p>
+					<p>不能处理 Symbol 数据，不管是属性名还是属性值是 Symbol 的，都会丢失掉</p>
+					<p>不能识别属性值手动设置为 undefined 的场景，会被认为是访问一个不存在的属性，从而导致丢失</p>
+					<p>不能解决循环引用问题</p>
+					<p>不能处理正则</p>
+					<p>等等</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//  判断数组或对象类型
+		function cloneType(target) {
+			return Object.prototype.toString.call(target).slice(8, -1)
+		}
+		// 手写一个深拷贝
+		function deepCopy(target) {
+			let result;
+			if (cloneType(target) === 'Object') {
+				result = {}
+			} else if (cloneType(target) === 'Array') {
+				result = []
+			} else {
+				result = target
+			}
+			for (let i in target) {
+				let item = target[i]
+				if (cloneType(item) === 'Object' || cloneType(item) === 'Array') {
+					result[i] = deepCopy(item)
+				} else {
+					result[i] = item
+				}
+			}
+			return result;
+		}
+		// 验证
+		let person = {
+			name: 'zhangsan',
+			age: 13,
+			option: {
+				sex: 'man',
+				fav: 'football'
+			}
+		}
+		let person2 = deepCopy(person)
+	    console.log(person2)
+		console.log('---------------')
+		person.option.sex = 'woman'
+		
+		
+		
+		var obj = {
+			 name:'huahua',
+			 age:19,
+			 sex:undefined,
+			 say:function(){
+				 console.log(this.name)
+			 }
+		}
+		var obj1 = obj
+		console.log('obj,obj1=====',obj,obj1)
+		obj1.name = 'lihua'
+		obj1.age = 13
+		console.log('改变obj1的name之后的变化=====',obj,obj1)
+		var obj2 = JSON.parse(JSON.stringify(obj))
+		obj2.name = 'lili'
+		obj2.age = 20
+		console.log('Json.parse(Json.stringfy())===',obj,obj1,obj2)
+	</script>
+</html>

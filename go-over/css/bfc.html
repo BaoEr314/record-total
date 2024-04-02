@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			html,
+			body {
+				height: 100%;
+			}
+
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			/* /* /* /* 1类 */
+			.bfc-wrap {
+				width: 1000px;
+			}
+
+			.aside {
+				background: red;
+				width: 170px;
+				height: 300px;
+				float: left;
+				margin-right: 10px;
+			}
+
+			.main {
+				background: green;
+				width: 500px;
+				height: 400px;
+				/* 查看效果注释和解开注释 */
+				/* overflow: hidden; */
+			}
+
+			/* /* /* /* 2类 */
+			.bfc-wrap1 {
+				margin-top: 20px;
+				overflow: hidden;
+			}
+
+			#red,
+			#yellow,
+			#orange,
+			#green {
+				width: 100px;
+				height: 100px;
+				float: left;
+			}
+
+			#red {
+				background-color: red;
+			}
+
+			#yellow {
+				background-color: yellow;
+			}
+
+			#orange {
+				background-color: orange;
+			}
+
+			#green {
+				background-color: green;
+			}
+
+			/* 查看效果注释和解开注释 */
+			/* #c1{overflow:hidden;} 
+			#c2{overflow:hidden;} */
+
+			.bfc-wrap2 {
+				margin-top: 20px;
+			}
+
+			.rowone {
+				background: yellow;
+				height: 100px;
+				margin-bottom: 20px;
+			}
+
+			.rowtow {
+				background: blue;
+				height: 100px;
+				margin-top: 20px;
+			}
+			/* .mg{
+				overflow: hidden;
+			} */
+		</style>
+	</head>
+	<body>
+		<div>
+			<h3>块级格式化上下文，是一个独立的盒子 里面的元素不会影响外边的元素，外边距重合、高度塌陷问题</h3>
+		</div>
+		<div class="bfc-wrap">
+			<div class="aside"></div>
+			<div class="main"></div>
+		</div>
+		<div class="bfc-wrap1">
+			<div id="c1">
+				<div id="red"> </div>
+				<div id="yellow"> </div>
+			</div>
+			<div id="c2">
+				<div id="orange"> </div>
+				<div id="green"> </div>
+			</div>
+		</div>
+		<div class="bfc-wrap2">
+			<h3>外边距重合</h3>
+			<div class="rowone"> </div>
+			<div class="rowtow"> </div>
+			<!-- 解决方案 再分别加两个div 并 overflow: hidden; -->
+			<!-- <div class="mg">
+				<div class="rowone"> </div>
+			</div>
+			<div class="mg">
+				<div class="rowtow"> </div>
+			</div> -->
+		</div>
+	</body>
+</html>

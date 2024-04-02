@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>找出字符串中最多的字符</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 找出字符串中最多的字符
+		function maxNumstr(str) {
+			let obj = {}
+			let max = 0,
+				chars = ''
+			for (i of str) {
+				obj[i] = obj[i] ? obj[i] += 1 : 1
+			}
+			for (key in obj) {
+				if (obj[key] > max) {
+					max = obj[key]
+					chars = key
+				}
+			}
+			console.log('出现次数最多的是:' + chars + '出现了' + max + '次');
+		}
+		maxNumstr('leecool')
+	</script>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 不能使用 break终止foreach；
+		// return 只是结束了本次循环
+		// 使用 try catch可以终止
+		try {
+			var array = ["第一", "第二", "第三", "第四"];
+			array.forEach(function(item, index) {
+				if (item == "第三") {
+					throw new Error("第三");
+				}
+				console.log(item)
+			})
+		}catch(e){
+			if(e.message!="第三") throw e.message;
+		}
+	</script>
+</html>

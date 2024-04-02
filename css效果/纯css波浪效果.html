@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>纯css波浪效果及渐变平行四边形</title>
+		<style type="text/css">
+			p {
+				background: #fff;
+				color: #000;
+			}
+
+			p::before,
+			p::after {
+				content: "";
+				position: absolute;
+				border-radius: 45% 48% 43% 47%;
+				background: rgba(3, 169, 244, .85);
+				animation: rotate 10s infinite linear;
+			}
+
+			p::after {
+				border-radius: 43% 47% 44% 48%;
+				animation: rotate 10s infinite .5s linear;
+			}
+
+			@keyframes rotate {
+				0% {
+					transform: translate(-50%, -50%) rotate(0);
+				}
+
+				100% {
+					transform: translate(-50%, -50%) rotate(360deg);
+				}
+			}
+
+			.item {
+			    width: 60px;
+			    height: 20px;
+			    background: linear-gradient(to right, hsl(180deg, 80%, 50%) 50%, hsl(0deg, 100%, 50%) 50%) 0 0 / 40px 10px repeat-x;
+			    mask: linear-gradient(to right, #000, transparent 6px) repeat-x;
+			    -webkit-mask-image: linear-gradient(to right, #aaa 15px, transparent 5px);
+			    -webkit-mask-repeat: repeat-x;
+			    -webkit-mask-size: 20px 5px;
+			    transform: skewX(-30deg);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="g-container">
+			<p>TEXT WAVE</p>
+			<ul>
+				<li class="item"></li>
+				<li class="item"></li>
+				<li class="item"></li>
+			</ul>
+		</div>
+	</body>
+</html>

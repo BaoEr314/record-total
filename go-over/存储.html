@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>cookie session localstorage sessionstorage</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>cookie localstorage sessionstorage三者的异同:</h3>
+					<h4>数据的生命期:<h4>
+							<p>cookie:如果设置了过期时间，超过过期时间自动销毁。如果没有设置，浏览器关闭也随之销毁</p>
+							<p>localstorage:除非被清除，否则永久保存</p>
+							<p>sessionstorage:仅在当前会话下有效，关闭页面或浏览器后被清除</p>
+							<h4>存放数据大小:</h4>
+							<p>cookie:4k左右</p>
+							<p>localstorage和sessionstorage:一般为5MB</p>
+							<h4>与服务器端通信:</h4>
+							<p>cookie:自动夹带在http请求中，容易被劫持。如果使用cookie保存过多数据会带来性能问题</p>
+							<p>localstorage和sessionstorage:仅在客户端（即浏览器）中保存，不参与和服务器的通信</p>
+							<h4>权限:</h4>
+							<p>cookie:同域名下所有页面共享</p>
+							<p>sessionstorage:不在不同的浏览器窗口中共享，即使是同一个页面</p>
+							<p>localstorage:同域名下所有页面共享</p>
+							<h4>易用性:</h4>
+							<p>cookie:需要程序员自己封装，源生的Cookie接口不友好</p>
+							<p>localstorage和sessionstorage:源生接口可以接受，亦可再次封装来对Object和Array有更好的支持</p>
+							<p>补充：<br>
+								Cookie是不可以跨域名的，隐私安全机制禁止网站非法获取其他网站的Cookie
+								<br>
+								目前所有的浏览器中都会把三者的值类型限定为string类型
+								<br>
+							</p>
+							<h3>session:</h3>
+							<p>session:存储在服务器上，存储值类型为:对象</p>
+							<p>生命周期:如果设置了过期时间，超过过期时间自动销毁</p>
+							<p>依赖于cookie（sessionID保存在cookie），如果禁用cookie，则要使用URL重写，不安全</p>
+				</li>
+
+			</ul>
+		</div>
+	</body>
+</html>

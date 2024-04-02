@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>分转化元</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 容易出问题：4610.35,0.69,2986.22,2986.21
+		const regYuanToFen = function(yuan, digit) {
+			var m = 0,
+				s1 = yuan.toString(),
+				s2 = digit.toString();
+			try {
+				m += s1.split(".")[1].length
+			} catch (e) {}
+			// console.log(m)
+			console.log(Number(s1.replace(".", "")), Number(s2.replace(".", "")), Math.pow(10, m))
+			return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
+		}
+		console.log(regYuanToFen(4610.35, 100))
+	</script>
+</html>

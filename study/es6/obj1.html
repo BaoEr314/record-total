@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		const obj = {
+			"date": {
+				"0": "20180201",
+				"1": "20180202",
+				"2": "20180205"
+			},
+			"lines": {
+				"0": 3.3,
+				"1": 10.4,
+				"2": 79.721
+			},
+			"count": {
+				"0": 5,
+				"1": 21,
+				"2": 13
+			},
+			"counts": {
+				"0": 5,
+				"1": 26,
+				"2": 39
+			},
+			"limit": {
+				"0": 3.3,
+				"1": 13.7,
+				"2": 93.421
+			}
+		};
+		const keys = Object.keys(obj);
+		const lens = Object.keys(obj[keys[0]]);
+		let arrays = []
+		for (const len of lens) {
+			let o = {};
+			for (const key of keys) {
+				o[key] = obj[key][len];
+			}
+			arrays.push(o);
+		}
+		console.log(arrays);
+	</script>
+</html>

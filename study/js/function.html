@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title></title>
+	</head>
+	<body>
+
+	</body>
+	<script type="text/javascript">
+		// 1、函数类型:声明式函数 赋值式函数
+		// 声明式函数与赋值式函数的区别在于：在JS的预编译期，
+		// 声明式函数将会先被提取出来，然后才按顺序执行js代码。
+
+		// ==============================================================================
+		// 2、函数执行顺序:
+		// 一、声明式函数
+		// 2.1 fn正序
+		// function fn(){
+		//    console.log('1')
+		// }
+		// fn()//1
+
+		// 2.2 fn倒序
+		// fn()//1
+		// function fn(){
+		//    console.log('1')
+		// }
+		// 二、赋值型函数
+		// f1() // f1 is not a function
+		// var f1 = function(){
+		// 	console.log('1')
+		// }
+
+		// =============================================================================================
+		// 3、变量执行顺序
+		// 一、正序
+
+		// var a = 1
+		// console.log(a)//1
+
+		// 二、倒序
+		// console.log(a)//undefind
+		// var a = 1
+
+		// 三、局部变量的执行 (JS的解析过程分为两个阶段：预编译期(预处理)与执行期)
+
+		// js中全局var声明的为全局变量  函数体内var声明为局部变量
+		// （函数外部访问不到）但是，函数体内未用var声明的为全局变量（函数外部可以使用）
+
+		// function fn(){
+		// 	console.log(a)
+		//  a = 3 
+		// }
+		// fn()  //error: a is not defined
+
+		// var a = 1
+		// function fn(){
+		// 	console.log(a)//undefind
+		// 	var a = 2
+		// 	console.log(a)//2
+		// }
+		// fn()//undefind 和 2
+
+		// 函数内部 再次全局声明，会修改全局的a
+		// var a = 1;
+		// function fn(){
+		// 	console.log(a)
+		// 	a = 2
+		// 	console.log(a)
+		// }
+		// fn()//1和2
+
+		//*函数内全局赋值一次，var声明一次    函数f()内还是会优先使用自己的变量a
+		// var a = 1
+		// function fn(){
+		// 	console.log(a)
+		// 	a = 2;
+		// 	console.log(a)
+		// 	var a = 3
+		// 	console.log(a)
+		// }
+		// fn()//undefind 2 3
+		// console.log(a) //1
+
+		// case:
+		// var a,b;
+		// (
+		// 	function (){
+		// 		console.log(a,b)//undefind undefind
+		// 		// var a=b=3 //等价于 var a = 3 ; b = 3; b是全局的
+		// 		console.log(a,b)//3，3
+		// 	}
+		// )()
+		// console.log(a,b)//undefind、3
+		// =======================================================================================
+		// 4、声明提升
+		// 只有 var 有变量提升 let const没有
+		// 变量声明提升会将变量声明提升到作用域顶部，但只会提升声明部分，不会提升赋值部分!!!!!!
+		// 函数声明提升优先于变量提升 函数声明会被变量赋值影响，但不会被变量声明影响
+		// JavaScript 只有声明的变量会提升，初始化的不会。
+		// case: var x = 5; // 初始化 x
+
+		// var a = 1
+
+		// function fn() {
+		// 	a = 2
+		// 	console.log(a)
+		// }
+
+		// function fn1() {
+		// 	console.log(a)
+		// }
+		// fn()
+		// fn1()
+	</script>
+</html>

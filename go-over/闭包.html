@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>闭包</title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>闭包概念:</h3>
+					<p>闭包是指有权访问另一个函数作用域中的变量的函数</p>
+				</li>
+				<li>
+					<h3>闭包的特点:</h3>
+					<ul>
+						<li>1、可以读取函数内部变量</li>
+						<li>2、可以避免使用全局变量，防止全局变量污染</li>
+						<li>3、局部变量会常驻在内存中，滥用闭包会造成内存消耗过大 导致网页性能问题；解决办法是在退出函数之前 把不再使用的变量全部清除</li>
+						<li>4、会造成内存泄漏（有一块内存空间被长期占用，而不被释放）</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// 简单的案例==================================
+		function fn1(a, b) {
+			if (b) {
+				return a + b
+			} else {
+				var b = a
+				// console.log(a,b)
+				return function fn1(a) {
+					// console.log(a,b)
+					return a + b
+				}
+			}
+		}
+		console.log(fn1(2, 3));
+		console.log(fn1(2)(3));
+		// // 易出错面试题:还没搞懂
+		function fun(n, o) {
+			console.log(o)
+			return {
+				fun: function(m) {
+					return fun(m, n);
+				}
+			};
+		}
+		var a = fun(0);
+		a.fun(1);
+		a.fun(2);
+		a.fun(3); //undefined,0,0,0
+		var b = fun(0).fun(1).fun(2).fun(3); //undefined,0,1,2
+		var c = fun(0).fun(1);
+		c.fun(2);
+		c.fun(3); //undefined,0,1,1
+
+		// ===============常见的定时器问题考察闭包
+		for (var i = 0; i < 5; i++) {
+			//setTimeout函数在当前执行队列的最后执行，获取到的i是最外部作用域的i=5,所以得到5个5
+			setTimeout(() => {
+				console.log(i); //得到5个5
+			}, 1000)
+		}
+		// 延申 如果想1s后得到0-4怎么做？在for循环内创建闭包
+		for (var i = 0; i < 5; i++) {
+			(function(i){
+				setTimeout(() => {
+					console.log('依次打印i----',i);
+				}, 1000)
+			})(i)
+		}
+		// 延申 如果想按顺序输出1，2，3，4 且每间隔输出一次
+		for (var i = 0; i < 5; i++) {
+			function aa(i) {
+				setTimeout(() => {
+					console.log('每隔一秒打印i====',i);//0-4
+				}, 1000*i)
+			}
+			aa(i)
+		}
+		// 智能乘法 
+		// 如果用 2 个参数调用 multiply(num1，numb2)，则应返回这 2 个参数的乘积。
+		//但是如果用 1个参数调用，则该函数应返回另一个函数：
+		function multiply(number1, number2) {
+			if (number2) {
+				return number1 * number2
+			}
+			// console.log('number1,number2=====',number1,number2)
+			return function doMultiply(number2) {
+				// console.log('number1,number2=====',number1,number2)
+				return number1 * number2;
+			};
+		}
+		const double = multiply(2);
+		double(5); 
+		double(11); 
+		// 6,10,22
+		console.log('multiply(2,3)====', multiply(2, 3), double(5), double(11))
+
+		// 手写一个闭包
+		function count() {
+			let num = 0;
+
+			function add() {
+				return num += 1
+			}
+			return add
+		}
+		const test = count()
+		console.log('test=====', test(), test(), test())
+
+		// 多次调用闭包怎么不相互影响 函数柯理化
+		function curry(fn) {
+			console.log('fn===', fn)
+			let arr = []
+			return function curried(...args) {
+				console.log('args====', ...args)
+				arr = [...arr, ...args]
+				console.log('arr===', arr)
+				console.log('fn.length===', fn.length)
+				if (arr.length >= fn.length) {
+					return fn(...arr)
+				}
+				return curried
+			}
+		}
+
+		function sum(a, b, c, d) {
+			return a + b + c + d;
+		}
+
+		let sum2 = curry(sum)
+		let sum3 = curry(sum)
+
+		console.log(sum2(1)(2)(2, 3))
+		console.log(sum3(4)(5)(6, 5))
+	</script>
+</html>

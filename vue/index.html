@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>
+					<h3>路由懒加载3种方式</h3>
+					<p>1 . vue异步组件技术 ==== 异步加载，这种情况下一个组件生成一个js文件
+					<br>{ path: '/home', name: 'home', component: resolve => require(['@/components/home'],resolve) },
+					</p>
+					<p>
+						2.组件懒加载方案二 路由懒加载(使用import)指定了相同的webpackChunkName，会合并打包成一个js文件
+						<br>const Home = () => import(/* webpackChunkName: 'ImportFuncDemo' */ '@/components/home')
+					</p>
+					<p>
+						3.webpack提供的require.ensure() 多个路由指定相同的chunkName，会合并打包成一个js文件
+						<br>
+						{ path: '/home', name: 'home', component: r => require.ensure([], () => r(require('@/components/home')), 'demo') },
+					</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

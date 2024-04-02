@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			var number = 70
+			var obj={
+				number:60,
+				getNum:function(){
+					var number = 70
+					return this.number
+				}
+			}
+			console.log(obj.getNum())// 60 
+			console.log(obj.getNum.call(undefined)) //70 
+			console.log(obj.getNum.call({number:30})) // 30
+			
+			function nums(a,b){
+				if(a>b)
+				console.log('a is bigger')
+				else
+				console.log('b is bigger')
+				return
+				a+b
+			}
+			console.log(nums(1,2)) //b is bigger
+			console.log(nums(3,2)) //a is bigger
+			const a = 1
+			var b = 9
+			function aa(){
+			    const a =2
+				const b = 10
+				const bb = function(){
+					const b =20
+					console.log('123====',a,this.a,b,this.b) // 2 undefined 20 9
+				}
+				return bb()
+			}
+			console.log('aa()=====',aa())
+		</script>
+	</body>
+	
+</html>

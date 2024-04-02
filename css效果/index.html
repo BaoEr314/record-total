@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.u-main-banner {
+				position: relative;
+				width: 100%;
+				height: 29rem;
+				background: #212121;
+			}
+
+			.u-animation-head {
+				position: absolute;
+				top: 4rem;
+				right: 6rem;
+				width: 24rem;
+				height: 24rem;
+				background: url(../img/animation_head.png) 100% / cover no-repeat;
+				animation: 1.6s steps(4) infinite forwards change2;
+			}
+			@keyframes change2 {
+				0% {
+					background-position: 0 0;
+				}
+			
+				100% {
+					background-position: -96rem 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<section class="u-main-banner">
+				<div class="u-1440-box u-plr-60 u-flex-box full-screen">
+					<section class="u-animation-head"></section>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

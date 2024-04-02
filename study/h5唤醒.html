@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		 <div>app唤醒</div>
+	</body>
+	<script type="text/javascript">
+		// 判断设备
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);		
+		if (isAndroid) {
+			
+			//window.android.method()
+		} 
+		if (isiOS) {
+			
+			// window.webkit.messageHandlers.Share.postMessage({title:'测试分享的标题',content:'测试分享的内容',url:'https://github.com/maying1992'});
+		}
+	</script>
+</html>

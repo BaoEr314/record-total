@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			ul,
+			li {
+				list-style: none;
+			}
+
+			.div {
+				font-size: 12px;
+				color: #ffffff;
+			}
+
+			.wrap1 {
+				width: 300px;
+				height: 300px;
+				position: relative;
+				background-color: aqua;
+			}
+
+			.div1 {
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: red;
+				margin: auto;
+			}
+
+			.wrap2 {}
+
+			.div2 {
+				width: 50px;
+				height: 50px;
+				background-color: red;
+				position: absolute;
+				left: 50%;
+				right: 50%;
+				margin-left: -25px;
+				margin-top: -25px;
+			}
+
+			.wrap3 {
+				width: 100px;
+				height: 100px;
+				position: relative;
+				background-color: gray;
+			}
+
+			.div3 {
+				background: red;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+
+			.wrap4 {
+				width: 300px;
+				height: 300px;
+				background-color: aqua;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.div4 {
+				width: 50px;
+				height: 50px;
+				background-color: red;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div>
+			<h3>垂直居中:</h1>
+				<div class="wrap1">
+					<div class=" div div1">绝对定位</div>
+				</div>
+				<div class="wrap2">
+					<div class="div div2">确定了当前div的宽度</div>
+				</div>
+				<div class="wrap3" style="margin-top: 10px;">
+					<div class="div div3">不确定当前div宽高</div>
+				</div>
+				<div class="wrap4" style="margin-top: 10px;">
+					<div class="div div4">flex</div>
+				</div>
+		</div>
+	</body>
+	<style>
+
+	</style>
+</html>

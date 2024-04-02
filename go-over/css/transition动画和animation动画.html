@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>transition动画和animation动画</title>
+		<style>
+			.box1 {
+				width: 200px;
+				height: 200px;
+				margin: 50px auto;
+				background-color: #20f100;
+				/* transition: 哪个属性运动 运动在多长时间完成 运动类型 延迟时间*/
+				transition: all 1s ease-in-out 1s;
+			}
+
+			.box1:hover {
+				width: 400px;
+				height: 400px;
+				cursor: pointer;
+			}
+			
+			img {
+				animation: transForm 3s linear infinite;
+				-moz-animation: transForm 3s linear infinite;
+				/* Firefox */
+				-webkit-animation: transForm 3s linear infinite;
+				/* Safari 和 Chrome */
+				-o-animation: transForm 3s linear infinite;
+				/* Opera */
+			}
+
+			@keyframes transForm {
+				from {
+					transform: rotate(0deg);
+					transform-origin: 50% 50%;
+				}
+
+				to {
+					transform: rotate(360deg);
+					transform-origin: 50% 50%;
+					transition: all 3s
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box1"></div>
+		<div class="box2">
+			<img src="./img/left-r.png" alt="">
+		</div>
+	</body>
+</html>

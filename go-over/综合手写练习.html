@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>综合手写题</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 数组去重
+			let arr = [4, 1, 2, 2, 3, 2, 1, 4, 4];
+			//es6
+			console.log(Array.from(new Set(arr)))
+			// indexof
+			function unique1(arr, result = []) {
+				for (let i = 0, len = arr.length; i < len; i++) {
+					if (result.indexOf(arr[i]) == -1) {
+						result.push(arr[i])
+					}
+				}
+				return result
+			}
+			console.log('indexof----', unique1(arr))
+			// fifter
+			function unique2(arr, result = []) {
+				return arr.filter((item, index) => {
+					return arr.indexOf(item) === index
+				})
+			}
+			console.log('filter----', unique2(arr))
+			// map
+			function unique3(arr) {
+				return arr.map((item, index) => {
+					if (arr.indexOf(item) === index) {
+						return item
+					}
+				})
+			}
+			console.log('map----', unique3(arr))
+
+			// 手写new
+			function mynew(fn) {
+				let obj = {}
+				obj = Object.create(fn.prototype)
+				let args = Array.prototype.slice.call(arguments, 1)
+				let result = fn.call(obj, ...args)
+				return typeof result === 'object' || result instanceof Function ? result : obj
+			}
+
+			function Cat(name, age) {
+				this.name = name
+				this.age = age
+			}
+			Cat.prototype.say = function() {
+				console.log(`名字=${this.name} 年龄=${this.age}`)
+			}
+			var cat = mynew(Cat, '坦克', 4)
+			cat.say()
+
+			// 手写instansof 
+			function instans(l, r) {
+				let proto = l.__proto__
+				let prototype = r.protype
+				while (true) {
+					if (proto === null) return false
+					if (proto === prototype) return true
+					proto = prototype.__proto__
+				}
+			}
+			// 手写防抖
+			function debounce(fn, wait) {
+				let timer = null
+				return function(...args) {
+					if (timer) {
+						clearTimeout(timer)
+					}
+					timer = setTimeout(() => {
+						fn.apply(this, args)
+					}, wait)
+				}
+			}
+			// 手写节流
+			function throttle(fn, wait) {
+				let pre = Date.now()
+				return function(...args) {
+					let now = Date.now()
+					if (now - pre >= wait) {
+						fn.apply(this, args)
+						pre = Date.now()
+					}
+				}
+			}
+
+			function throttled(fn, wait) {
+				let timer = null
+				return function(...args) {
+					if (!timer) {
+						timer = setTimeout(() => {
+							fn.apply(this, args)
+							timer = null
+						}, wait)
+					}
+				}
+			}
+			// 手写数组扁平化
+			const optionArr = [1, [2, 3, [4, 5, [6, 7]]]]
+			// 递归的方法
+			function flatten1(arr, result = []) {
+				if (!Array.isArray(arr)) {
+					return result.push(arr)
+				}
+				for (let value of arr) {
+					flatten1(value, result)
+				}
+				return result
+			}
+			console.log('数组扁平化递归-------', flatten1(optionArr))
+			// 字符串的方法
+			function flatten2(arr, result = []) {
+				result = arr.toString().split(',').map((item) => Number(item))
+				return result
+			}
+			console.log('字符串方法-------', flatten2(optionArr))
+			// reduce 方法
+			function flatten3(arr) {
+				return arr.reduce((pre, cur) => {
+					// console.log('pre===',pre,'cur----',cur)
+					return pre.concat(Array.isArray(cur) ? flatten3(cur) : cur)
+				}, [])
+			}
+			console.log('reduce 方法-------', flatten3(optionArr))
+
+			// 手写一个深拷贝
+			// 验证
+			let person = {
+				name: 'zhangsan',
+				age: 13,
+				option: {
+					sex: 'man',
+					fav: 'football'
+				}
+			}
+			// 先判断是数组还是对象
+			function clonecopy(target) {
+				return Object.prototype.toString.call(target).slice(8, -1)
+			}
+
+			function deepCopy(target) {
+				let result;
+				if (clonecopy(target) === 'Object') {
+					result = {}
+				} else if (clonecopy(target) === 'Array') {
+					result = []
+				} else {
+					result = target
+				}
+				for (let i in target) {
+					let item = target[i]
+					if (clonecopy(item) === 'Object' || clonecopy(item) === 'Array') {
+						result[i] = deepCopy(item)
+					}else{
+						result[i] = item
+					}
+				}
+				return result;
+			}
+			let person2 = deepCopy(person)
+			console.log(person2)
+			console.log('---------------')
+			person.option.sex = 'woman'
+			console.log(person2)
+			
+			// 手写promise
+			const PENDING = 'PENDING';
+			const FULFILLED = 'FULFILLED';
+			const REJECTED = 'REJECTED'; 
+			class MyPromise{
+				constructor(executor) {
+					this.state = PENDING
+				    this.successValue = undefined
+					this.errorValue = undefined
+					// 存放成功的回调
+					this.onResolvedCallbacks = [];
+					// 存放失败的回调
+					this.onRejectedCallbacks = [];
+					const resolve = (successValue)=>{
+						if(this.state===PENDING){
+							this.state = FULFILLED
+							this.successValue = successValue
+							this.onResolvedCallbacks.map((fn)=>fn())
+						}
+					}
+					const reject = (errorValue)=>{
+						if(this.state===PENDING){
+							this.state = REJECTED
+							this.errorValue = errorValue
+							this.onRejectedCallbacks.map((fn)=>fn())
+						}
+					}
+					try{
+						executor(resolve,reject)	
+					}catch(error){
+						reject(error)
+					}
+				}
+				
+				then(onFulfilled,onRejected){
+					if(this.state === PENDING){
+						this.onResolvedCallbacks.push(() => {
+							onFulfilled(this.successValue)
+						})
+						this.onRejectedCallbacks.push(() => {
+							onRejected(this.errorValue)
+						})
+					}
+					if(this.state === FULFILLED){
+						onFulfilled(this.successValue)
+					}
+					if(this.state === REJECTED){
+						onRejected(this.errorValue)
+					}
+				}
+				
+			}
+			// 例子
+			const test_sync = new MyPromise((resolve,reject)=>{
+				resolve('同步成功')
+			})
+			console.log('test_sync====',test_sync)
+			test_sync.then((res)=>{
+				console.log('res---',res)
+			})
+			const test_async = new MyPromise((resolve,reject)=>{
+				setTimeout(()=>{
+					resolve('异步')
+				},1000)
+			})
+			console.log('test_async====',test_async)
+			test_async.then((res)=>{
+				console.log('res---',res)
+			})
+			// 找出字符串中最多的字符
+			function maxNumstr(str){
+				let map = {}
+				let max = 1
+				let chars = '' 
+				for(let i of str){
+					console.log('i===',i)
+					if(map[i]){
+						map[i]+=1
+					}else{
+						map[i]=1
+					}
+				}
+				console.log('map===',map)
+				for(let n in map){
+					// console.log('n===',map[n])
+					if(map[n]>max){
+						max=map[n]
+						chars = n
+					}
+				}
+				console.log('出现次数最多的是:' + chars + '出现了' + max + '次');
+			}
+			maxNumstr('leecool')
+		</script>
+	</body>
+</html>

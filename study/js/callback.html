@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+	</head>
+	<body>
+		<div>
+			<button id="btn_1">提交</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// function callfunc(){
+		//  alert('点击执行回调')
+		// }
+		// $('#btn_1').click(callfunc)
+		function genericPoemMaker(name, gender) {
+			console.log('回调', name, gender);
+		}
+
+		function getUserInput(a, b, callback) {
+			var sum = a + b;
+			console.log('sum====', sum)
+			if (typeof(callback) === 'function') {
+				callback(sum, 1)
+			}
+		}
+		getUserInput(1, 2, genericPoemMaker)
+		// (function(a){console.log('111',a)})(3)//立即执行函数
+	</script>
+</html>

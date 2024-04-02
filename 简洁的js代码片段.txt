@@ -1,0 +1,159 @@
+1、从数组中删除重复项
+	在 JavaScript 中，Set 是一个集合，它允许你仅存储唯一值。这意味着删除任何重复的值。
+	因此，要从数组中删除重复项，你可以将其转换为集合，然后再转换回数组。
+	 case:
+	 const numbers = [11,22,11,1,1,6,6,3,3,99,9];
+	 const uniquenumbers = [...new Set(numbers)];
+	 console.log('uniquenumbers',uniquenumbers)
+	
+2、较短的 If-Else 的空合并:
+   你可以使用看涨合并，而不是使用 if-else 构造来检查值是否为空。该nullish合并操作 ??，
+   如果没有定义左侧返回右侧。如果是，则返回左侧：
+	case:
+	let maybeSomething;
+	console.log(maybeSomething??'Not found')
+   
+3、防止崩溃的可选链:
+
+ 如果访问未定义的属性，则会产生错误。这就是可选链的用武之地。
+ 在未定义属性时使用可选链运算符，undefined将返回而不是错误。这可以防止你的代码崩溃。
+
+4、将任何值转换为布尔值 在 JavaScript 中，你可以使用 !! 在 JS 中将任何内容转换为布尔值。
+	case:
+	!!true    // true
+	!!2       // true
+	!![]      // true
+	!!"Test"  // true
+
+	!!false   // false
+	!!0       // false
+	!!""      // false
+
+5、扩展运算符 使用扩展运算符组合两个数组...
+	case:
+	const nums1 = [1, 2, 3];
+	const nums2 = [4, 5, 6];
+	newArray = [...nums1, ...nums2];
+	
+	case:
+	let numbers = [1, 2, 3];
+	numbers = [...numbers, 4, 5];
+	
+6、传播解构
+   case:
+   const student = {
+     name: "Matt",
+     age: 23,
+     city: "Helsinki",
+     state: "Finland",
+   };
+   const { name, age, ...address } = student;
+   console.log(address)//{city: "Helsinki", state: "Finland"}
+   
+7、使用 && 进行短路评估
+
+   不必用if语句检查某事是否为真，你可以使用&&运算符：
+   case：
+   var isReady = true;
+   isReady && doSomething();
+
+8、类固醇的字符串
+   case:
+   const age = 41;
+   const sentence = `I'm ${age} years old`;
+
+9、 从数组中查找特定元素 使用find()方法查找匹配特定条件的元素：
+	case:
+	const fruits = [
+	  { type: "Banana", color: "Yellow" },
+	  { type: "Apple", color: "Green" }
+	];
+	yellowFruit = fruits.find((fruit) => fruit.color === "Yellow");
+	记：find返回第一个符合条件的对象 filter返回所有符合条件的数据 返回数组 这两个方法都不会改变原数组
+	
+10、对象属性赋值：
+	case:
+	const name = "Luis", city = "Paris", age = 43, favoriteFood = "Spaghetti";
+	const person = { name, city, age, favoriteFood };
+	console.log(person)
+	
+11、 默认功能参数 你可以为函数参数提供默认值：
+	 case:
+	 // LONG FORM
+	 function pickUp(fruit) {
+	   if(fruit === undefined){
+	     console.log("I picked up a Banana");
+	   } else {
+	     console.log(`I picked up a ${fruit}`);
+	   }
+	 }
+	 
+	 // SHORTHAND
+	 function pickUp(fruit = "Banana") {
+	   console.log(`I picked up a ${fruit}`)
+	 }
+	 
+	 pickUp("Mango"); // -> I picked up a Mango
+	 pickUp();        // -> I picked up a Banana
+
+12:将对象的值收集到数组中 用于Object.values()将对象的所有值收集到一个新数组中：
+	case:
+	const info = { name: "Matt", country: "Finland", age: 35 };
+	// LONGER FORM
+	let data = [];
+	for (let key in info) {
+	  data.push(info[key]);
+	}
+	
+	// SHORTHAND
+	const data = Object.values(info);
+
+13:检查一个项目是否存在于数组中:includes
+
+14:压缩多个条件（同上）
+
+15: 指数运算符
+	
+   case:
+   // LONGER FORM
+   Math.pow(4,2); // 16
+   Math.pow(2,3); // 8
+   
+   // SHORTHAND
+   4**2 // 16
+   2**3 // 8
+
+16:Math.floor() 简写
+
+	case:
+	
+	// LONG FORM
+	Math.floor(5.25) // -> 5.0
+	
+	// SHORTHAND
+	~~5.25 // -> 5.0
+	
+17:一行代码分配多个值
+  case:
+  let num1, num2;
+  
+  // LONGER FORM
+  num1 = 10;
+  num2 = 100;
+  
+  // SHORTHAND
+  [num1, num2] = [10, 100];
+  
+  javascript对象同上:
+  
+  student = {
+    name: "Matt",
+    age: 29,
+  };
+  
+  // LONGER FORM
+  let name = student.name;
+  let age = student.age;
+  
+  // SHORTHAND
+  let { name, age } = student;

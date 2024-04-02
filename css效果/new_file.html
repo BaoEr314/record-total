@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			 html,
+			    body {
+			      width: 100%;
+			      height: 100%;
+			    }
+			
+			    * {
+			      margin: 0;
+			      padding: 0;
+			    }
+			
+			    body {
+			      background-color: #000;
+			    }
+			
+			    .blingBox {
+			      display: flex;
+			      flex-direction: row;
+			      flex-wrap: nowrap;
+			      width: 100%;
+			      height: 100%
+			    }
+			
+			    .bling {
+			      width: 300px;
+			      font-size: 30px;
+			      color: #E91E63;
+			      margin: 0 auto;
+			      text-align: center;
+			      animation: changeshadow 1s ease-in infinite;
+			    }
+			
+			    @keyframes changeshadow {
+			      0% {
+			        text-shadow: 0 0 4px #E91E63
+			      }
+			
+			      50% {
+			        text-shadow: 0 0 50px #E91E63
+			      }
+			
+			      100% {
+			        text-shadow: 0 0 4px #E91E63
+			      }
+			    }
+			
+			    .blingLeft {
+			      order: 1;
+			      flex: 200px 0 0;
+			      height: 100%;
+			      /* background: repeating-linear-gradient(45deg, #161305, #F0FFEF 800px, #fff); */
+			      /* background:repeating-linear-gradient(-45deg,#161305, #F0FFEF 400px, #fff); */
+			      box-shadow: inset 20px 40px 60px 70px #F0FFEF;
+			      /* animation: blingLeft .7s ease infinite; */
+			      position: relative;
+			      overflow:hidden;
+			      animation: blingLeftBox 1s ease-in-out infinite;
+			    }
+			
+			    .blingLeft:after {
+			      content: "";
+			      position: absolute;
+			      bottom: 0;
+			      left: 40px;
+			      width: 20px;
+			      height: 100%;
+			      background-color: #bbb;
+			      box-shadow: 0 0 10px 10px #bbb;
+			      transform: rotate(0deg) skew(0deg,4deg);
+			      /* transform:; */
+			      transform-origin: 0 0;
+			      z-index: -1;
+			      animation: blingLeft 1s ease infinite
+			    }
+			
+			    .blingLeft:before {
+			      content: "";
+			      position: absolute;
+			      bottom: 0;
+			      right: 40px;
+			      width: 20px;
+			      height: 100%;
+			      background-color: #bbb;
+			      box-shadow: 0 0 10px 10px #bbb;
+			      transform: rotate(-0deg) skew(10deg,4deg);
+			      /* transform:; */
+			      transform-origin: 80px 0;
+			      z-index: -1;
+			      animation: blingLeft2 1s ease-out infinite
+			    }
+			
+			    .blingMiddle {
+			      order: 2;
+			      flex: auto 1 0;
+			
+			    }
+			
+			    .blingRight {
+			      order: 3;
+			      flex: 200px 0 0;
+			      height: 100%;
+			      background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 800px, #fff);
+			      /* background:repeating-linear-gradient(-45deg,#161305, #F0FFEF 400px, #fff); */
+			      /* animation: blingRight .7s ease infinite; */
+			    }
+			
+			    @keyframes blingRight {
+			      0% {
+			        background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 600px, #fff);
+			      }
+			
+			      20% {
+			        background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 400px, #fff);
+			      }
+			
+			      40% {
+			        background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 200px, #fff);
+			      }
+			
+			      60% {
+			        background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 400px, #fff);
+			      }
+			
+			      80% {
+			        background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 600px, #fff);
+			      }
+			
+			      100% {
+			        background: repeating-linear-gradient(-45deg, #161305, #F0FFEF 800px, #fff);
+			      }
+			    }
+			
+			    @keyframes blingLeftBox{
+			      0%{
+			        box-shadow: inset 20px 40px 60px 70px #F0FFEF;
+			      }
+			      50%{
+			        box-shadow: inset 20px 40px 80px 50px #F0FFEF;
+			      }
+			      100%{
+			        box-shadow: inset 20px 40px 60px 70px #F0FFEF;
+			      }
+			    }
+			    @keyframes blingLeft {
+			      0% {
+			        transform: rotate(0deg) skew(0deg,4deg);
+			      }
+			      /* 12.5%{
+			        transform: rotate(10deg) skew(5deg,4deg);
+			      } */
+			      25%{
+			        transform: rotate(20deg) skew(10deg,4deg);
+			      }
+			      /* 37.5%{
+			        transform: rotate(10deg) skew(5deg,4deg);
+			      } */
+			      50%{
+			        transform: rotate(0deg) skew(5deg,4deg);
+			      }
+			      /* 62.5%{
+			        transform: rotate(-10deg) skew(5deg,4deg);
+			      } */
+			      75%{
+			        transform: rotate(-20deg) skew(10deg,4deg);
+			      }
+			      /* 87.5%{
+			        transform: rotate(-10deg) skew(5deg,4deg);
+			      } */
+			      100%{
+			        transform: rotate(0deg) skew(0deg,4deg);
+			      }
+			    }
+			    @keyframes blingLeft2{
+			      0% {
+			        transform: rotate(0deg) skew(10deg,4deg);
+			      }
+			      25%{
+			        transform: rotate(-30deg) skew(10deg,4deg);
+			      }
+			      50%{
+			        transform: rotate(0deg) skew(0deg,4deg);
+			      }
+			      75%{
+			        transform: rotate(30deg) skew(10deg,4deg);
+			      }
+			      100%{
+			        transform: rotate(0deg) skew(10deg,4deg);
+			      }
+			    }
+			
+			    .bg {
+			      background: #000;
+			      width: 400px;
+			      margin: 20px auto;
+			      font-size: 30px;
+			    }
+			
+			    .slideShine {
+			      width: 400px;
+			      text-align: center;
+			      background: #111 -webkit-linear-gradient(left, #111, #fff) 0 0 no-repeat;
+			      background-size: 20px;
+			      background-clip: text;
+			      animation: slideShine 3s infinite;
+			    }
+			
+			    @keyframes slideShine {
+			      0% {
+			        background-position: 0 0;
+			      }
+			
+			      100% {
+			        background-position: 100% 100%;
+			      }
+			    }
+			
+			    .blingLeftText {
+			      color: black;
+			      width: 200px;
+			      font-size: 20px;
+			      line-height: 1;
+			      margin: 0;
+			      padding: 0;
+			      transform: rotateX(25deg) rotateY(20deg) rotateZ(-3deg);
+			      position: absolute;
+			      left: 200px;
+			      top: 50px;
+			      margin-left: -180px;
+			      animation: shinning 3s linear infinite;
+			    }
+			
+			    @keyframes shinning {
+			      0% {
+			        text-shadow: -3px 2px 0px red;
+			      }
+			
+			      10% {
+			        text-shadow: 2px -3px 0px green;
+			      }
+			
+			      20% {
+			        text-shadow: -5px 2px 0px blue;
+			      }
+			
+			      30% {
+			        text-shadow: 2px -3px 0px yellow;
+			      }
+			
+			      40% {
+			        text-shadow: -4px 2px 0px orange;
+			      }
+			
+			      50% {
+			        text-shadow: 2px 3px 0px purple;
+			      }
+			
+			      60% {
+			        text-shadow: -3px 2px 0px brown;
+			      }
+			
+			      70% {
+			        text-shadow: 2px 4px 0px pink;
+			      }
+			
+			      80% {
+			        text-shadow: -5px -2px 0px lime;
+			      }
+			
+			      90% {
+			        text-shadow: 2px -3px 0px cyan;
+			      }
+			
+			      100% {
+			        text-shadow: -5px 2px 0px teal;
+			      }
+			    }
+		</style>
+	</head>
+	<body>
+		 <div class="blingBox">
+		    <div class="blingMiddle">
+		      <div class="bg">
+		        <p class="slideShine">欢迎来到coco`s show</p>
+		      </div>
+		      <div class="bling">
+		        恭喜coco喜提白丝
+		      </div>
+		
+		    </div>
+		    <div class="blingLeft">
+		      <div class="blingLeftText">
+		        coco迪厅装修中
+		      </div>
+		    </div>
+		    <div class="blingRight"></div>
+		  </div>
+	</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>迭代器与生成器</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 迭代器定义：
+		// 	迭代器是一种特殊对象，它具有一些专门为迭代过程设计的专有接口，所有的迭代器对象都有一个next()方法
+		// 	，每次调用都返回一个结果对象。结果对象有两个属性：一个是value，表示下一个将要返回的值；另一个是done，
+		// 	它是一个布尔类型的值，当没有更多可返回数据时返回true。迭代器还会保存一个内部指针，用来指向当前集合中值的位置，
+		//  每调用一次next()方法，都会返回下一个可用的值
+		// 	如果在最后一个值返回后再调用next()方法，那么返回的对象中属性done的值为true，
+		// 	属性value则包含迭代器最终返回的值，这个返回值不是数据集的一部分，它与函数的返回值类似，
+		// 	是函数调用过程中最后一次给调用者传递信息的方法，如果没有相关数据则返回undefined;
+
+		// 生成器定义：
+		// 　生成器是一种返回迭代器的函数，通过function关键字后的星号(*)来表示，函数中会用到新的关键字yield。
+		//   星号可以紧挨着function关键字，也可以在中间添加一个空格
+
+		//ES5的语法创建一个迭代器：
+		// case：
+		function createIterator(items) {
+			i = 0;
+			return {
+				next() {
+					const done = i >= items.length;
+					const value = !done ? items[i++] : undefined;
+					return {
+						value: value,
+						done: done,
+					}
+				}
+			}
+		}
+		var iterator = createIterator([1, 2, 3]);
+		console.log(iterator.next()); // "{ value: 1, done: false }"
+		console.log(iterator.next()); // "{ value: 2, done: false }"
+		console.log(iterator.next()); // "{ value: 3, done: false }"
+		console.log(iterator.next()); // "{ value: undefind, done: true }"
+
+		// 生成器创建的迭代器
+		function* createIterator() {
+			yield 1;
+			yield 2;
+			yield 3;
+		}
+		let iterator1 = createIterator();
+		console.log(iterator1.next().value); // 1
+		console.log(iterator1.next().value); // 2
+		console.log(iterator1.next().value); // 3
+
+		// 可迭代对象定义:
+		//可迭代对象具有Symbol.iterator属性，是一种与迭代器密切相关的对象。
+		//Symbol.iterator通过指定的函数可以返回一个作用于附属对象的迭代器。
+		//在ES6中，所有的集合对象(数组、Set集合及Map集合)和字符串都是可迭代对象，
+		//这些对象中都有默认的迭代器。ES6中新加入的特性for-of循环需要用到可迭代对象的这些功能。
+
+		// [注意]由于生成器默认会为Symbol.iterator属性赋值，因此所有通过生成器创建的迭代器都是可迭代对象。
+		// 具有Symbol.iterator属性的对象都有默认的迭代器，因此可以用它来检测对象是否为可迭代对象;
+		// case:
+		function isIterable(obj) {
+			return typeof obj[Symbol.iterator] === 'function';
+		}
+		console.log(isIterable([1, 2, 3])) //true
+		console.log(isIterable("Hello")); // true
+		console.log(isIterable(new Map())); // true
+		console.log(isIterable(new Set())); // true
+		console.log(isIterable(new WeakMap())); // false
+		console.log(isIterable(new WeakSet())); // false
+		console.log(isIterable({
+			name: 'aa'
+		})) //false
+		console.log(isIterable(Object.keys({
+			name: 'aa'
+		}))) //true
+
+		// 不同集合类型的默认迭代器:
+		//每个集合类型都有一个默认的迭代器,数组和Set集合的默认迭代器是values()方法，
+		//Map集合的默认迭代器是entries()方法;
+		// case:
+		// let colors = [ "red", "green", "blue" ];
+		// let tracking = new Set([1234, 5678, 9012]);
+		// let data = new Map();
+		// data.set("title", "Understanding ES6");
+		// data.set("format", "print");
+		// // 与使用 colors.values() 相同
+		// for (let value of colors) {
+		//     console.log(value);
+		// }
+		// // 与使用 tracking.values() 相同
+		// for (let num of tracking) {
+		//     console.log(num);
+		// }
+		// // 与使用 data.entries() 相同
+		// for (let entry of data) {
+		//     console.log(entry);
+		// }
+		//==============================================================================================
+
+		//迭代和遍历的区别:
+		// 迭代：迭代强调的是依次取数据的过程，并不保证取多少，也不保证把所有的数据都取完;
+		// 遍历：遍历强调的是要把整个数据依次全部取出;
+
+		//迭代器：对迭代过程的封装，在不同的语言中有不同的表现形式，通常为对象;
+
+		//迭代模式：一种设计模式，用于统一迭代过程，迭代模式规范了迭代器规格;
+		//迭代器应该具有得到下一个数据的能力;
+		//迭代器应该具有判断是否还有后续数据的能力;
+	</script>
+</html>

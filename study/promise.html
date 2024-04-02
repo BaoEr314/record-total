@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>promise</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		// 一、Promise.all 如何防止某一个promise失败而使整个promise失败
+		// 1、Promise.allSettled
+		// 2、在catch中resolve
+		// case:
+		// 	let p1 = Promise.resolve(1)
+		// 	let p2 = Promise.resolve(2)
+		// 	let p3 = Promise.resolve(3)
+		// 	let p4 = Promise.resolve(4)
+		// 	let p5 = Promise.reject("error")
+		// 	let arr = [p1,p2,p3,p4,p5];
+
+		// 	let all = Promise.all(arr.map((promise)=>promise.catch((e)=>{console.log("错误信息"+e)})))
+		// 	all.then(res=>{console.log(res)}).catch(err=>console.log(err));
+
+		// 二、promise与async和await的区别
+		// async/await是写异步代码的新方式，以前的方法有回调函数和Promise。
+		// async/await是基于Promise实现的，它不能用于普通的回调函数。
+		// async/await与Promise一样，是非阻塞的。
+		// async/await使得异步代码看起来像同步代码，这正是它的魔力所在。
+
+		// 三、终止promise链式调用 通过throw抛出异常  通过reject来中断
+
+		// 四、Promise上的实例promise是一个对象，不是一个函数。在声明的时候，Promise传递的参数函数会立即执行
+		async function fn() {
+			console.log('async1')
+			const res = await new Promise((resolve) => {
+				resolve(1)
+			})
+			console.log(res)
+			console.log('async2')
+		}
+		setTimeout(() => {
+			console.log('setTimeout')
+		}, 0)
+		fn();//async1 1 async2 setTimeout
+		
+		// promise.then是异步操作且是微任务 process.nextTick()其回调函数也会被被分发到微任务
+		// new Promise((resolve) => {
+		// 	console.log('Promise1')
+		// 	resolve()
+		// }).then(() => {
+		// 	console.log('Promise2')
+		// })
+		// console.log('end')
+		// async1 Promise1 end async2  Promise2 setTimeout
+
+		// =================================================================================
+
+		// new Promise((resolve) => {
+		// 	console.log("1")
+		// 	resolve()
+		// }).then(() => {
+		// 	console.log("2")
+		// 	setTimeout(() => {
+		// 		console.log("3")
+		// 	}, 1000)
+		// })
+		// setTimeout(() => {
+		// 	console.log("4")
+		// }, 0)
+		// console.log("5")
+		// 1 5 2 4 3
+
+
+		//javascript是一门单线程语言
+		//Event Loop是javascript的执行机制
+	</script>
+</html>
