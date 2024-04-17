@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>防下拉菜单</title>
+		<style type="text/css">
+			ul,
+			li,
+			span {
+				margin: 0;
+				padding: 0
+			}
+
+			li {
+				list-style: none;
+			}
+
+			.trangle_up {
+				width: 0;
+				height: 0;
+				border-left: 16px solid transparent;
+				border-right: 16px solid transparent;
+				border-bottom: 16px solid rgb(96, 64, 53);
+			}
+
+			#menu ul:first-child {
+				width: 800px;
+				height: 40px;
+				margin: 100px auto;
+				line-height: 40px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				position: relative;
+			}
+
+			.menu_nav {
+				display: inline-block;
+				width: 150px;
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+				font-size: 1.2rem;
+			}
+
+			.menu_nav:hover {
+				color: red;
+			}
+
+			.menu_con {
+				display: none;
+				width: 150px;
+				position: absolute;
+				top: 50px;
+			}
+
+			.menu_con .trangle_up {
+				position: absolute;
+				top: -15px;
+				left: 40%;
+			}
+
+			.menu_con ul {
+				width: 150px;
+				height: 200px;
+				background-color: rgba(96, 64, 53, .9);
+				overflow: hidden;
+				text-align: center;
+			}
+
+			.menu_con ul li:hover {
+				background-color: #8c6f65;
+				color: red;
+			}
+
+			#menu li:hover .menu_con {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="menu">
+			<ul>
+				<li>
+					<span class="menu_nav">华语</span>
+					<div class="menu_con menu_con1">
+						<div class="trangle_up"></div>
+						<ul>
+							<li>我是子目录1</li>
+							<li>我是子目录1</li>
+							<li>我是子目录1</li>
+							<li>我是子目录1</li>
+							<li>我是子目录1</li>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<span class="menu_nav">欧美</span>
+					<div class="menu_con menu_con2">
+						<div class="trangle_up"></div>
+						<ul>
+							<li>我是子目录2</li>
+							<li>我是子目录2</li>
+							<li>我是子目录2</li>
+							<li>我是子目录2</li>
+							<li>我是子目录2</li>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<span class="menu_nav">韩国</span>
+					<div class="menu_con menu_con3">
+						<div class="trangle_up"></div>
+						<ul>
+							<li>我是子目录3</li>
+							<li>我是子目录3</li>
+							<li>我是子目录3</li>
+							<li>我是子目录3</li>
+							<li>我是子目录3</li>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<span class="menu_nav">日本</span>
+					<div class="menu_con menu_con4">
+						<div class="trangle_up"></div>
+						<ul>
+							<li>我是子目录4</li>
+							<li>我是子目录4</li>
+							<li>我是子目录4</li>
+							<li>我是子目录4</li>
+							<li>我是子目录4</li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
