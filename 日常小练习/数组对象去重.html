@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		// 1
+		const arr = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }, { id: 1, name: 'Alice' }];
+		const uniqueArr = [...new Set(arr.map(JSON.stringify))].map(JSON.parse);
+		console.log(uniqueArr);
+		
+		// 2
+		const arr = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }, { id: 1, name: 'Alice' }];
+		const uniqueArr = arr.reduce((acc, cur) => {
+		  const hasDuplicate = acc.some(item => item.id === cur.id && item.name === cur.name);
+		  if (!hasDuplicate) {
+		    acc.push(cur);
+		  }
+		  return acc;
+		}, []);
+		console.log(uniqueArr);
+		
+		// 3
+		const arr = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }, { id: 1, name: 'Alice' }];
+		const uniqueArr = arr.filter((item, index, self) => {
+		  return index === self.findIndex(obj => obj.id === item.id && obj.name === item.name);
+		});
+		console.log(uniqueArr);
+	</script>
+</html>

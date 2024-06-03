@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		function processNestedData(data, temparr, arr) {
+		    for (let i = 0; i < data.length; i++) {
+		        if (temparr.indexOf(data[i].id) > -1) {
+		            continue;
+		        } else {
+		            temparr.push(data[i].id);
+		        }
+		
+		        if (data[i].childList) {
+		            processNestedData(data[i].childList, temparr, arr);
+		        }
+		
+		        arr.push(data[i]);
+		    }
+		}
+		
+		let data = [
+		    {
+		        id: '26',
+		        parentId: '5',
+		        countryCode: '02029900',
+		        provinceCode: '01019900',
+		        remarks: null,
+		        sort: 3,
+		        typeLevel: 3,
+		        flag: '04050100',
+		        shortFlag: '040501',
+		        enable: '1',
+		        name1: null,
+		        name2: null,
+		        name3: null,
+		        name: '警容风纪其他',
+		        score: 0,
+		        leaderScore: 0,
+		        logId: null,
+		        questionTypeLog: null,
+		        questionTime: null,
+		        startTime: null,
+		        endTime: null,
+		        childList: [
+		            {
+		                id: '118',
+		                parentId: '26',
+		                countryCode: null,
+		                provinceCode: '01010112',
+		                remarks: null,
+		                sort: 1,
+		                typeLevel: 4,
+		                flag: '04050101',
+		                shortFlag: '04050101',
+		                enable: '1',
+		                name1: null,
+		                name2: null,
+		                name3: null,
+		                name: '警容风纪其他',
+		                score: 0,
+		                leaderScore: 0,
+		                logId: null,
+		                questionTypeLog: null,
+		                questionTime: null,
+		                startTime: null,
+		                endTime: null,
+		                childList: null,
+		                type: null,
+		                content: '警容风纪其他'
+		            }
+		        ],
+		        type: null,
+		        content: '警容风纪其他'
+		    },
+		    {
+		        id: '118',
+		        parentId: '26',
+		        countryCode: null,
+		        provinceCode: '01010112',
+		        remarks: null,
+		        sort: 1,
+		        typeLevel: 4,
+		        flag: '04050101',
+		        shortFlag: '04050101',
+		        enable: '1',
+		        name1: null,
+		        name2: null,
+		        name3: null,
+		        name: '警容风纪其他',
+		        score: 0,
+		        leaderScore: 0,
+		        logId: null,
+		        questionTypeLog: null,
+		        questionTime: null,
+		        startTime: null,
+		        endTime: null,
+		        childList: null,
+		        type: null,
+		        content: '警容风纪其他'
+		    }
+		];
+		
+		let arr = [];
+		let temparr = [];
+		
+		processNestedData(data, temparr, arr);
+		
+		console.log('arr----', arr);
+
+	</script>
+</html>

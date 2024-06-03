@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		const data = [{
+			id: 1,
+			name: '队伍管理',
+			childList: [{
+					id: 5,
+					name: '警容风纪',
+					childList: [{
+							id: 24,
+							name: '警容着装不规范',
+							childList: [{
+								id: 96,
+								name: '警服与便服混穿',
+								childList: null
+							}]
+						},
+						{
+							id: 25,
+							name: '行为举止不规范',
+							childList: [{
+								id: 107,
+								name: '在室内禁烟区域抽烟',
+								childList: null
+							}]
+						}
+					]
+				},
+				{
+					id: 6,
+					name: '内务卫生',
+					childList: null
+				}
+			]
+		}]
+		// function recursiveReplaceKey(obj, oldKey, newKey) {
+		// 		if (Array.isArray(obj)) {
+		// 			return obj.map((item) => this.recursiveReplaceKey(item, oldKey, newKey))
+		// 		} else if (obj && typeof obj === 'object') {
+		// 			const newObj = {}
+		// 			for (let key in obj) {
+		// 				if (key === oldKey) {
+		// 					newObj[newKey] = this.recursiveReplaceKey(obj[key], oldKey, newKey)
+		// 				} else {
+		// 					newObj[key] = obj[key]
+		// 				}
+		// 			}
+		// 			return newObj
+		// 		} else {
+		// 			return obj
+		// 		}
+		// 	},
+		// 	recursiveReplaceKey(data, 'childList','child')
+
+		function replaceKey(data) {
+			if (Array.isArray(data)) {
+				return data.map(item => replaceKey(item));
+			} else if (data && typeof data === 'object') {
+				const newData = {};
+				for (let key in data) {
+					if (key === 'childList') {
+						newData['child'] = replaceKey(data[key]);
+					} else {
+						newData[key] = replaceKey(data[key]);
+					}
+				}
+				return newData;
+			} else {
+				return data;
+			}
+		}
+
+		const newData = replaceKey(data);
+		console.log(newData);
+	</script>
+</html>
